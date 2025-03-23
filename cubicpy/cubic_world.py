@@ -1,4 +1,4 @@
-# cubicpy/world.py
+import sys
 from direct.showbase.ShowBase import ShowBase
 from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import *
@@ -9,12 +9,13 @@ from .box import Box
 from .sphere import Sphere
 from .cylinder import Cylinder
 from .axis import Axis
+from pkg_resources import resource_filename
 
 
 class CubicWorld(ShowBase):
-    """
-    子供向けの3D物理シミュレーション世界を提供するメインクラス
-    """
+    GRAVITY_VECTOR = Vec3(0, 0, -9.81)
+    RESTITUTION = 0  # 反発係数
+    FRICTION = 0.5  # 摩擦係数
 
     def __init__(self, window_title="CubicPy World", window_size=(1800, 1200), gravity_factor=-6):
         """
@@ -30,7 +31,20 @@ class CubicWorld(ShowBase):
             重力の強さ（負の値＝重力が下向き）
         """
         # ShowBaseを初期化（Panda3Dの基本機能）
-        ShowBase.__init__(self)
+        super().__init__(self)
+        self.gravity_factor = gravity_factor
+        self.gravity_vector = self.GRAVITY_VECTOR * 10 ** gravity_factor
+        self.box_shapes = {}
+        self.sphere_shapes = {}
+        self.cylinder_shapes = {}
+        self.body_objects = []
+        self.tilt_x = 0
+        self.tilt_y = 0
+        self.tilt_speed = 5
+        self.target_tilt_x = 0
+        self.target_tilt_y = 0
+        self.tilt_step = 0  # 現在のフレーム数
+        self.max_tilt_frames = 10  # 10フレームかけて傾ける
 
         # ウィンドウ設定
         self.setup_window(window_title, window_size)
@@ -40,6 +54,29 @@ class CubicWorld(ShowBase):
 
         # オブジェクトリスト
         self.objects = []
+
+        # Box Model
+        self.box_model = self.loader.loadModel('models/box.egg')
+        self.box_model.setPos(-0.5, -0.5, -0.5)  # モデルの中心を原点に
+        self.box_model.setScale(1, 1, 1)
+        self.box_model.setTextureOff(1)
+        self.box_model.flattenLight()
+
+        # Sphere Model
+        self.sphere_model = self.loader.loadModel('misc/sphere.egg')
+        # self.sphere_model.setPos(-0.5, -0.5, -0.5)  # モデルの中心を原点に
+        self.sphere_model.setScale(0.5)
+        self.sphere_model.setTextureOff(1)
+        self.sphere_model.flattenLight()
+
+        # Cylinder Model
+        # self.cylinder_model = self.loader.loadModel('cubicpy/models/cylinder48.egg')
+        model_file = resource_filename('cubicpy', 'models/cylinder48.egg')
+        self.cylinder_model = self.loader.loadModel(model_file)
+        self.cylinder_model.setPos(0, 0, -0.5)  # モデルの中心を原点に
+        self.cylinder_model.setScale(1, 1, 1)
+        self.cylinder_model.setTextureOff(1)
+        self.cylinder_model.flattenLight()
 
         # キー操作の設定
         self.setup_controls()
@@ -53,9 +90,6 @@ class CubicWorld(ShowBase):
 
     def setup_world(self, gravity_factor):
         """世界の基本設定"""
-        # 重力設定
-        self.gravity_vector = Vec3(0, 0, -9.81) * (10 ** gravity_factor)
-
         # 物理エンジン
         self.bullet_world = BulletWorld()
         self.bullet_world.setGravity(self.gravity_vector)
@@ -82,7 +116,7 @@ class CubicWorld(ShowBase):
 
     def setup_controls(self):
         """キー操作の設定"""
-        self.accept("escape", self.quit)
+        self.accept("escape", sys.exit)
         self.accept("f1", self.toggle_debug)
         self.accept("r", self.reset)
         # その他のキー設定...
@@ -186,11 +220,44 @@ class CubicWorld(ShowBase):
         --------
         作成されたオブジェクト
         """
+        # 各パラメータをkwargsから取得（デフォルト値付き）
+        position = kwargs.get('position', kwargs.get('pos', (0, 0, 0)))
+        scale = kwargs.get('scale', (1, 1, 1))
+        color = kwargs.get('color', (0.5, 0.5, 0.5))
+        mass = kwargs.get('mass', 1)
+        color_alpha = kwargs.get('color_alpha', 1)
+
+        # 追加のパラメータがあれば取得（オプション）
+        hpr = kwargs.get('hpr', None)
+        position_mode = kwargs.get('position_mode', None)
+
+        # オブジェクトの種類に応じてメソッドを呼び出し
         if obj_type == 'box':
-            return self.add_box(**kwargs)
+            return self.add_box(
+                position=position,
+                scale=scale,
+                color=color,
+                mass=mass,
+                color_alpha=color_alpha
+            )
         elif obj_type == 'sphere':
-            return self.add_sphere(**kwargs)
-        # その他のタイプも同様に...
+            return self.add_sphere(
+                position=position,
+                scale=scale,
+                color=color,
+                mass=mass,
+                color_alpha=color_alpha
+            )
+        elif obj_type == 'cylinder':
+            return self.add_cylinder(
+                position=position,
+                scale=scale,
+                color=color,
+                mass=mass,
+                color_alpha=color_alpha
+            )
+        else:
+            raise ValueError(f"未知のオブジェクトタイプ: {obj_type}")
 
     def from_body_data(self, body_data):
         """
@@ -208,4 +275,17 @@ class CubicWorld(ShowBase):
 
     def run(self):
         """シミュレーションを実行"""
-        self.run()  # ShowBaseのrunメソッドを呼び出し
+        # 地面を配置
+        ground_data = {
+            'type': 'box',
+            'pos': (-500, -500, -1),
+            'scale': (1000, 1000, 1),
+            'color': (0, 1, 0),
+            'mass': 0,
+            'color_alpha': 0.3
+        }
+        self.from_body_data([ground_data])
+        super().run()  # ShowBaseのrunメソッドを呼び出し
+
+        # # 物理エンジンを即座に更新
+        # self.bullet_world.doPhysics(0)

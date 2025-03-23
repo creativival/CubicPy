@@ -1,9 +1,11 @@
 README.md
 setup.py
 cubicpy/__init__.py
+cubicpy/app.py
 cubicpy/axis.py
 cubicpy/box.py
 cubicpy/camera.py
+cubicpy/cli.py
 cubicpy/cone.py
 cubicpy/cubic_world.py
 cubicpy/cylinder.py

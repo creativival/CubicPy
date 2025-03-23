@@ -1,4 +1,4 @@
-# cubicpy/world.py
+import sys
 from direct.showbase.ShowBase import ShowBase
 from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import *
@@ -12,9 +12,9 @@ from .axis import Axis
 
 
 class CubicWorld(ShowBase):
-    """
-    子供向けの3D物理シミュレーション世界を提供するメインクラス
-    """
+    GRAVITY_VECTOR = Vec3(0, 0, -9.81)
+    RESTITUTION = 0  # 反発係数
+    FRICTION = 0.5  # 摩擦係数
 
     def __init__(self, window_title="CubicPy World", window_size=(1800, 1200), gravity_factor=-6):
         """
@@ -31,6 +31,19 @@ class CubicWorld(ShowBase):
         """
         # ShowBaseを初期化（Panda3Dの基本機能）
         ShowBase.__init__(self)
+        self.gravity_factor = gravity_factor
+        self.gravity_vector = self.GRAVITY_VECTOR * 10 ** gravity_factor
+        self.box_shapes = {}
+        self.sphere_shapes = {}
+        self.cylinder_shapes = {}
+        self.body_objects = []
+        self.tilt_x = 0
+        self.tilt_y = 0
+        self.tilt_speed = 5
+        self.target_tilt_x = 0
+        self.target_tilt_y = 0
+        self.tilt_step = 0  # 現在のフレーム数
+        self.max_tilt_frames = 10  # 10フレームかけて傾ける
 
         # ウィンドウ設定
         self.setup_window(window_title, window_size)
@@ -82,7 +95,7 @@ class CubicWorld(ShowBase):
 
     def setup_controls(self):
         """キー操作の設定"""
-        self.accept("escape", self.quit)
+        self.accept("escape", sys.exit)
         self.accept("f1", self.toggle_debug)
         self.accept("r", self.reset)
         # その他のキー設定...

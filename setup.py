@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
+from cubicpy import __version__
 
 setup(
     name="cubicpy",
-    version="0.1.0",
+    version=__version__,
     packages=find_packages(),
     include_package_data=True,
     package_data={
@@ -14,7 +15,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "cubicpy=cubicpy.main:main",
+            "cubicpy=cubicpy.cli:main",
         ],
     },
     author="creativival",
