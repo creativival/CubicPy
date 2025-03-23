@@ -4,7 +4,7 @@ from panda3d.core import *
 from panda3d.bullet import BulletWorld
 from panda3d.bullet import BulletDebugNode
 from . import (
-    CameraControl, Axis, Box, Sphere, Cylinder, SafeExec, InputHandler
+    CameraControl, Axis, Box, Sphere, Cylinder, SafeExec, InputHandler, ModelManager
 )
 from pkg_resources import resource_filename
 
@@ -19,9 +19,6 @@ class CubicPyApp(ShowBase):
         self.code_file = code_file
         self.gravity_factor = gravity_factor
         self.gravity_vector = self.GRAVITY_VECTOR * (10 ** gravity_factor)
-        self.box_shapes = {}
-        self.sphere_shapes = {}
-        self.cylinder_shapes = {}
         self.body_objects = []
         self.tilt_x = 0
         self.tilt_y = 0
@@ -47,6 +44,10 @@ class CubicPyApp(ShowBase):
         # Bulletワールドを作成
         self.bullet_world = BulletWorld()
 
+        # モデル管理
+        self.model_manager = ModelManager(self)
+
+
         # デバッグ表示で物理オブジェクトの形状を表示
         self.collider_debug = self.render.attachNewNode(BulletDebugNode("colliderDebug"))
         self.bullet_world.setDebugNode(self.collider_debug.node())
@@ -57,30 +58,6 @@ class CubicPyApp(ShowBase):
 
         # すべてのノードの親
         self.world_node = self.render.attachNewNode("world_node")
-        # self.world_node.setHpr(0, 0, 10)
-
-        # Box Model
-        self.box_model = self.loader.loadModel('models/box.egg')
-        self.box_model.setPos(-0.5, -0.5, -0.5)  # モデルの中心を原点に
-        self.box_model.setScale(1, 1, 1)
-        self.box_model.setTextureOff(1)
-        self.box_model.flattenLight()
-
-        # Sphere Model
-        self.sphere_model = self.loader.loadModel('misc/sphere.egg')
-        # self.sphere_model.setPos(-0.5, -0.5, -0.5)  # モデルの中心を原点に
-        self.sphere_model.setScale(0.5)
-        self.sphere_model.setTextureOff(1)
-        self.sphere_model.flattenLight()
-
-        # Cylinder Model
-        # self.cylinder_model = self.loader.loadModel('cubicpy/models/cylinder48.egg')
-        model_file = resource_filename('cubicpy', 'models/cylinder48.egg')
-        self.cylinder_model = self.loader.loadModel(model_file)
-        self.cylinder_model.setPos(0, 0, -0.5)  # モデルの中心を原点に
-        self.cylinder_model.setScale(1, 1, 1)
-        self.cylinder_model.setTextureOff(1)
-        self.cylinder_model.flattenLight()
 
         # ユーザーコードよりワールドを生成する
         self.build_world()

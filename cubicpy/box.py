@@ -20,11 +20,11 @@ class Box:
         self.node_pos = Vec3(box['pos']) + self.get_position_offset()
 
         # 物理形状（スケールを適用）
-        if box['scale'] in self.base.box_shapes:
-            self.box_shape = self.base.box_shapes[box['scale']]
+        if box['scale'] in self.base.model_manager.box_shapes:
+            self.box_shape = self.base.model_manager.box_shapes[box['scale']]
         else:
             self.box_shape = BulletBoxShape(Vec3(0.5, 0.5, 0.5))
-            self.base.box_shapes[box['scale']] = self.box_shape
+            self.base.model_manager.box_shapes[box['scale']] = self.box_shape
 
         # Bullet剛体ノード
         self.rigid_box = BulletRigidBodyNode('Box')
@@ -40,7 +40,7 @@ class Box:
         self.box_node.setScale(self.node_scale)
         self.box_node.setColor(*self.node_color, self.color_alpha)
         self.box_node.setHpr(self.node_hpr)
-        self.base.box_model.copyTo(self.box_node)
+        self.base.model_manager.box_model.copyTo(self.box_node)
 
         if self.color_alpha < 1:
             self.box_node.setTransparency(1)  # 半透明を有効化

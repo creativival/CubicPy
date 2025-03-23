@@ -6,6 +6,7 @@ from .axis import Axis
 from .geom_utils import *
 from .safe_exec import SafeExec
 from .input_handler import InputHandler
+from .model_manager import ModelManager
 from .cubic_world import CubicWorld
 from .app import CubicPyApp
 

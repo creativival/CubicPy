@@ -21,11 +21,11 @@ class Sphere:
         self.node_pos = Vec3(sphere['pos']) + self.get_position_offset()
 
         # 物理形状（スケールを適用）
-        if sphere['scale'] in self.base.sphere_shapes:
-            self.sphere_shape = self.base.sphere_shapes[sphere['scale']]
+        if sphere['scale'] in self.base.model_manager.sphere_shapes:
+            self.sphere_shape = self.base.model_manager.sphere_shapes[sphere['scale']]
         else:
             self.sphere_shape = BulletSphereShape(0.5)
-            self.base.sphere_shapes[sphere['scale']] = self.sphere_shape
+            self.base.model_manager.sphere_shapes[sphere['scale']] = self.sphere_shape
 
         # Bullet剛体ノード
         self.rigid_sphere = BulletRigidBodyNode('Sphere')
@@ -41,7 +41,7 @@ class Sphere:
         self.sphere_node.setScale(self.node_scale)
         self.sphere_node.setColor(*self.node_color, self.color_alpha)
         self.sphere_node.setHpr(self.node_hpr)
-        self.base.sphere_model.copyTo(self.sphere_node)
+        self.base.model_manager.sphere_model.copyTo(self.sphere_node)
 
         if self.color_alpha < 1:
             self.sphere_node.setTransparency(1)  # 半透明を有効化
