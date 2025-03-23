@@ -4,7 +4,7 @@ from panda3d.core import *
 from panda3d.bullet import BulletWorld
 from panda3d.bullet import BulletDebugNode
 from . import (
-    CameraControl, Axis, Box, Sphere, Cylinder, SafeExec
+    CameraControl, Axis, Box, Sphere, Cylinder, SafeExec, InputHandler
 )
 from pkg_resources import resource_filename
 
@@ -85,21 +85,12 @@ class CubicPyApp(ShowBase):
         # ユーザーコードよりワールドを生成する
         self.build_world()
 
+        # キー入力ハンドラの設定
+        self.input_handler = InputHandler(self)
+
         # Task
         # 物理演算を実行
         self.taskMgr.add(self.update, 'update')
-
-        # キー入力の登録
-        self.accept('escape', exit)
-        self.accept('f1', self.toggle_debug)
-        self.accept('f', self.change_gravity, [-1])
-        self.accept('g', self.change_gravity, [1])
-        self.accept('r', self.reset_all)
-        self.accept("w", self.tilt_ground, [-1, 0])   # X軸 (前傾)
-        self.accept("s", self.tilt_ground, [1, 0])    # X軸 (後傾)
-        self.accept("a", self.tilt_ground, [0, -1])   # Y軸 (左傾)
-        self.accept("d", self.tilt_ground, [0, 1])    # Y軸 (右傾)
-
     def tilt_ground(self, dx, dy):
         """目標の傾きを設定し、100フレームでゆっくり傾ける"""
         self.target_tilt_x = self.tilt_x + dx * self.tilt_speed

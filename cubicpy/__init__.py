@@ -5,6 +5,7 @@ from .camera import CameraControl
 from .axis import Axis
 from .geom_utils import *
 from .safe_exec import SafeExec
+from .input_handler import InputHandler
 from .cubic_world import CubicWorld
 from .app import CubicPyApp
 
