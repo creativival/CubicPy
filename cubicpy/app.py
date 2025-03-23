@@ -1,12 +1,10 @@
 from direct.showbase.ShowBase import ShowBase
 from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import *
-from panda3d.bullet import BulletWorld
-from panda3d.bullet import BulletDebugNode
 from . import (
-    CameraControl, Axis, Box, Sphere, Cylinder, SafeExec, InputHandler, ModelManager
+    CameraControl, Axis, Box, Sphere, Cylinder, SafeExec,
+    InputHandler, ModelManager, PhysicsEngine
 )
-from pkg_resources import resource_filename
 
 
 class CubicPyApp(ShowBase):
@@ -18,7 +16,6 @@ class CubicPyApp(ShowBase):
         ShowBase.__init__(self)
         self.code_file = code_file
         self.gravity_factor = gravity_factor
-        self.gravity_vector = self.GRAVITY_VECTOR * (10 ** gravity_factor)
         self.body_objects = []
         self.tilt_x = 0
         self.tilt_y = 0
@@ -33,7 +30,6 @@ class CubicPyApp(ShowBase):
         props.setTitle('CubicPy World')
         props.setSize(1800, 1200)
         self.win.requestProperties(props)
-        # self.setBackgroundColor(0, 0, 0)
 
         # カメラの位置を設定
         CameraControl(self)
@@ -41,20 +37,11 @@ class CubicPyApp(ShowBase):
         # 座標軸を描画
         Axis(self)
 
-        # Bulletワールドを作成
-        self.bullet_world = BulletWorld()
-
         # モデル管理
         self.model_manager = ModelManager(self)
 
-
-        # デバッグ表示で物理オブジェクトの形状を表示
-        self.collider_debug = self.render.attachNewNode(BulletDebugNode("colliderDebug"))
-        self.bullet_world.setDebugNode(self.collider_debug.node())
-        self.collider_debug.show()
-
-        # 重力の設定
-        self.bullet_world.setGravity(self.gravity_vector)
+        # 物理エンジン
+        self.physics = PhysicsEngine(self, gravity_factor)
 
         # すべてのノードの親
         self.world_node = self.render.attachNewNode("world_node")
@@ -68,6 +55,7 @@ class CubicPyApp(ShowBase):
         # Task
         # 物理演算を実行
         self.taskMgr.add(self.update, 'update')
+
     def tilt_ground(self, dx, dy):
         """目標の傾きを設定し、100フレームでゆっくり傾ける"""
         self.target_tilt_x = self.tilt_x + dx * self.tilt_speed
@@ -81,9 +69,6 @@ class CubicPyApp(ShowBase):
         if self.tilt_step >= self.max_tilt_frames:
             # 重力の再設定
             self.change_gravity(1)
-
-            # # 地面の傾きを更新
-            # self.ground.tilt_ground(self.tilt_x, self.tilt_y)
             return task.done  # 完了したらタスクを終了
 
         # 徐々に目標角度に近づける
@@ -105,32 +90,23 @@ class CubicPyApp(ShowBase):
                 body_object = Sphere(self, body)
             elif body['type'] == 'cylinder':
                 body_object = Cylinder(self, body)
-            # elif body['type'] == 'cone':
-            #     self.cones.append(Cone(self, body))
             else:
                 body_object = Box(self, body)
             self.body_objects.append({'type': body['type'], 'object': body_object})
 
-
     def toggle_debug(self):
-        if self.collider_debug.isHidden():
-            self.collider_debug.show()
-        else:
-            self.collider_debug.hide()
+        self.physics.toggle_debug()
 
     def change_gravity(self, value):
-        self.gravity_vector *= 10 ** value
-        print(f'Gravity: {self.gravity_vector}')
-        self.bullet_world.setGravity(self.gravity_vector)
+        # 物理エンジンの重力を変更
+        self.physics.change_gravity(value)
+        # そしてワールドを再構築
         self.reset_build()
 
     # 物理演算を定期実行
     def update(self, task):
         dt = globalClock.getDt()
-        self.bullet_world.doPhysics(dt)
-        # self.bullet_world.doPhysics(dt, 10, 1 / 60)
-        # print(self.cones[0].cone_node.getPos())
-        # print(self.boxes[0].box_node.getPos())
+        self.physics.update(dt)
         return task.cont
 
     def reset_world_rotation(self):
@@ -141,12 +117,10 @@ class CubicPyApp(ShowBase):
 
     def reset_gravity(self):
         # 重力を初期化
-        self.gravity_vector = self.GRAVITY_VECTOR * 10 ** self.gravity_factor
-        self.bullet_world.setGravity(self.gravity_vector)
+        self.physics.reset_gravity()
 
     def reset_build(self):
         """物理エンジンをリセットし、建物を再生成する"""
-
         # 既存のオブジェクトを削除
         for body in self.body_objects:
             body['object'].remove()
@@ -175,10 +149,9 @@ class CubicPyApp(ShowBase):
         self.build_body_data(body_data)
 
         # 物理エンジンを即座に更新
-        self.bullet_world.doPhysics(0)
+        self.physics.bullet_world.doPhysics(0)
 
     def reset_all(self):
         self.reset_gravity()
         self.reset_world_rotation()
-        # self.ground.tilt_ground(self.tilt_x, self.tilt_y)
         self.reset_build()

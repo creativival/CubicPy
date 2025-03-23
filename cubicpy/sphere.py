@@ -33,7 +33,7 @@ class Sphere:
         self.rigid_sphere.addShape(self.sphere_shape)
         self.rigid_sphere.setRestitution(self.base.RESTITUTION)
         self.rigid_sphere.setFriction(self.base.FRICTION)
-        self.base.bullet_world.attachRigidBody(self.rigid_sphere)
+        self.base.physics.bullet_world.attachRigidBody(self.rigid_sphere)
 
         # ノードパス
         self.sphere_node = self.base.world_node.attachNewNode(self.rigid_sphere)
@@ -63,7 +63,7 @@ class Sphere:
 
     def remove(self):
         """ ボックスを削除 """
-        self.base.bullet_world.removeRigidBody(self.sphere_node.node())
+        self.base.physics.bullet_world.removeRigidBody(self.sphere_node.node())
         self.sphere_node.removeNode()
         del self.sphere_node
         del self.sphere_shape  # 削除処理

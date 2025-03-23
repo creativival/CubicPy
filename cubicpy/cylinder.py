@@ -32,7 +32,7 @@ class Cylinder:
         self.rigid_cylinder.addShape(self.cylinder_shape)
         self.rigid_cylinder.setRestitution(self.base.RESTITUTION)
         self.rigid_cylinder.setFriction(self.base.FRICTION)
-        self.base.bullet_world.attachRigidBody(self.rigid_cylinder)
+        self.base.physics.bullet_world.attachRigidBody(self.rigid_cylinder)
 
         # ノードパス
         self.cylinder_node = self.base.world_node.attachNewNode(self.rigid_cylinder)
@@ -62,7 +62,7 @@ class Cylinder:
 
     def remove(self):
         """ ボックスを削除 """
-        self.base.bullet_world.removeRigidBody(self.cylinder_node.node())
+        self.base.physics.bullet_world.removeRigidBody(self.cylinder_node.node())
         self.cylinder_node.removeNode()
         del self.cylinder_node
         del self.cylinder_shape  # 削除処理

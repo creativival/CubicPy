@@ -32,7 +32,7 @@ class Box:
         self.rigid_box.addShape(self.box_shape)
         self.rigid_box.setRestitution(self.base.RESTITUTION)
         self.rigid_box.setFriction(self.base.FRICTION)
-        self.base.bullet_world.attachRigidBody(self.rigid_box)
+        self.base.physics.bullet_world.attachRigidBody(self.rigid_box)
 
         # ノードパス
         self.box_node = self.base.world_node.attachNewNode(self.rigid_box)
@@ -62,7 +62,7 @@ class Box:
 
     def remove(self):
         """ ボックスを削除 """
-        self.base.bullet_world.removeRigidBody(self.box_node.node())
+        self.base.physics.bullet_world.removeRigidBody(self.box_node.node())
         self.box_node.removeNode()
         del self.box_node
         del self.box_shape  # 削除処理
