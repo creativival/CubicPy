@@ -16,7 +16,7 @@ for i in range(10):
         color=(i/10, 0, 1-i/10)
     )
 
-# 従来のコードと互換性を保つbody_dataの追加
+# cubicpyコマンドと互換性を保つbody_dataの追加
 body_data = []
 for i in range(10):
     body_data.append({

@@ -11,10 +11,11 @@ from . import (
 class CubicPyApp(ShowBase):
     """CubicPy アプリケーションのメインクラス"""
     GRAVITY_VECTOR = Vec3(0, 0, -9.81)
+    DEFAULT_GRAVITY_FACTOR = -4
     RESTITUTION = 0  # 反発係数
     FRICTION = 0.5  # 摩擦係数
 
-    def __init__(self, code_file=None, gravity_factor=-6):
+    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR):
         ShowBase.__init__(self)
         self.code_file = code_file
         self.gravity_factor = gravity_factor
