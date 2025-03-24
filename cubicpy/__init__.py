@@ -9,7 +9,7 @@ from .input_handler import InputHandler
 from .model_manager import ModelManager
 from .physics import PhysicsEngine
 from .world_manager import WorldManager
-from .cubic_world import CubicWorld
+from .api_method import ApiMethod
 from .app import CubicPyApp
 
 # サンプル関連機能をエクスポート

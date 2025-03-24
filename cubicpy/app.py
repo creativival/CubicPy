@@ -3,7 +3,8 @@ from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import *
 from . import (
     CameraControl, Axis, InputHandler,
-    ModelManager, PhysicsEngine, WorldManager
+    ModelManager, PhysicsEngine, WorldManager,
+    ApiMethod
 )
 
 
@@ -13,7 +14,7 @@ class CubicPyApp(ShowBase):
     RESTITUTION = 0  # 反発係数
     FRICTION = 0.5  # 摩擦係数
 
-    def __init__(self, code_file, gravity_factor=1):
+    def __init__(self, code_file=None, gravity_factor=-6):
         ShowBase.__init__(self)
         self.code_file = code_file
         self.gravity_factor = gravity_factor
@@ -29,17 +30,21 @@ class CubicPyApp(ShowBase):
         self.model_manager = ModelManager(self)
         self.physics = PhysicsEngine(self, gravity_factor)
 
+        # APIメソッドの初期化（オブジェクト配置用）
+        self.api = ApiMethod(self)
+
         # ワールド管理システムの初期化
         self.world_manager = WorldManager(self)
-
-        # ワールド構築 - WorldManagerの初期化後に実行
-        self.world_manager.build_world()
 
         # 入力ハンドラの設定
         self.input_handler = InputHandler(self)
 
         # 物理シミュレーションタスクの開始
         self.taskMgr.add(self.update_physics, 'update_physics')
+
+        # コードファイルが指定されていれば、ワールド構築
+        if code_file:
+            self.world_manager.build_world()
 
     def setup_window(self, title, size):
         """ウィンドウ設定"""
@@ -54,7 +59,37 @@ class CubicPyApp(ShowBase):
         self.physics.update(dt)
         return task.cont
 
-    # 委譲メソッド - WorldManagerへ転送
+    # ApiMethodクラスのメソッドを統合
+    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+        """箱を追加"""
+        return self.api.add_box(position, scale, color, mass, color_alpha)
+
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+        """球を追加"""
+        return self.api.add_sphere(position, scale, color, mass, color_alpha)
+
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+        """円柱を追加"""
+        return self.api.add_cylinder(position, scale, color, mass, color_alpha)
+
+    def add_ground(self, color=(0, 1, 0), color_alpha=0.3):
+        """地面を追加"""
+        return self.api.add_ground(color, color_alpha)
+
+    def add(self, obj_type, **kwargs):
+        """汎用オブジェクト追加"""
+        return self.api.add(obj_type, **kwargs)
+
+    def from_body_data(self, body_data):
+        """オブジェクトデータからボディを構築"""
+        self.api.from_body_data(body_data)
+
+    def reset(self):
+        """オブジェクトをリセット"""
+        # ワールドを再構築
+        self.world_manager.rebuild_from_api_data()
+
+    # 既存の委譲メソッド - WorldManagerへ転送
     def tilt_ground(self, dx, dy):
         self.world_manager.tilt_ground(dx, dy)
 
@@ -72,6 +107,16 @@ class CubicPyApp(ShowBase):
         self.physics.reset_gravity()
         self.world_manager.reset_rotation()
         self.world_manager.rebuild()
+
+    # メソッドをオーバーライド
+    def run(self):
+        """世界を構築して実行"""
+        if self.code_file is None:
+            # APIからのオブジェクトデータでワールドを構築
+            self.world_manager.build_from_api_data()
+
+        # アプリを実行
+        super().run()
 
     @property
     def world_node(self):

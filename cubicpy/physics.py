@@ -1,4 +1,3 @@
-from panda3d.core import Vec3
 from panda3d.bullet import BulletWorld, BulletDebugNode
 
 
@@ -39,9 +38,10 @@ class PhysicsEngine:
 
     def change_gravity(self, value):
         """重力の変更"""
-        self.gravity_vector *= 10 ** value
-        print(f'Gravity: {self.gravity_vector}')
-        self.bullet_world.setGravity(self.gravity_vector)
+        if value != 0:  # 0でない場合のみ重力を変更
+            self.gravity_vector *= 10 ** value
+            print(f'Gravity: {self.gravity_vector}')
+            self.bullet_world.setGravity(self.gravity_vector)
         # 注意：ここではreset_buildを呼び出さない
         # 代わりにappに通知し、appが適切な処理を行う
 

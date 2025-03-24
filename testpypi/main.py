@@ -2,7 +2,6 @@ from cubicpy.app import CubicPyApp
 
 
 if __name__ == '__main__':
-    # ファイルパス
     user_code_file = 'cubicpy/examples/box_line_sample.py'
     user_code_file = 'cubicpy/examples/sphere_line_sample.py'
     user_code_file = 'cubicpy/examples/cylinder_line_sample.py'
@@ -12,6 +11,5 @@ if __name__ == '__main__':
     user_code_file = 'cubicpy/examples/column_building_3x3_sample.py'
     user_code_file = 'codes/box_twisted_tower.py'
 
-    # CubicPyAppを実行
     app = CubicPyApp(user_code_file, gravity_factor=-4)
     app.run()

@@ -1,4 +1,3 @@
-from panda3d.core import *
 from . import Box, Sphere, Cylinder, SafeExec
 
 
@@ -66,38 +65,83 @@ class WorldManager:
                 body_object = Box(self.app, body)
             self.body_objects.append({'type': body['type'], 'object': body_object})
 
+    def rebuild(self):
+        """ワールドを再構築"""
+        # 既存のオブジェクトを削除
+        self.clear_objects()
+
+        # コードファイルがある場合はそのデータを使用
+        if self.app.code_file:
+            self.build_world()
+        else:
+            # APIデータからワールドを再構築
+            self.build_from_api_data()
+
+    def get_world_node(self):
+        """ワールドノードを取得"""
+        return self.world_node
+
     def build_world(self):
-        """地面と建物を生成する"""
-        safe_exec = SafeExec(self.app.code_file)
-        body_data = safe_exec.run()
+        """コードファイルからワールドを構築"""
+        if self.app.code_file:
+            safe_exec = SafeExec(self.app.code_file)
+            body_data = safe_exec.run()
+        else:
+            body_data = []
 
-        # 地面を作成
-        body_data.append({
-            'type': 'box',
-            'pos': (-500, -500, -1),
-            'scale': (1000, 1000, 1),
-            'color': (0, 1, 0),
-            'mass': 0,
-            'color_alpha': 0.3
-        })
+        # 地面を追加（必要な場合）
+        self.add_default_ground(body_data)
 
-        # 建物を再構築
+        # 建物を構築
         self.build_body_data(body_data)
 
         # 物理エンジンを即座に更新
         self.app.physics.bullet_world.doPhysics(0)
 
-    def rebuild(self):
-        """ワールドを再構築"""
+    def build_from_api_data(self):
+        """APIデータからワールドを構築"""
+        # APIからのオブジェクトデータを取得
+        body_data = self.app.api.get_object_data()
+
+        # 地面を追加（必要な場合）
+        self.add_default_ground(body_data)
+
+        # 建物を構築
+        self.build_body_data(body_data)
+
+        # 物理エンジンを即座に更新
+        self.app.physics.bullet_world.doPhysics(0)
+
+    @staticmethod
+    def add_default_ground(body_data):
+        """デフォルトの地面を追加（必要な場合）"""
+        # 地面がまだ存在しない場合は追加
+        has_ground = any(data.get('mass', 1) == 0 and
+                          data.get('type') == 'box' and
+                          abs(data.get('scale', (1, 1, 1))[0]) > 500
+                          for data in body_data)
+
+        if not has_ground:
+            body_data.append({
+                'type': 'box',
+                'pos': (-500, -500, -1),
+                'scale': (1000, 1000, 1),
+                'color': (0, 1, 0),
+                'mass': 0,
+                'color_alpha': 0.3
+            })
+
+    def rebuild_from_api_data(self):
+        """APIデータからワールドを再構築"""
         # 既存のオブジェクトを削除
+        self.clear_objects()
+
+        # APIデータでワールドを再構築
+        self.build_from_api_data()
+
+    def clear_objects(self):
+        """すべてのオブジェクトを削除"""
         for body in self.body_objects:
             body['object'].remove()
 
         self.body_objects = []
-
-        # ワールドを再生成
-        self.build_world()
-
-    def get_world_node(self):
-        """ワールドノードを取得"""
-        return self.world_node
