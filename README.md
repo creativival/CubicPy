@@ -1,8 +1,8 @@
 # CubicPy
 
-*[日本語](README.ja.md) | [English](README.md)*
+*[日本語](README.ja.md) | English*
 
-![CubicPy Logo](./assets/logo.png)
+![CubicPy Logo](./assets/cubicpy_logo.png)
 
 CubicPy - A 3D programming learning app for placing and building physics objects with code
 
