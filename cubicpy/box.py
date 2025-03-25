@@ -15,6 +15,7 @@ class Box:
         self.color_alpha = box['color_alpha'] if 'color_alpha' in box else 1
         # 位置基準（corner_near_origin, bottom_center, gravity_center or None）
         self.position_mode = box['position_mode'] if 'position_mode' in box else None
+        self.remove_selected = box['remove'] if 'remove' in box else False
 
         # 配置位置の計算
         self.node_pos = Vec3(box['pos']) + self.get_position_offset()

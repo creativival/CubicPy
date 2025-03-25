@@ -15,6 +15,7 @@ class Cylinder:
         self.color_alpha = cylinder['color_alpha'] if 'color_alpha' in cylinder else 1
         # 位置基準（corner_near_origin, bottom_center, gravity_center or None）
         self.position_mode = cylinder['position_mode'] if 'position_mode' in cylinder else None
+        self.remove_selected = cylinder['remove'] if 'remove' in cylinder else False
 
         # 配置位置の計算
         self.node_pos = Vec3(cylinder['pos']) + self.get_position_offset()

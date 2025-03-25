@@ -218,7 +218,7 @@ reset()  # Reset the world
 - **W/S/A/D**: Tilt the ground
 - **F/G**: Change gravity strength
 - **R**: Reset
-- **F1**: Toggle debug display
+- **Z**: Toggle debug display
 - **ESC**: Exit
 
 ## Requirements

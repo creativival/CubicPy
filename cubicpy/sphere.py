@@ -16,6 +16,7 @@ class Sphere:
         self.color_alpha = sphere['color_alpha'] if 'color_alpha' in sphere else 1
         # 位置基準（corner_near_origin, bottom_center, gravity_center or None）
         self.position_mode = sphere['position_mode'] if 'position_mode' in sphere else None
+        self.remove_selected = sphere['remove'] if 'remove' in sphere else False
 
         # 配置位置の計算
         self.node_pos = Vec3(sphere['pos']) + self.get_position_offset()

@@ -4,10 +4,9 @@ from panda3d.bullet import BulletWorld, BulletDebugNode
 class PhysicsEngine:
     """物理シミュレーション管理クラス"""
 
-    def __init__(self, app, gravity_factor):
+    def __init__(self, app):
         self.app = app
-        self.gravity_factor = gravity_factor
-        self.gravity_vector = app.GRAVITY_VECTOR * gravity_factor
+        self.gravity_vector = app.GRAVITY_VECTOR * app.initial_gravity_factor
 
         # Bulletワールドを作成
         self.bullet_world = BulletWorld()
@@ -45,7 +44,10 @@ class PhysicsEngine:
         # 注意：ここではreset_buildを呼び出さない
         # 代わりにappに通知し、appが適切な処理を行う
 
+        # 物理エンジンを即座に更新
+        self.app.physics.bullet_world.doPhysics(0)
+
     def reset_gravity(self):
         """重力を初期状態に戻す"""
-        self.gravity_vector = self.app.GRAVITY_VECTOR * self.gravity_factor
+        self.gravity_vector = self.app.GRAVITY_VECTOR * self.app.initial_gravity_factor
         self.bullet_world.setGravity(self.gravity_vector)

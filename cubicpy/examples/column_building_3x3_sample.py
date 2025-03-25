@@ -9,7 +9,7 @@ for k in range(step_num):
         for i in range(3):
             if j < 2:
                 # Y方向の梁
-                pos_y_beam = (i * 9.5, 0.5 + 9.25 * j, 9 + k * 10)
+                pos_y_beam = (i * 9.25, 0.5 + 9.25 * j, 9 + k * 10)
                 scale_y_beam = (0.5, 8.75, 1)
                 body_data.append({
                     'type': 'box',
