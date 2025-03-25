@@ -156,24 +156,26 @@ CubicPyApp(code_file=None, gravity_factor=1)
 
 #### 箱を追加
 ```python
-add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
+add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - `position`: 位置座標 (x, y, z)
 - `scale`: 大きさ (幅, 奥行き, 高さ)
 - `color`: 色 (赤, 緑, 青) - 各値は0〜1
 - `mass`: 質量 (0: 固定物体)
 - `color_alpha`: 透明度 (0: 透明 〜 1: 不透明)
+- `hpr`: 回転角度 (heading, pitch, roll)
+- `base_point`: 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
 - `remove`: 削除するオブジェクト(真偽値)
 
 #### 球体を追加
 ```python
-add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
+add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - パラメータは`add_box`と同様
 
 #### 円柱を追加
 ```python
-add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
+add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - パラメータは`add_box`と同様
 

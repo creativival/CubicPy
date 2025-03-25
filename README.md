@@ -157,7 +157,7 @@ CubicPyApp(code_file=None, gravity_factor=1)
 
 #### Adding a Box
 ```python
-add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
+add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - `position`: Position coordinates (x, y, z)
 - `scale`: Size (width, depth, height)
@@ -165,18 +165,18 @@ add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, colo
 - `mass`: Mass (0: fixed object)
 - `color_alpha`: Transparency (0: transparent to 1: opaque)
 - `hpr`: Rotation degree angles (heading, pitch, roll)
-- `base_point`: Position reference
+- `base_point`: Position reference point
 - `remove`: Removed object (Boolean)
 
 #### Adding a Sphere
 ```python
-add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
+add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - Parameters are the same as `add_box`
 
 #### Adding a Cylinder
 ```python
-add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
+add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - Parameters are the same as `add_box`
 

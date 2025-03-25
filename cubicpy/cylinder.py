@@ -14,7 +14,7 @@ class Cylinder:
         self.node_mass = cylinder['mass'] if 'mass' in cylinder else 1
         self.node_hpr = cylinder['hpr'] if 'hpr' in cylinder else Vec3(0, 0, 0)
         self.color_alpha = cylinder['color_alpha'] if 'color_alpha' in cylinder else 1
-        # 配置するときの位置基準（0: corner_near_origin, 1: bottom_center, 2: gravity_center or None）
+        # 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
         self.base_point = cylinder['base_point'] if 'base_point' in cylinder else 0
         self.remove_selected = cylinder['remove'] if 'remove' in cylinder else False
 
