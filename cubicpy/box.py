@@ -1,5 +1,6 @@
 from panda3d.core import Vec3
 from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+from . import get_position_offset
 
 
 class Box:
@@ -13,12 +14,12 @@ class Box:
         self.node_mass = box['mass'] if 'mass' in box else 1
         self.node_hpr = box['hpr'] if 'hpr' in box else Vec3(0, 0, 0)
         self.color_alpha = box['color_alpha'] if 'color_alpha' in box else 1
-        # 位置基準（corner_near_origin, bottom_center, gravity_center or None）
-        self.position_mode = box['position_mode'] if 'position_mode' in box else None
+        # 配置するときの位置基準（0: corner_near_origin, 1: bottom_center, 2: gravity_center or None）
+        self.base_point = box['base_point'] if 'base_point' in box else 0
         self.remove_selected = box['remove'] if 'remove' in box else False
 
         # 配置位置の計算
-        self.node_pos = Vec3(box['pos']) + self.get_position_offset()
+        self.node_pos = Vec3(box['pos']) + get_position_offset(self)
 
         # 物理形状（スケールを適用）
         if box['scale'] in self.app.model_manager.box_shapes:
@@ -45,17 +46,6 @@ class Box:
 
         if self.color_alpha < 1:
             self.box_node.setTransparency(1)  # 半透明を有効化
-
-    def get_position_offset(self):
-        """ `position_mode` に基づいてオフセットを返す """
-        half_scale = self.node_scale / 2
-        if self.position_mode == 'corner_near_origin':
-            return half_scale  # 原点側の角
-        elif self.position_mode == 'bottom_center':
-            return Vec3(0, 0, half_scale.z)  # 底面の中心
-        elif self.position_mode == 'gravity_center':
-            return Vec3(0, 0, 0)  # 重心
-        return half_scale  # デフォルト（原点側の角）
 
     def update(self):
         """ 物理エンジンの位置を更新 """

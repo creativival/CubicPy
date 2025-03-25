@@ -88,13 +88,13 @@ for i in range(10):
 | `mass`          | 質量 (0: 固定物体)                           | 任意 | 1                    |
 | `color_alpha`   | 透明度 (0: 透明 〜 1: 不透明)                   | 任意 | 1                    |
 | `hpr`           | 回転角度 (heading, pitch, roll)            | 任意 | (0, 0, 0)            |
-| `position_mode` | 位置基準                                   | 任意 | 'corner_near_origin' |
+| `base_point` | 配置するときの位置基準                            | 任意 | 0 |
 | `remove`        | 削除するオブジェクト                             | 任意 | False                |
 
-※ `position_mode`は以下の値が指定可能:
-- `'corner_near_origin'`: 原点に近い角が基準
-- `'bottom_center'`: 底面の中心が基準
-- `'gravity_center'`: 立方体の重心が基準
+※ `base_point`は以下の値が指定可能:
+- `0`: 原点に近い角が基準
+- `1`: 底面の中心が基準
+- `2`: 立方体の重心が基準
 
 ## cubicpyコマンドでワールドをビルドする方法
 

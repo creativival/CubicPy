@@ -89,13 +89,13 @@ Details of object definitions to add to the `body_data` list:
 | `mass`          | Mass (0: fixed object)                        | Optional | 1                    |
 | `color_alpha`   | Transparency (0: transparent to 1: opaque)    | Optional | 1                    |
 | `hpr`           | Rotation degree angles (heading, pitch, roll) | Optional | (0, 0, 0)            |
-| `position_mode` | Position reference                            | Optional | 'corner_near_origin' |
+| `base_point` | Position reference point                      | Optional | 0 |
 | `remove`        | Removed Object                                | Optional | False                |
 
-※ `position_mode` can be set to the following values:
-- `'corner_near_origin'`: The corner nearest to the origin is the reference
-- `'bottom_center'`: The center of the bottom surface is the reference
-- `'gravity_center'`: The center of gravity is the reference
+※ `base_point` can be set to the following values:
+- `0`: The corner nearest to the origin is the reference
+- `1`: The center of the bottom surface is the reference
+- `2`: The center of gravity is the reference
 
 ## Building Worlds with the cubicpy Command
 
@@ -165,7 +165,7 @@ add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, colo
 - `mass`: Mass (0: fixed object)
 - `color_alpha`: Transparency (0: transparent to 1: opaque)
 - `hpr`: Rotation degree angles (heading, pitch, roll)
-- `position_mode`: Position reference
+- `base_point`: Position reference
 - `remove`: Removed object (Boolean)
 
 #### Adding a Sphere
@@ -194,7 +194,7 @@ add(obj_type, **kwargs)
   - mass: Mass
   - color_alpha: Transparency
   - hpr: Rotation degree angles (heading, pitch, roll)          | 
-  - position_mode: Position reference
+  - base_point: Position reference
   - remove: Removed Object
 
 #### Building Objects from body_data List

@@ -32,7 +32,7 @@ for j in range(height):
             'color': (1, 0, 0),
             'mass': 1,
             'hpr': (degrees(angle), 0, 0),
-            'position_mode': 'bottom_center'
+            'base_point': 1
         })
 
         pos_pair = (-x, -y, z)
@@ -44,5 +44,5 @@ for j in range(height):
             'color': (1, 1, 1),
             'mass': 1,
             'hpr': (degrees(angle_pair), 0, 0),
-            'position_mode': 'bottom_center'
+            'base_point': 1
         })
