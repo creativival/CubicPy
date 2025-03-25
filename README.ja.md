@@ -43,7 +43,7 @@ cubicpy --example box_tower_sample
 cubicpy -e box_tower_sample
 
 # 自作のPythonファイルを実行
-cubicpy my_script.py
+cubicpy your_box_data_script.py
 
 # 重力係数を変更して実行（重力に10の何乗倍を掛けるか指定する）
 cubicpy --gravity 0.01 --example box_tower_sample

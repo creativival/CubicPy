@@ -43,7 +43,7 @@ cubicpy --example box_tower_sample
 cubicpy -e box_tower_sample
 
 # Run your own Python file
-cubicpy my_script.py
+cubicpy your_box_data_script.py
 
 # Run with modified gravity factor (specifies the power of 10 to multiply gravity by)
 cubicpy --gravity 0.01 --example box_tower_sample
@@ -88,7 +88,7 @@ Details of object definitions to add to the `body_data` list:
 | `color`         | Color (red, green, blue) - values from 0 to 1 | Optional | (0.5, 0.5, 0.5)      |
 | `mass`          | Mass (0: fixed object)                        | Optional | 1                    |
 | `color_alpha`   | Transparency (0: transparent to 1: opaque)    | Optional | 1                    |
-| `hpr`           | Rotation angles (heading, pitch, roll)        | Optional | (0, 0, 0)            |
+| `hpr`           | Rotation degree angles (heading, pitch, roll) | Optional | (0, 0, 0)            |
 | `position_mode` | Position reference                            | Optional | 'corner_near_origin' |
 | `remove`        | Removed Object                                | Optional | False                |
 
@@ -164,6 +164,8 @@ add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, colo
 - `color`: Color (red, green, blue) - values from 0 to 1
 - `mass`: Mass (0: fixed object)
 - `color_alpha`: Transparency (0: transparent to 1: opaque)
+- `hpr`: Rotation degree angles (heading, pitch, roll)
+- `position_mode`: Position reference
 - `remove`: Removed object (Boolean)
 
 #### Adding a Sphere
@@ -191,6 +193,8 @@ add(obj_type, **kwargs)
   - color: Color
   - mass: Mass
   - color_alpha: Transparency
+  - hpr: Rotation degree angles (heading, pitch, roll)          | 
+  - position_mode: Position reference
   - remove: Removed Object
 
 #### Building Objects from body_data List
