@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: cubicpy
-Version: 0.1.3
+Version: 0.1.4
 Summary: A Python library for creating 3D basic shape models and animations with Physics.
 Home-page: https://github.com/creativival/CubicPy
 Author: creativival
@@ -23,130 +23,131 @@ Dynamic: summary
 
 # CubicPy
 
-*日本語 | [English](README.md)*
+*[日本語](https://github.com/creativival/CubicPy/blob/main/README.ja.md) | English*
 
-![CubicPy Logo](./assets/cubicpy_logo.png)
+![CubicPy Logo](https://creativival.github.io/CubicPy/assets/cubicpy_logo.png)
 
-CubicPy - コードで物理オブジェクトを配置・構築する3Dプログラミング学習アプリ
+CubicPy - A 3D programming learning app for placing and building physics objects with code
 
-「キュービックパイ」 - 略して「キューパイ」と呼んでください！
+Call it "CubicPy" - or simply "CuPy" for short!
 
-## アプリの説明
+## Application Description
 
-CubicPyは、Pythonコードを使って3D空間にオブジェクトを配置し、リアルな物理演算で動作する世界を構築できるアプリケーションです。ボックスや球体などの物体を自由に配置して建築物を作り、重力や衝突などの物理法則を体験しながらプログラミングを学べます。
+CubicPy is an application that allows you to place objects in 3D space using Python code and build worlds that operate with realistic physics simulations. You can freely place boxes, spheres, and other objects to create structures and learn programming while experiencing physical laws such as gravity and collisions.
 
-![CubicPy Sample Animation Gif](./assets/cubicpy_sample.gif)
+![CubicPy Sample Animation Gif](https://creativival.github.io/CubicPy/assets/cubicpy_sample.gif)
 
-作成したオブジェクト建築物は、地面を傾けることで物理演算を使ったリアルな崩壊過程を観察できます。また、重力係数を変更することで、異なる重力環境下での物理挙動を確認できます。
+The constructed objects and structures can be observed undergoing realistic collapse processes by tilting the ground using physics simulations. You can also change the gravity factor to observe physical behavior under different gravitational environments.
 
-## インストール方法
+## Installation
 
 ```
 pip install cubicpy
 ```
 
-## cubicpyコマンドの使用方法
+## Using the cubicpy Command
 
-インストール後、コマンドラインから簡単に実行できます：
+After installation, you can easily run from the command line:
 
 ```
-# サンプルコードをランダムに選択して実行
+# Run a randomly selected sample code
 cubicpy
 
-# ヘルプを表示
+# Display help
 cubicpy --help
 cubicpy -h
 
-# サンプル一覧を表示
+# Display sample list
 cubicpy --list
 cubicpy -l
 
-# 特定のサンプルを実行
+# Run a specific sample
 cubicpy --example box_tower_sample
 cubicpy -e box_tower_sample
 
-# 自作のPythonファイルを実行
+# Run your own Python file
 cubicpy my_script.py
 
-# 重力係数を変更して実行（重力に10の何乗倍を掛けるか指定する）
+# Run with modified gravity factor (specifies the power of 10 to multiply gravity by)
 cubicpy --gravity -6 --example box_tower_sample
 cubicpy -g -6 -e box_tower_sample
 
-# カスタムウィンドウサイズ(1280x720)で実行
+# Run with custom window size (1280x720)
 cubicpy -e box_tower_sample -w 1280,720
 cubicpy --window-size 1280,720 -e box_tower_sample
 ```
 
-## サンプルコードの解説
+## Sample Code Examples
 
-### 箱の塔を作る (box_tower_sample.py)
+### Creating a Tower of Boxes (box_tower_sample.py)
 
-![Sample box tower](./assets/box_tower.png)
+![Sample box tower](https://creativival.github.io/CubicPy/assets/box_tower.png)
+
 
 ```python
-# 物体データの配列を作成
+# Create an array of object data
 body_data = []
 
-# 10段の箱を積み上げる
+# Stack 10 levels of boxes
 for i in range(10):
     body_data.append({
         'type': 'box',
-        'pos': (0, 0, i),  # 位置: x, y, z
-        'scale': (1, 1, 1),  # サイズ: 幅, 奥行き, 高さ
-        'color': (i/10, 0, 1-i/10),  # 色: 赤, 緑, 青 (0〜1)
-        'mass': 1  # 質量（省略可）
+        'pos': (0, 0, i),  # Position: x, y, z
+        'scale': (1, 1, 1),  # Size: width, depth, height
+        'color': (i/10, 0, 1-i/10),  # Color: red, green, blue (0-1)
+        'mass': 1  # Mass (optional)
     })
 ```
 
-## オブジェクト定義の詳細（cubicコマンド用）
+## Object Definition Details (for cubicpy command)
 
-`body_data`リストに追加するオブジェクト定義の詳細：
+Details of object definitions to add to the `body_data` list:
 
-| パラメータ | 説明 | 必須 | デフォルト値 |
+| Parameter | Description | Required | Default Value |
 |------------|------|------|--------|
-| `type` | オブジェクトの種類: 'box', 'sphere', 'cylinder' | 必須 | - |
-| `pos` | 位置座標 (x, y, z) | 必須 | - |
-| `scale` | 大きさ (幅, 奥行き, 高さ) | 任意 | (1, 1, 1) |
-| `color` | 色 (赤, 緑, 青) - 各値は0〜1 | 任意 | (0.5, 0.5, 0.5) |
-| `mass` | 質量 (0: 固定物体) | 任意 | 1 |
-| `color_alpha` | 透明度 (0: 透明 〜 1: 不透明) | 任意 | 1 |
-| `hpr` | 回転角度 (heading, pitch, roll) | 任意 | (0, 0, 0) |
-| `position_mode` | 位置基準 | 任意 | 'corner_near_origin' |
+| `type` | Object type: 'box', 'sphere', 'cylinder' | Required | - |
+| `pos` | Position coordinates (x, y, z) | Required | - |
+| `scale` | Size (width, depth, height) | Optional | (1, 1, 1) |
+| `color` | Color (red, green, blue) - values from 0 to 1 | Optional | (0.5, 0.5, 0.5) |
+| `mass` | Mass (0: fixed object) | Optional | 1 |
+| `color_alpha` | Transparency (0: transparent to 1: opaque) | Optional | 1 |
+| `hpr` | Rotation angles (heading, pitch, roll) | Optional | (0, 0, 0) |
+| `position_mode` | Position reference | Optional | 'corner_near_origin' |
 
-※ `position_mode`は以下の値が指定可能:
-- `'corner_near_origin'`: 原点に近い角が基準
-- `'bottom_center'`: 底面の中心が基準
-- `'gravity_center'`: 立方体の重心が基準
+※ `position_mode` can be set to the following values:
+- `'corner_near_origin'`: The corner nearest to the origin is the reference
+- `'bottom_center'`: The center of the bottom surface is the reference
+- `'gravity_center'`: The center of gravity is the reference
 
-## cubicpyコマンドでワールドをビルドする方法
+## Building Worlds with the cubicpy Command
 
-1. サンプルのような形式でPythonファイルを作成
-2. `cubicpy your_file.py`コマンドで実行
+1. Create a Python file in the format of the sample
+2. Run it with the `cubicpy your_file.py` command
 
-## APIモードでビルドするサンプルコード
+## Sample Code for API Mode
 
-![Sample api mode](./assets/sample_api_mode.png)
+![Sample api mode](https://creativival.github.io/CubicPy/assets/sample_api_mode.png)
 
 ```python
 from cubicpy import CubicPyApp
 
-# インスタンス化
+# Instantiate
 app = CubicPyApp(gravity_factor=-4)
 
-# 単独オブジェクトの追加
-# APIを使ってオブジェクトを追加
+# Adding individual objects
+# Add objects using API
 app.add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
 app.add_sphere(position=(2, 0, 0),  scale=(1, 1, 1), color=(0, 1, 0))
 app.add_cylinder(position=(4, 0, 0),  scale=(1, 1, 1), color=(0, 0, 1))
 
-# 複数オブジェクトの追加（ループ）
+# Adding multiple objects (loop)
 for i in range(10):
     app.add_box(
         position=(0, 5, i),
         color=(i/10, 0, 1-i/10)
     )
 
-# cubicpyコマンドと互換性を保つbody_dataの追加
+# Adding body_data for compatibility with cubicpy command
 body_data = []
 for i in range(10):
     body_data.append({
@@ -160,92 +161,92 @@ for i in range(10):
 
 app.from_body_data(body_data)
 
-# シミュレーション実行
+# Run simulation
 app.run()
 ```
 
-## APIモードのメソッド詳細
+## API Mode Method Details
 
-### CubicPyAppクラス
+### CubicPyApp Class
 
 ```python
 CubicPyApp(code_file=None, gravity_factor=-6)
 ```
-- `code_file`: 実行するPythonファイルのパス（任意）
-- `gravity_factor`: 重力係数（任意、デフォルト: -4）
+- `code_file`: Path to Python file to execute (optional)
+- `gravity_factor`: Gravity factor (optional, default: -4)
 
-### オブジェクト追加メソッド
+### Object Addition Methods
 
-#### 箱を追加
+#### Adding a Box
 ```python
 add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
 ```
-- `position`: 位置座標 (x, y, z)
-- `scale`: 大きさ (幅, 奥行き, 高さ)
-- `color`: 色 (赤, 緑, 青) - 各値は0〜1
-- `mass`: 質量 (0: 固定物体)
-- `color_alpha`: 透明度 (0: 透明 〜 1: 不透明)
+- `position`: Position coordinates (x, y, z)
+- `scale`: Size (width, depth, height)
+- `color`: Color (red, green, blue) - values from 0 to 1
+- `mass`: Mass (0: fixed object)
+- `color_alpha`: Transparency (0: transparent to 1: opaque)
 
-#### 球体を追加
+#### Adding a Sphere
 ```python
 add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
 ```
-- パラメータは`add_box`と同様
+- Parameters are the same as `add_box`
 
-#### 円柱を追加
+#### Adding a Cylinder
 ```python
 add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
 ```
-- パラメータは`add_box`と同様
+- Parameters are the same as `add_box`
 
-#### body_dataリストからオブジェクトを構築
+#### Building Objects from body_data List
 ```python
 from_body_data(body_data) 
 ```
-- `body_data`: cubicpyコマンドのオブジェクト定義（辞書形式）のリスト
+- `body_data`: List of object definitions (dictionaries) as used by the cubicpy command
 
-### ワールド操作メソッド
+### World Operation Methods
 
 ```python
-run()  # ワールドを構築して実行
-reset()  # ワールドをリセット
+run()  # Build and run the world
+reset()  # Reset the world
 ```
 
-## APIモードでワールドを構築する方法
+## Building Worlds with API Mode
 
-1. Pythonスクリプトで`CubicPyApp`のインスタンスを作成
-2. `add_box()`、`add_sphere()`などのメソッドでオブジェクトを追加
-3. `run()`メソッドを呼び出してワールドを構築・実行
-4. 必要に応じて`reset()`メソッドで再構築可能
-5. `python your_script.py`で実行
+1. Create a CubicPyApp instance in your Python script
+2. Add objects using methods like `add_box()`, `add_sphere()`, etc.
+3. Call the `run()` method to build and run the world
+4. If needed, use the `reset()` method to rebuild
+5. Run with `python your_script.py`
 
-## アプリの操作方法
+## Application Controls
 
-- **矢印キー**: カメラ角度の変更
-- **マウスホイール**: ズームイン/アウト
-- **W/S/A/D**: 地面を傾ける
-- **F/G**: 重力の強さを変更
-- **R**: リセット
-- **F1**: デバッグ表示切替
-- **ESC**: 終了
+- **Arrow keys**: Change camera angle
+- **Mouse wheel**: Zoom in/out
+- **W/S/A/D**: Tilt the ground
+- **F/G**: Change gravity strength
+- **R**: Reset
+- **F1**: Toggle debug display
+- **ESC**: Exit
 
-## 必須条件
+## Requirements
 
-- Python 3.9以上
+- Python 3.9 or higher
 - Panda3D
-- Panda3D-Bullet物理エンジン
+- Panda3D-Bullet physics engine
 - NumPy
 
-これらの依存パッケージは`pip install cubicpy`で自動的にインストールされます。
+These dependencies are automatically installed with `pip install cubicpy`.
 
-## 著作権
+## Copyright
 
-MITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。
+Released under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 貢献
+## Contribution
 
-バグ報告や機能改善の提案は、GitHubのIssueやPull Requestでお願いします。また、新しいサンプルの作成や、ドキュメントの改善なども歓迎します。
+Bug reports and feature improvement suggestions are welcome via GitHub Issues or Pull Requests. New sample creation and documentation improvements are also welcome.
 
 ---
 
-CubicPyで楽しくプログラミングを学びましょう！
+Have fun learning programming with CubicPy!
