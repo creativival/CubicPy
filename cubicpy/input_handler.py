@@ -14,8 +14,8 @@ class InputHandler:
         """キー入力の設定"""
         self.app.accept('escape', sys.exit)
         self.app.accept('f1', self.app.toggle_debug)
-        self.app.accept('f', self.app.change_gravity, [-1])
-        self.app.accept('g', self.app.change_gravity, [1])
+        self.app.accept('f', self.app.change_gravity, [0.1])
+        self.app.accept('g', self.app.change_gravity, [10])
         self.app.accept('r', self.app.reset_all)
         self.app.accept("w", self.app.tilt_ground, [-1, 0])  # X軸 (前傾)
         self.app.accept("s", self.app.tilt_ground, [1, 0])  # X軸 (後傾)

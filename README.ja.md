@@ -1,6 +1,6 @@
 # CubicPy
 
-*日本語 | [English](https://github.com/creativival/CubicPy/blob/main/README.md)*
+*日本語 | [English](https://creativival.github.io/CubicPy/)*
 
 ![CubicPy Logo](https://creativival.github.io/CubicPy/assets/cubicpy_logo.png)
 
@@ -46,8 +46,8 @@ cubicpy -e box_tower_sample
 cubicpy my_script.py
 
 # 重力係数を変更して実行（重力に10の何乗倍を掛けるか指定する）
-cubicpy --gravity -6 --example box_tower_sample
-cubicpy -g -6 -e box_tower_sample
+cubicpy --gravity 0.01 --example box_tower_sample
+cubicpy -g 0.01 -e box_tower_sample
 
 # カスタムウィンドウサイズ(1280x720)で実行
 cubicpy -e box_tower_sample -w 1280,720
@@ -108,7 +108,7 @@ for i in range(10):
 from cubicpy import CubicPyApp
 
 # インスタンス化
-app = CubicPyApp(gravity_factor=-4)
+app = CubicPyApp(gravity_factor=0.01)
 
 # 単独オブジェクトの追加
 # APIを使ってオブジェクトを追加
@@ -146,10 +146,10 @@ app.run()
 ### CubicPyAppクラス
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=-6)
+CubicPyApp(code_file=None, gravity_factor=0.01)
 ```
 - `code_file`: 実行するPythonファイルのパス（任意）
-- `gravity_factor`: 重力係数（任意、デフォルト: -4）
+- `gravity_factor`: 重力係数（任意、デフォルト: 1）
 
 ### オブジェクト追加メソッド
 
@@ -180,6 +180,19 @@ add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1,
 from_body_data(body_data) 
 ```
 - `body_data`: cubicpyコマンドのオブジェクト定義（辞書形式）のリスト
+
+### 汎用オブジェクト追加
+```python
+add(obj_type, **kwargs)
+```
+
+-obj_type: オブジェクトの種類 ('box', 'sphere', 'cylinder')
+- **kwargs: オブジェクトのパラメータ（以下のキーワード引数が使用可能）
+  - positionまたはpos: 位置座標
+  - scale: 大きさ
+  - color: 色
+  - mass: 質量
+  - color_alpha: 透明度
 
 ### ワールド操作メソッド
 

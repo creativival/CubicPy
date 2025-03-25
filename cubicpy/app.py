@@ -2,6 +2,7 @@ from direct.showbase.ShowBase import ShowBase
 from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import *
 from . import (
+    DEFAULT_GRAVITY_FACTOR,
     CameraControl, Axis, InputHandler,
     ModelManager, PhysicsEngine, WorldManager,
     ApiMethod
@@ -10,8 +11,7 @@ from . import (
 
 class CubicPyApp(ShowBase):
     """CubicPy アプリケーションのメインクラス"""
-    GRAVITY_VECTOR = Vec3(0, 0, -9.81)
-    DEFAULT_GRAVITY_FACTOR = -4
+    GRAVITY_VECTOR = Vec3(0, 0, -9.81) * (10 ** -4)  # 重力ベクトル（1万分の1に補正）
     DEFAULT_WINDOW_SIZE = (900, 600)
     RESTITUTION = 0  # 反発係数
     FRICTION = 0.5  # 摩擦係数

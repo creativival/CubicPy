@@ -4,10 +4,10 @@ from panda3d.bullet import BulletWorld, BulletDebugNode
 class PhysicsEngine:
     """物理シミュレーション管理クラス"""
 
-    def __init__(self, app, gravity_factor=1):
+    def __init__(self, app, gravity_factor):
         self.app = app
         self.gravity_factor = gravity_factor
-        self.gravity_vector = app.GRAVITY_VECTOR * (10 ** gravity_factor)
+        self.gravity_vector = app.GRAVITY_VECTOR * gravity_factor
 
         # Bulletワールドを作成
         self.bullet_world = BulletWorld()
@@ -39,7 +39,7 @@ class PhysicsEngine:
     def change_gravity(self, value):
         """重力の変更"""
         if value != 0:  # 0でない場合のみ重力を変更
-            self.gravity_vector *= 10 ** value
+            self.gravity_vector *= value
             print(f'Gravity: {self.gravity_vector}')
             self.bullet_world.setGravity(self.gravity_vector)
         # 注意：ここではreset_buildを呼び出さない
@@ -47,5 +47,5 @@ class PhysicsEngine:
 
     def reset_gravity(self):
         """重力を初期状態に戻す"""
-        self.gravity_vector = self.app.GRAVITY_VECTOR * (10 ** self.gravity_factor)
+        self.gravity_vector = self.app.GRAVITY_VECTOR * self.gravity_factor
         self.bullet_world.setGravity(self.gravity_vector)

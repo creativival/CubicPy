@@ -32,7 +32,7 @@ class WorldManager:
         """徐々に傾きを変更するタスク"""
         if self.tilt_step >= self.max_tilt_frames:
             # 重力の再設定
-            self.app.change_gravity(1)
+            self.app.change_gravity(10)
             return task.done
 
         # 徐々に目標角度に近づける

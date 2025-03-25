@@ -1,6 +1,6 @@
 # CubicPy
 
-*[日本語](https://github.com/creativival/CubicPy/blob/main/README.ja.md) | English*
+*[日本語](https://creativival.github.io/CubicPy/README.ja.html) | English*
 
 ![CubicPy Logo](https://creativival.github.io/CubicPy/assets/cubicpy_logo.png)
 
@@ -46,8 +46,8 @@ cubicpy -e box_tower_sample
 cubicpy my_script.py
 
 # Run with modified gravity factor (specifies the power of 10 to multiply gravity by)
-cubicpy --gravity -6 --example box_tower_sample
-cubicpy -g -6 -e box_tower_sample
+cubicpy --gravity 0.01 --example box_tower_sample
+cubicpy -g 0.01 -e box_tower_sample
 
 # Run with custom window size (1280x720)
 cubicpy -e box_tower_sample -w 1280,720
@@ -109,7 +109,7 @@ Details of object definitions to add to the `body_data` list:
 from cubicpy import CubicPyApp
 
 # Instantiate
-app = CubicPyApp(gravity_factor=-4)
+app = CubicPyApp(gravity_factor=0.01)
 
 # Adding individual objects
 # Add objects using API
@@ -147,10 +147,10 @@ app.run()
 ### CubicPyApp Class
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=-6)
+CubicPyApp(code_file=None, gravity_factor=0.01)
 ```
 - `code_file`: Path to Python file to execute (optional)
-- `gravity_factor`: Gravity factor (optional, default: -4)
+- `gravity_factor`: Gravity factor (optional, default: 1)
 
 ### Object Addition Methods
 
@@ -175,6 +175,20 @@ add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, c
 add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
 ```
 - Parameters are the same as `add_box`
+
+### Generic Object Addition
+
+```python
+add(obj_type, **kwargs)
+```
+
+- obj_type: Type of object ('box', 'sphere', 'cylinder')
+- **kwargs: Object parameters (the following keyword arguments can be used)
+  - position or pos: Position coordinates
+  - scale: Size
+  - color: Color
+  - mass: Mass
+  - color_alpha: Transparency
 
 #### Building Objects from body_data List
 ```python

@@ -1,7 +1,7 @@
 from cubicpy import CubicPyApp
 
 # インスタンス化
-app = CubicPyApp(gravity_factor=-4, window_size=(1800, 1200))
+app = CubicPyApp(gravity_factor=0.01, window_size=(1800, 1200))
 
 # 単独オブジェクトの追加
 # APIを使ってオブジェクトを追加

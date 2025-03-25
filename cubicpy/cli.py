@@ -8,7 +8,7 @@ import os
 import sys
 import locale
 import random
-from cubicpy import CubicPyApp, list_samples, get_sample_path
+from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR
 
 # 言語に応じたメッセージ
 MESSAGES = {
@@ -17,7 +17,7 @@ MESSAGES = {
         'epilog': '例: cubicpy -e box_tower_sample または cubicpy my_script.py',
         'example_help': '実行するサンプル名（例: box_tower_sample）',
         'list_help': '利用可能なサンプル一覧を表示',
-        'gravity_help': '重力係数（デフォルト: -4）',
+        'gravity_help': '重力係数（デフォルト: 0）',
         'window_size_help': 'ウィンドウサイズをカンマ区切りで指定（例: 1280,720）デフォルト: 900,600',
         'file_help': '実行するPythonファイル（オプション）',
         'available_samples': '利用可能なサンプル:',
@@ -37,7 +37,7 @@ MESSAGES = {
         'epilog': 'Example: cubicpy -e box_tower_sample or cubicpy my_script.py',
         'example_help': 'Sample name to run (e.g. box_tower_sample)',
         'list_help': 'Display list of available samples',
-        'gravity_help': 'Gravity factor (default: -4)',
+        'gravity_help': 'Gravity factor (default: 0)',
         'window_size_help': 'Window size as comma-separated values (e.g. 1280,720) default: 900,600',
         'file_help': 'Python file to run (optional)',
         'available_samples': 'Available samples:',
@@ -104,7 +104,7 @@ def main():
                         help=msgs['example_help'])
     parser.add_argument('--list', '-l', action='store_true',
                         help=msgs['list_help'])
-    parser.add_argument('--gravity', '-g', type=int, default=CubicPyApp.DEFAULT_GRAVITY_FACTOR,
+    parser.add_argument('--gravity', '-g', type=float, default=DEFAULT_GRAVITY_FACTOR,
                         help=msgs['gravity_help'])
     parser.add_argument('--window-size', '-w', default="900,600",
                         help=msgs['window_size_help'])

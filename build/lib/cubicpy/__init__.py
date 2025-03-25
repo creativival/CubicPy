@@ -17,7 +17,7 @@ from .examples import get_sample_path, list_samples
 
 
 # 簡単にサンプルを実行するための補助関数
-def run_sample(sample_name, gravity_factor=-4):
+def run_sample(sample_name, gravity_factor=0):
     """指定したサンプルを実行する
 
     Args:
