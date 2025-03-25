@@ -5,7 +5,11 @@ from .camera import CameraControl
 from .axis import Axis
 from .geom_utils import *
 from .safe_exec import SafeExec
-from .cubic_world import CubicWorld
+from .input_handler import InputHandler
+from .model_manager import ModelManager
+from .physics import PhysicsEngine
+from .world_manager import WorldManager
+from .api_method import ApiMethod
 from .app import CubicPyApp
 
 # サンプル関連機能をエクスポート
@@ -23,4 +27,4 @@ def run_sample(sample_name, gravity_factor=-4):
     app = CubicPyApp(get_sample_path(sample_name), gravity_factor=gravity_factor)
     app.run()
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"

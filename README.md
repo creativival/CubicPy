@@ -1,8 +1,8 @@
 # CubicPy
 
-*[日本語](README.ja.md) | English*
+*[日本語](https://github.com/creativival/CubicPy/blob/main/README.ja.md) | English*
 
-![CubicPy Logo](./assets/cubicpy_logo.png)
+![CubicPy Logo](https://creativival.github.io/CubicPy/assets/cubicpy_logo.png)
 
 CubicPy - A 3D programming learning app for placing and building physics objects with code
 
@@ -12,7 +12,7 @@ Call it "CubicPy" - or simply "CuPy" for short!
 
 CubicPy is an application that allows you to place objects in 3D space using Python code and build worlds that operate with realistic physics simulations. You can freely place boxes, spheres, and other objects to create structures and learn programming while experiencing physical laws such as gravity and collisions.
 
-![CubicPy Sample Animation Gif](./assets/cubicpy_sample.gif)
+![CubicPy Sample Animation Gif](https://creativival.github.io/CubicPy/assets/cubicpy_sample.gif)
 
 The constructed objects and structures can be observed undergoing realistic collapse processes by tilting the ground using physics simulations. You can also change the gravity factor to observe physical behavior under different gravitational environments.
 
@@ -58,7 +58,7 @@ cubicpy --window-size 1280,720 -e box_tower_sample
 
 ### Creating a Tower of Boxes (box_tower_sample.py)
 
-![Sample box tower](./assets/box_tower.png)
+![Sample box tower](https://creativival.github.io/CubicPy/assets/box_tower.png)
 
 
 ```python
@@ -103,7 +103,7 @@ Details of object definitions to add to the `body_data` list:
 
 ## Sample Code for API Mode
 
-![Sample api mode](./assets/sample_api_mode.png)
+![Sample api mode](https://creativival.github.io/CubicPy/assets/sample_api_mode.png)
 
 ```python
 from cubicpy import CubicPyApp

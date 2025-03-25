@@ -1,8 +1,8 @@
 # CubicPy
 
-*日本語 | [English](README.md)*
+*日本語 | [English](https://github.com/creativival/CubicPy/blob/main/README.md)*
 
-![CubicPy Logo](./assets/cubicpy_logo.png)
+![CubicPy Logo](https://creativival.github.io/CubicPy/assets/cubicpy_logo.png)
 
 CubicPy - コードで物理オブジェクトを配置・構築する3Dプログラミング学習アプリ
 
@@ -12,7 +12,7 @@ CubicPy - コードで物理オブジェクトを配置・構築する3Dプロ�
 
 CubicPyは、Pythonコードを使って3D空間にオブジェクトを配置し、リアルな物理演算で動作する世界を構築できるアプリケーションです。ボックスや球体などの物体を自由に配置して建築物を作り、重力や衝突などの物理法則を体験しながらプログラミングを学べます。
 
-![CubicPy Sample Animation Gif](./assets/cubicpy_sample.gif)
+![CubicPy Sample Animation Gif](https://creativival.github.io/CubicPy/assets/cubicpy_sample.gif)
 
 作成したオブジェクト建築物は、地面を傾けることで物理演算を使ったリアルな崩壊過程を観察できます。また、重力係数を変更することで、異なる重力環境下での物理挙動を確認できます。
 
@@ -58,7 +58,7 @@ cubicpy --window-size 1280,720 -e box_tower_sample
 
 ### 箱の塔を作る (box_tower_sample.py)
 
-![Sample box tower](./assets/box_tower.png)
+![Sample box tower](https://creativival.github.io/CubicPy/assets/box_tower.png)
 
 ```python
 # 物体データの配列を作成
@@ -102,7 +102,7 @@ for i in range(10):
 
 ## APIモードでビルドするサンプルコード
 
-![Sample api mode](./assets/sample_api_mode.png)
+![Sample api mode](https://creativival.github.io/CubicPy/assets/sample_api_mode.png)
 
 ```python
 from cubicpy import CubicPyApp

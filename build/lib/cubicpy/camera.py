@@ -10,9 +10,9 @@ class CameraControl:
     BASE_PHI = -80
     MIN_PHI = 0.0000001
 
-    def __init__(self, base):
-        self.base = base
-        self.base.disableMouse()
+    def __init__(self, app):
+        self.app = app
+        self.app.disableMouse()
         self.camera_radius = self.BASE_RADIUS
         self.camera_theta = self.BASE_THETA
         self.camera_phi = self.BASE_PHI
@@ -22,19 +22,19 @@ class CameraControl:
         # self.lens = OrthographicLens()
         # self.film_size = self.BASE_FILM_SIZE
         # self.lens.setFilmSize(*self.film_size)  # 表示範囲のサイズを設定
-        # self.base.cam.node().setLens(self.lens)
+        # self.app.cam.node().setLens(self.lens)
 
-        self.base.accept('arrow_right', self.change_camera_angle, [0, 1])
-        self.base.accept('arrow_left', self.change_camera_angle, [0, -1])
-        self.base.accept('arrow_up', self.change_camera_angle, [-1, 0])
-        self.base.accept('arrow_down', self.change_camera_angle, [1, 0])
-        self.base.accept('arrow_right-repeat', self.change_camera_angle, [0, 1])
-        self.base.accept('arrow_left-repeat', self.change_camera_angle, [0, -1])
-        self.base.accept('arrow_up-repeat', self.change_camera_angle, [-1, 0])
-        self.base.accept('arrow_down-repeat', self.change_camera_angle, [1, 0])
-        self.base.accept('wheel_up', self.change_camera_radius, [1.1])
-        self.base.accept('wheel_down', self.change_camera_radius, [0.9])
-        self.base.accept('r', self.reset_camera)
+        self.app.accept('arrow_right', self.change_camera_angle, [0, 1])
+        self.app.accept('arrow_left', self.change_camera_angle, [0, -1])
+        self.app.accept('arrow_up', self.change_camera_angle, [-1, 0])
+        self.app.accept('arrow_down', self.change_camera_angle, [1, 0])
+        self.app.accept('arrow_right-repeat', self.change_camera_angle, [0, 1])
+        self.app.accept('arrow_left-repeat', self.change_camera_angle, [0, -1])
+        self.app.accept('arrow_up-repeat', self.change_camera_angle, [-1, 0])
+        self.app.accept('arrow_down-repeat', self.change_camera_angle, [1, 0])
+        self.app.accept('wheel_up', self.change_camera_radius, [1.1])
+        self.app.accept('wheel_down', self.change_camera_radius, [0.9])
+        self.app.accept('r', self.reset_camera)
 
     def change_camera_angle(self, theta, phi):
         self.camera_theta += theta
@@ -52,15 +52,15 @@ class CameraControl:
     # def change_film_size(self, rate):
     #     self.film_size = tuple([int(size * rate) for size in self.film_size])
     #     self.lens.setFilmSize(*self.film_size)  # 表示範囲のサイズを設定
-    #     self.base.cam.node().setLens(self.lens)
+    #     self.app.cam.node().setLens(self.lens)
 
     def camera_set_pos(self):
         radius = self.camera_radius
         theta = self.camera_theta
         phi = self.camera_phi
         position = Point3(*self.convert_to_cartesian(radius, theta, phi))
-        self.base.camera.setPos(position)
-        self.base.camera.lookAt(0, 0, 0)
+        self.app.camera.setPos(position)
+        self.app.camera.lookAt(0, 0, 0)
 
     def reset_camera(self):
         self.camera_radius = self.BASE_RADIUS
@@ -68,7 +68,7 @@ class CameraControl:
         self.camera_phi = self.BASE_PHI
         self.camera_set_pos()
         # self.lens.setFilmSize(*self.BASE_FILM_SIZE)  # 表示範囲のサイズを設定
-        # self.base.cam.node().setLens(self.lens)
+        # self.app.cam.node().setLens(self.lens)
 
     @staticmethod
     def convert_to_cartesian(r, theta, phi):

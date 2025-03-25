@@ -20,7 +20,7 @@ setup(
     },
     author="creativival",
     description="A Python library for creating 3D basic shape models and animations with Physics.",
-    long_description=open("README.ja.md", encoding="utf-8").read(),
+    long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/creativival/CubicPy",
     classifiers=[
