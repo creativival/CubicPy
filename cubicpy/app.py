@@ -12,16 +12,18 @@ class CubicPyApp(ShowBase):
     """CubicPy アプリケーションのメインクラス"""
     GRAVITY_VECTOR = Vec3(0, 0, -9.81)
     DEFAULT_GRAVITY_FACTOR = -4
+    DEFAULT_WINDOW_SIZE = (900, 600)
     RESTITUTION = 0  # 反発係数
     FRICTION = 0.5  # 摩擦係数
 
-    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR):
+    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE):
         ShowBase.__init__(self)
         self.code_file = code_file
         self.gravity_factor = gravity_factor
+        self.window_size = window_size
 
         # ウィンドウ設定
-        self.setup_window("CubicPy World", (1800, 1200))
+        self.setup_window("CubicPy World", self.window_size)
 
         # カメラと座標軸
         CameraControl(self)

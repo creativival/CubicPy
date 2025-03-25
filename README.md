@@ -12,6 +12,8 @@ Call it "CubicPy" - or simply "CuPy" for short!
 
 CubicPy is an application that allows you to place objects in 3D space using Python code and build worlds that operate with realistic physics simulations. You can freely place boxes, spheres, and other objects to create structures and learn programming while experiencing physical laws such as gravity and collisions.
 
+![CubicPy Sample Animation Gif](./assets/cubicpy_sample.gif)
+
 The constructed objects and structures can be observed undergoing realistic collapse processes by tilting the ground using physics simulations. You can also change the gravity factor to observe physical behavior under different gravitational environments.
 
 ## Installation
@@ -46,11 +48,18 @@ cubicpy my_script.py
 # Run with modified gravity factor (specifies the power of 10 to multiply gravity by)
 cubicpy --gravity -6 --example box_tower_sample
 cubicpy -g -6 -e box_tower_sample
+
+# Run with custom window size (1280x720)
+cubicpy -e box_tower_sample -w 1280,720
+cubicpy --window-size 1280,720 -e box_tower_sample
 ```
 
 ## Sample Code Examples
 
 ### Creating a Tower of Boxes (box_tower_sample.py)
+
+![Sample box tower](./assets/box_tower.png)
+
 
 ```python
 # Create an array of object data
@@ -93,6 +102,8 @@ Details of object definitions to add to the `body_data` list:
 2. Run it with the `cubicpy your_file.py` command
 
 ## Sample Code for API Mode
+
+![Sample api mode](./assets/sample_api_mode.png)
 
 ```python
 from cubicpy import CubicPyApp

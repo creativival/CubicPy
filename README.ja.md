@@ -12,6 +12,8 @@ CubicPy - コードで物理オブジェクトを配置・構築する3Dプロ�
 
 CubicPyは、Pythonコードを使って3D空間にオブジェクトを配置し、リアルな物理演算で動作する世界を構築できるアプリケーションです。ボックスや球体などの物体を自由に配置して建築物を作り、重力や衝突などの物理法則を体験しながらプログラミングを学べます。
 
+![CubicPy Sample Animation Gif](./assets/cubicpy_sample.gif)
+
 作成したオブジェクト建築物は、地面を傾けることで物理演算を使ったリアルな崩壊過程を観察できます。また、重力係数を変更することで、異なる重力環境下での物理挙動を確認できます。
 
 ## インストール方法
@@ -46,11 +48,17 @@ cubicpy my_script.py
 # 重力係数を変更して実行（重力に10の何乗倍を掛けるか指定する）
 cubicpy --gravity -6 --example box_tower_sample
 cubicpy -g -6 -e box_tower_sample
+
+# カスタムウィンドウサイズ(1280x720)で実行
+cubicpy -e box_tower_sample -w 1280,720
+cubicpy --window-size 1280,720 -e box_tower_sample
 ```
 
 ## サンプルコードの解説
 
 ### 箱の塔を作る (box_tower_sample.py)
+
+![Sample box tower](./assets/box_tower.png)
 
 ```python
 # 物体データの配列を作成
@@ -93,6 +101,8 @@ for i in range(10):
 2. `cubicpy your_file.py`コマンドで実行
 
 ## APIモードでビルドするサンプルコード
+
+![Sample api mode](./assets/sample_api_mode.png)
 
 ```python
 from cubicpy import CubicPyApp

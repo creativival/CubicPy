@@ -18,6 +18,7 @@ MESSAGES = {
         'example_help': '実行するサンプル名（例: box_tower_sample）',
         'list_help': '利用可能なサンプル一覧を表示',
         'gravity_help': '重力係数（デフォルト: -4）',
+        'window_size_help': 'ウィンドウサイズをカンマ区切りで指定（例: 1280,720）デフォルト: 900,600',
         'file_help': '実行するPythonファイル（オプション）',
         'available_samples': '利用可能なサンプル:',
         'running_sample': "サンプル '{0}' を実行します",
@@ -27,6 +28,7 @@ MESSAGES = {
         'running_default_sample': "デフォルトサンプル '{0}' を実行します",
         'error_default_sample': "エラー: デフォルトサンプルが見つかりません: {0}",
         'error_application': "エラー: アプリケーションの実行中にエラーが発生しました: {0}",
+        'error_window_size': "エラー: ウィンドウサイズの形式が無効です。例: 1280,720",
         'code_preview': "--- サンプルコード ---",
         'code_preview_end': "--- コード終了 ---"
     },
@@ -36,6 +38,7 @@ MESSAGES = {
         'example_help': 'Sample name to run (e.g. box_tower_sample)',
         'list_help': 'Display list of available samples',
         'gravity_help': 'Gravity factor (default: -4)',
+        'window_size_help': 'Window size as comma-separated values (e.g. 1280,720) default: 900,600',
         'file_help': 'Python file to run (optional)',
         'available_samples': 'Available samples:',
         'running_sample': "Running sample '{0}'",
@@ -45,6 +48,7 @@ MESSAGES = {
         'running_default_sample': "Running default sample '{0}'",
         'error_default_sample': "Error: Default sample not found: {0}",
         'error_application': "Error: An error occurred while running the application: {0}",
+        'error_window_size': "Error: Invalid window size format. Example: 1280,720",
         'code_preview': "--- Sample Code ---",
         'code_preview_end': "--- End of Code ---"
     }
@@ -75,6 +79,16 @@ def display_code(file_path, lang):
         print(f"Error reading code file: {e}")
 
 
+def parse_window_size(size_str, lang):
+    """ウィンドウサイズの文字列をタプルに変換する"""
+    try:
+        width, height = map(int, size_str.split(','))
+        return (width, height)
+    except ValueError:
+        print(MESSAGES[lang]['error_window_size'])
+        return None
+
+
 def main():
     """コマンドラインエントリーポイント"""
     # システムの言語を取得
@@ -92,10 +106,17 @@ def main():
                         help=msgs['list_help'])
     parser.add_argument('--gravity', '-g', type=int, default=CubicPyApp.DEFAULT_GRAVITY_FACTOR,
                         help=msgs['gravity_help'])
+    parser.add_argument('--window-size', '-w', default="900,600",
+                        help=msgs['window_size_help'])
     parser.add_argument('file', nargs='?',
                         help=msgs['file_help'])
 
     args = parser.parse_args()
+
+    # ウィンドウサイズのパース
+    window_size = parse_window_size(args.window_size, lang)
+    if window_size is None:
+        return 1
 
     # サンプル一覧の表示
     if args.list:
@@ -140,7 +161,7 @@ def main():
 
     try:
         # アプリを起動
-        app = CubicPyApp(file_path, gravity_factor=args.gravity)
+        app = CubicPyApp(file_path, gravity_factor=args.gravity, window_size=window_size)
         app.run()
     except Exception as e:
         print(msgs['error_application'].format(e))
