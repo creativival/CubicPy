@@ -14,7 +14,7 @@ CubicPy is an application that allows you to place objects in 3D space using Pyt
 
 ![CubicPy Sample Animation Gif](https://creativival.github.io/CubicPy/assets/cubicpy_sample.gif)
 
-The constructed objects and structures can be observed undergoing realistic collapse processes by tilting the ground using physics simulations. You can also change the gravity factor to observe physical behavior under different gravitational environments.
+The constructed objects and structures can be observed undergoing realistic collapse processes by tilting the ground or removing objects using physics simulations. You can also change the gravity factor to observe physical behavior under different gravitational environments.
 
 ## Installation
 
@@ -80,16 +80,17 @@ for i in range(10):
 
 Details of object definitions to add to the `body_data` list:
 
-| Parameter | Description | Required | Default Value |
-|------------|------|------|--------|
-| `type` | Object type: 'box', 'sphere', 'cylinder' | Required | - |
-| `pos` | Position coordinates (x, y, z) | Required | - |
-| `scale` | Size (width, depth, height) | Optional | (1, 1, 1) |
-| `color` | Color (red, green, blue) - values from 0 to 1 | Optional | (0.5, 0.5, 0.5) |
-| `mass` | Mass (0: fixed object) | Optional | 1 |
-| `color_alpha` | Transparency (0: transparent to 1: opaque) | Optional | 1 |
-| `hpr` | Rotation angles (heading, pitch, roll) | Optional | (0, 0, 0) |
-| `position_mode` | Position reference | Optional | 'corner_near_origin' |
+| Parameter       | Description                                   | Required | Default Value        |
+|-----------------|-----------------------------------------------|------|----------------------|
+| `type`          | Object type: 'box', 'sphere', 'cylinder'      | Required | -                    |
+| `pos`           | Position coordinates (x, y, z)                | Required | -                    |
+| `scale`         | Size (width, depth, height)                   | Optional | (1, 1, 1)            |
+| `color`         | Color (red, green, blue) - values from 0 to 1 | Optional | (0.5, 0.5, 0.5)      |
+| `mass`          | Mass (0: fixed object)                        | Optional | 1                    |
+| `color_alpha`   | Transparency (0: transparent to 1: opaque)    | Optional | 1                    |
+| `hpr`           | Rotation angles (heading, pitch, roll)        | Optional | (0, 0, 0)            |
+| `position_mode` | Position reference                            | Optional | 'corner_near_origin' |
+| `remove`        | Removed Object                                | Optional | False                |
 
 ※ `position_mode` can be set to the following values:
 - `'corner_near_origin'`: The corner nearest to the origin is the reference
@@ -147,7 +148,7 @@ app.run()
 ### CubicPyApp Class
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=0.01)
+CubicPyApp(code_file=None, gravity_factor=1)
 ```
 - `code_file`: Path to Python file to execute (optional)
 - `gravity_factor`: Gravity factor (optional, default: 1)
@@ -156,23 +157,24 @@ CubicPyApp(code_file=None, gravity_factor=0.01)
 
 #### Adding a Box
 ```python
-add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
+add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
 ```
 - `position`: Position coordinates (x, y, z)
 - `scale`: Size (width, depth, height)
 - `color`: Color (red, green, blue) - values from 0 to 1
 - `mass`: Mass (0: fixed object)
 - `color_alpha`: Transparency (0: transparent to 1: opaque)
+- `remove`: Removed object (Boolean)
 
 #### Adding a Sphere
 ```python
-add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
+add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
 ```
 - Parameters are the same as `add_box`
 
 #### Adding a Cylinder
 ```python
-add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
+add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
 ```
 - Parameters are the same as `add_box`
 
@@ -189,6 +191,7 @@ add(obj_type, **kwargs)
   - color: Color
   - mass: Mass
   - color_alpha: Transparency
+  - remove: Removed Object
 
 #### Building Objects from body_data List
 ```python
@@ -219,6 +222,7 @@ reset()  # Reset the world
 - **F/G**: Change gravity strength
 - **R**: Reset
 - **Z**: Toggle debug display
+- **X**: Remove selected objects
 - **ESC**: Exit
 
 ## Requirements

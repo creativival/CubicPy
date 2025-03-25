@@ -63,15 +63,15 @@ class CubicPyApp(ShowBase):
         return task.cont
 
     # ApiMethodクラスのメソッドを統合
-    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """箱を追加"""
         return self.api.add_box(position, scale, color, mass, color_alpha)
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """球を追加"""
         return self.api.add_sphere(position, scale, color, mass, color_alpha)
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """円柱を追加"""
         return self.api.add_cylinder(position, scale, color, mass, color_alpha)
 

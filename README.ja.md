@@ -14,7 +14,7 @@ CubicPyは、Pythonコードを使って3D空間にオブジェクトを配置�
 
 ![CubicPy Sample Animation Gif](https://creativival.github.io/CubicPy/assets/cubicpy_sample.gif)
 
-作成したオブジェクト建築物は、地面を傾けることで物理演算を使ったリアルな崩壊過程を観察できます。また、重力係数を変更することで、異なる重力環境下での物理挙動を確認できます。
+作成したオブジェクト建築物は、地面を傾けたり、オブジェクトを消すことで物理演算を使ったリアルな崩壊過程を観察できます。また、重力係数を変更することで、異なる重力環境下での物理挙動を確認できます。
 
 ## インストール方法
 
@@ -79,16 +79,17 @@ for i in range(10):
 
 `body_data`リストに追加するオブジェクト定義の詳細：
 
-| パラメータ | 説明 | 必須 | デフォルト値 |
-|------------|------|------|--------|
-| `type` | オブジェクトの種類: 'box', 'sphere', 'cylinder' | 必須 | - |
-| `pos` | 位置座標 (x, y, z) | 必須 | - |
-| `scale` | 大きさ (幅, 奥行き, 高さ) | 任意 | (1, 1, 1) |
-| `color` | 色 (赤, 緑, 青) - 各値は0〜1 | 任意 | (0.5, 0.5, 0.5) |
-| `mass` | 質量 (0: 固定物体) | 任意 | 1 |
-| `color_alpha` | 透明度 (0: 透明 〜 1: 不透明) | 任意 | 1 |
-| `hpr` | 回転角度 (heading, pitch, roll) | 任意 | (0, 0, 0) |
-| `position_mode` | 位置基準 | 任意 | 'corner_near_origin' |
+| パラメータ           | 説明                                     | 必須 | デフォルト値               |
+|-----------------|----------------------------------------|------|----------------------|
+| `type`          | オブジェクトの種類: 'box', 'sphere', 'cylinder' | 必須 | -                    |
+| `pos`           | 位置座標 (x, y, z)                         | 必須 | -                    |
+| `scale`         | 大きさ (幅, 奥行き, 高さ)                       | 任意 | (1, 1, 1)            |
+| `color`         | 色 (赤, 緑, 青) - 各値は0〜1                   | 任意 | (0.5, 0.5, 0.5)      |
+| `mass`          | 質量 (0: 固定物体)                           | 任意 | 1                    |
+| `color_alpha`   | 透明度 (0: 透明 〜 1: 不透明)                   | 任意 | 1                    |
+| `hpr`           | 回転角度 (heading, pitch, roll)            | 任意 | (0, 0, 0)            |
+| `position_mode` | 位置基準                                   | 任意 | 'corner_near_origin' |
+| `remove`        | 削除するオブジェクト                             | 任意 | False                |
 
 ※ `position_mode`は以下の値が指定可能:
 - `'corner_near_origin'`: 原点に近い角が基準
@@ -146,7 +147,7 @@ app.run()
 ### CubicPyAppクラス
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=0.01)
+CubicPyApp(code_file=None, gravity_factor=1)
 ```
 - `code_file`: 実行するPythonファイルのパス（任意）
 - `gravity_factor`: 重力係数（任意、デフォルト: 1）
@@ -155,23 +156,24 @@ CubicPyApp(code_file=None, gravity_factor=0.01)
 
 #### 箱を追加
 ```python
-add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
+add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
 ```
 - `position`: 位置座標 (x, y, z)
 - `scale`: 大きさ (幅, 奥行き, 高さ)
 - `color`: 色 (赤, 緑, 青) - 各値は0〜1
 - `mass`: 質量 (0: 固定物体)
 - `color_alpha`: 透明度 (0: 透明 〜 1: 不透明)
+- `remove`: 削除するオブジェクト(真偽値)
 
 #### 球体を追加
 ```python
-add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
+add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
 ```
 - パラメータは`add_box`と同様
 
 #### 円柱を追加
 ```python
-add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1)
+add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False)
 ```
 - パラメータは`add_box`と同様
 
@@ -193,6 +195,7 @@ add(obj_type, **kwargs)
   - color: 色
   - mass: 質量
   - color_alpha: 透明度
+  - remove: 削除するオブジェクト
 
 ### ワールド操作メソッド
 
@@ -217,6 +220,7 @@ reset()  # ワールドをリセット
 - **F/G**: 重力の強さを変更
 - **R**: リセット
 - **Z**: デバッグ表示切替
+- **X**: 選択したオブジェクトを削除
 - **ESC**: 終了
 
 ## 必須条件
