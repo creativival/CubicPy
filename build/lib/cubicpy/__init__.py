@@ -1,3 +1,6 @@
+DEFAULT_GRAVITY_FACTOR = 1
+
+from .base_point import get_position_offset
 from .box import Box
 from .sphere import Sphere
 from .cylinder import Cylinder
@@ -17,7 +20,7 @@ from .examples import get_sample_path, list_samples
 
 
 # 簡単にサンプルを実行するための補助関数
-def run_sample(sample_name, gravity_factor=0):
+def run_sample(sample_name, gravity_factor=DEFAULT_GRAVITY_FACTOR):
     """指定したサンプルを実行する
 
     Args:
@@ -27,4 +30,4 @@ def run_sample(sample_name, gravity_factor=0):
     app = CubicPyApp(get_sample_path(sample_name), gravity_factor=gravity_factor)
     app.run()
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"

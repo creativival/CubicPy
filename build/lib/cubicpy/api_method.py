@@ -7,7 +7,7 @@ class ApiMethod:
         self.app = app
         self.object_data = []  # リセット用にオブジェクトデータを保存
 
-    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
         """箱を追加"""
         box_data = {
             'type': 'box',
@@ -15,12 +15,15 @@ class ApiMethod:
             'scale': scale,
             'color': color,
             'mass': mass,
-            'color_alpha': color_alpha
+            'color_alpha': color_alpha,
+            'hpr': hpr,
+            'base_point': base_point,
+            'remove': remove
         }
         self.object_data.append(box_data)
         return box_data
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
         """球を追加"""
         sphere_data = {
             'type': 'sphere',
@@ -28,12 +31,15 @@ class ApiMethod:
             'scale': scale,
             'color': color,
             'mass': mass,
-            'color_alpha': color_alpha
+            'color_alpha': color_alpha,
+            'hpr': hpr,
+            'base_point': base_point,
+            'remove': remove
         }
         self.object_data.append(sphere_data)
         return sphere_data
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
         """円柱を追加"""
         cylinder_data = {
             'type': 'cylinder',
@@ -41,7 +47,10 @@ class ApiMethod:
             'scale': scale,
             'color': color,
             'mass': mass,
-            'color_alpha': color_alpha
+            'color_alpha': color_alpha,
+            'hpr': hpr,
+            'base_point': base_point,
+            'remove': remove
         }
         self.object_data.append(cylinder_data)
         return cylinder_data
@@ -66,12 +75,15 @@ class ApiMethod:
         color = kwargs.get('color', (0.5, 0.5, 0.5))
         mass = kwargs.get('mass', 1)
         color_alpha = kwargs.get('color_alpha', 1)
+        hpr = kwargs.get('hpr', (0, 0, 0))
+        base_point = kwargs.get('base_point', 0)
+        remove = kwargs.get('remove', False)
         if obj_type == 'box':
-            self.add_box(position, scale, color, mass, color_alpha)
+            self.add_box(position, scale, color, mass, color_alpha, hpr, base_point, remove)
         elif obj_type == 'sphere':
-            self.add_sphere(position, scale, color, mass, color_alpha)
+            self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove)
         elif obj_type == 'cylinder':
-            self.add_cylinder(position, scale, color, mass, color_alpha)
+            self.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove)
 
         else:
             raise ValueError(f"未知のオブジェクトタイプ: {obj_type}")

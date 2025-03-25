@@ -4,6 +4,7 @@ cubicpy/__init__.py
 cubicpy/api_method.py
 cubicpy/app.py
 cubicpy/axis.py
+cubicpy/base_point.py
 cubicpy/box.py
 cubicpy/camera.py
 cubicpy/cli.py
@@ -29,6 +30,11 @@ cubicpy/examples/box_tower_sample.py
 cubicpy/examples/column_building_2x2_sample.py
 cubicpy/examples/column_building_3x3_sample.py
 cubicpy/examples/cylinder_tower_sample.py
+cubicpy/examples/delete_box_building_sample.py
+cubicpy/examples/delete_box_tower_sample.py
+cubicpy/examples/delete_column_building_2x2_sample.py
+cubicpy/examples/delete_column_building_3x3_sample.py
+cubicpy/examples/falling_sphere_sample.py
 cubicpy/examples/sphere_tower_sample.py
 cubicpy/models/box.egg
 cubicpy/models/cone48.egg

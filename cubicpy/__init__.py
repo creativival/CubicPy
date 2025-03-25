@@ -30,4 +30,4 @@ def run_sample(sample_name, gravity_factor=DEFAULT_GRAVITY_FACTOR):
     app = CubicPyApp(get_sample_path(sample_name), gravity_factor=gravity_factor)
     app.run()
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"

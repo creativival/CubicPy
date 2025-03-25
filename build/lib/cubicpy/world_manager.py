@@ -32,7 +32,7 @@ class WorldManager:
         """徐々に傾きを変更するタスク"""
         if self.tilt_step >= self.max_tilt_frames:
             # 重力の再設定
-            self.app.change_gravity(1)
+            self.app.change_gravity(10)
             return task.done
 
         # 徐々に目標角度に近づける
@@ -145,3 +145,14 @@ class WorldManager:
             body['object'].remove()
 
         self.body_objects = []
+
+    def remove_selected(self):
+        """選択したオブジェクトを削除"""
+        for body in self.body_objects:
+            remove_selected = getattr(body['object'], 'remove_selected', False)
+            if remove_selected:
+                body['object'].remove()
+                self.body_objects.remove(body)
+
+                # 物理エンジンを即座に更新  # TODO 削除の毎回実行すべきか？
+                self.app.physics.bullet_world.doPhysics(0)

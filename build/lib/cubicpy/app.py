@@ -2,6 +2,7 @@ from direct.showbase.ShowBase import ShowBase
 from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import *
 from . import (
+    DEFAULT_GRAVITY_FACTOR,
     CameraControl, Axis, InputHandler,
     ModelManager, PhysicsEngine, WorldManager,
     ApiMethod
@@ -10,16 +11,15 @@ from . import (
 
 class CubicPyApp(ShowBase):
     """CubicPy アプリケーションのメインクラス"""
-    GRAVITY_VECTOR = Vec3(0, 0, -9.81)
-    DEFAULT_GRAVITY_FACTOR = -4
+    GRAVITY_VECTOR = Vec3(0, 0, -9.81) * (10 ** -1)  # 重力ベクトル（10の1に補正）
     DEFAULT_WINDOW_SIZE = (900, 600)
-    RESTITUTION = 0  # 反発係数
+    RESTITUTION = 0.5  # 反発係数
     FRICTION = 0.5  # 摩擦係数
 
     def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE):
         ShowBase.__init__(self)
         self.code_file = code_file
-        self.gravity_factor = gravity_factor
+        self.initial_gravity_factor = gravity_factor
         self.window_size = window_size
 
         # ウィンドウ設定
@@ -31,7 +31,7 @@ class CubicPyApp(ShowBase):
 
         # 各サブシステムの初期化
         self.model_manager = ModelManager(self)
-        self.physics = PhysicsEngine(self, gravity_factor)
+        self.physics = PhysicsEngine(self)
 
         # APIメソッドの初期化（オブジェクト配置用）
         self.api = ApiMethod(self)
@@ -63,15 +63,15 @@ class CubicPyApp(ShowBase):
         return task.cont
 
     # ApiMethodクラスのメソッドを統合
-    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """箱を追加"""
         return self.api.add_box(position, scale, color, mass, color_alpha)
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """球を追加"""
         return self.api.add_sphere(position, scale, color, mass, color_alpha)
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """円柱を追加"""
         return self.api.add_cylinder(position, scale, color, mass, color_alpha)
 
@@ -102,8 +102,8 @@ class CubicPyApp(ShowBase):
     def change_gravity(self, value):
         # 物理エンジンの重力を変更
         self.physics.change_gravity(value)
-        # そしてワールドを再構築
-        self.world_manager.rebuild()
+        # # そしてワールドを再構築  # TODO 重力を変えたときに物理エンジンを即座に更新することで不要になったか？
+        # self.world_manager.rebuild()
 
     def reset_all(self):
         """すべてをリセット"""
@@ -120,6 +120,10 @@ class CubicPyApp(ShowBase):
 
         # アプリを実行
         super().run()
+
+    # 選択したオブジェクトを削除
+    def remove_selected(self):
+        self.world_manager.remove_selected()
 
     @property
     def world_node(self):

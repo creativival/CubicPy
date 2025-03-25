@@ -39,5 +39,6 @@ for k in range(step_num):
                 'pos': pos_pillar,
                 'scale': scale_pillar,
                 'color': (i, j, k),
-                'mass': 1
+                'mass': 1,
+                'remove': True if i < 6 and j == 0 and k == 0 else False
             })

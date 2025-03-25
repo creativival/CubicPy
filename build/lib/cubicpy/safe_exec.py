@@ -1,4 +1,5 @@
 import math
+import random
 import numpy as np
 
 class SafeExec:
@@ -25,6 +26,10 @@ class SafeExec:
             "math.sqrt": math.sqrt, "math.pi": math.pi, "math.exp": math.exp,
             "math.log": math.log, "math.pow": math.pow, "math.fabs": math.fabs,
             "math.ceil": math.ceil, "math.floor": math.floor,
+            'random.randint': random.randint, 'random.choice': random.choice, 'random.uniform': random.uniform,
+            'random.seed': random.seed, 'random.shuffle': random.shuffle, 'random.random': random.random,
+            'randint': random.randint, 'choice': random.choice, 'uniform': random.uniform,
+            'seed': random.seed, 'shuffle': random.shuffle, 'random': random.random,
             "np": np,
         }
 
