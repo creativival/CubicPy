@@ -14,7 +14,7 @@ if __name__ == '__main__':
     user_code_file = 'cubicpy/examples/throwing_sphere_sample.py'
 
     # user code file
-    # user_code_file = 'codes/box_twisted_tower.py'
+    # user_code_file = 'codes/cube_twisted_tower.py'
 
     app = CubicPyApp(user_code_file, gravity_factor=1, window_size=(1800, 1200))
     app.run()

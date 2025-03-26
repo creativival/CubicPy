@@ -27,3 +27,5 @@ class InputHandler:
         self.app.accept("d", self.app.tilt_ground, [0, 1])  # Y軸 (右傾)
         # オブジェクトの削除
         self.app.accept('x', self.app.remove_selected)
+        # オブジェクトの発射
+        self.app.accept('space', self.app.launch_objects)

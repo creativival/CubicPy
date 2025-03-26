@@ -9,12 +9,12 @@ class ModelManager:
         self.app = app
 
         # 形状キャッシュ
-        self.box_shapes = {}
+        self.cube_shapes = {}
         self.sphere_shapes = {}
         self.cylinder_shapes = {}
 
-        # Box Model
-        self.box_model = self.load_box_model()
+        # Cube Model
+        self.cube_model = self.load_cube_model()
 
         # Sphere Model
         self.sphere_model = self.load_sphere_model()
@@ -22,7 +22,7 @@ class ModelManager:
         # Cylinder Model
         self.cylinder_model = self.load_cylinder_model()
 
-    def load_box_model(self):
+    def load_cube_model(self):
         """ボックスモデルのロード"""
         model = self.app.loader.loadModel('models/box.egg')
         model.setPos(-0.5, -0.5, -0.5)  # モデルの中心を原点に

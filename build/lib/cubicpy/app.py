@@ -63,9 +63,9 @@ class CubicPyApp(ShowBase):
         return task.cont
 
     # ApiMethodクラスのメソッドを統合
-    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
+    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """箱を追加"""
-        return self.api.add_box(position, scale, color, mass, color_alpha)
+        return self.api.add_cube(position, scale, color, mass, color_alpha)
 
     def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
         """球を追加"""
@@ -124,6 +124,11 @@ class CubicPyApp(ShowBase):
     # 選択したオブジェクトを削除
     def remove_selected(self):
         self.world_manager.remove_selected()
+
+    # 選択したオブジェクトを発射
+    def launch_objects(self):
+        """初速度ベクトルが設定されたオブジェクトを発射"""
+        self.world_manager.launch_objects()
 
     @property
     def world_node(self):

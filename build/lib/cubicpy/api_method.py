@@ -7,10 +7,11 @@ class ApiMethod:
         self.app = app
         self.object_data = []  # リセット用にオブジェクトデータを保存
 
-    def add_box(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
+    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """箱を追加"""
-        box_data = {
-            'type': 'box',
+        cube_data = {
+            'type': 'cube',
             'pos': position,
             'scale': scale,
             'color': color,
@@ -18,12 +19,14 @@ class ApiMethod:
             'color_alpha': color_alpha,
             'hpr': hpr,
             'base_point': base_point,
-            'remove': remove
+            'remove': remove,
+            'vec': vec
         }
-        self.object_data.append(box_data)
-        return box_data
+        self.object_data.append(cube_data)
+        return cube_data
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """球を追加"""
         sphere_data = {
             'type': 'sphere',
@@ -34,12 +37,14 @@ class ApiMethod:
             'color_alpha': color_alpha,
             'hpr': hpr,
             'base_point': base_point,
-            'remove': remove
+            'remove': remove,
+            'vec': vec
         }
         self.object_data.append(sphere_data)
         return sphere_data
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """円柱を追加"""
         cylinder_data = {
             'type': 'cylinder',
@@ -50,7 +55,8 @@ class ApiMethod:
             'color_alpha': color_alpha,
             'hpr': hpr,
             'base_point': base_point,
-            'remove': remove
+            'remove': remove,
+            'vec': vec
         }
         self.object_data.append(cylinder_data)
         return cylinder_data
@@ -58,7 +64,7 @@ class ApiMethod:
     def add_ground(self, color=(0, 1, 0), color_alpha=0.3):
         """平面の地面を追加"""
         ground_data = {
-            'type': 'box',
+            'type': 'cube',
             'pos': (-500, -500, -1),
             'scale': (1000, 1000, 1),
             'color': color,
@@ -78,12 +84,14 @@ class ApiMethod:
         hpr = kwargs.get('hpr', (0, 0, 0))
         base_point = kwargs.get('base_point', 0)
         remove = kwargs.get('remove', False)
-        if obj_type == 'box':
-            self.add_box(position, scale, color, mass, color_alpha, hpr, base_point, remove)
+        vec = kwargs.get('vec', (0, 0, 0))
+
+        if obj_type == 'cube':
+            self.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
         elif obj_type == 'sphere':
-            self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove)
+            self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
         elif obj_type == 'cylinder':
-            self.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove)
+            self.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
         else:
             raise ValueError(f"未知のオブジェクトタイプ: {obj_type}")
@@ -92,7 +100,7 @@ class ApiMethod:
         """body_dataリストからオブジェクトを作成"""
         for data in body_data:
             data_copy = data.copy()  # 元のデータを変更しないようにコピー
-            obj_type = data_copy.pop('type', 'box')
+            obj_type = data_copy.pop('type', 'cube')
             self.add(obj_type, **data_copy)
         return self
 

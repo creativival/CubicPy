@@ -1,7 +1,7 @@
 DEFAULT_GRAVITY_FACTOR = 1
 
 from .base_point import get_position_offset
-from .box import Box
+from .cube import Cube
 from .sphere import Sphere
 from .cylinder import Cylinder
 from .camera import CameraControl
@@ -30,4 +30,4 @@ def run_sample(sample_name, gravity_factor=DEFAULT_GRAVITY_FACTOR):
     app = CubicPyApp(get_sample_path(sample_name), gravity_factor=gravity_factor)
     app.run()
 
-__version__ = "0.1.6"
+__version__ = "0.1.7"
