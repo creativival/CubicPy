@@ -125,6 +125,11 @@ class CubicPyApp(ShowBase):
     def remove_selected(self):
         self.world_manager.remove_selected()
 
+    # 選択したオブジェクトを発射
+    def launch_objects(self):
+        """初速度ベクトルが設定されたオブジェクトを発射"""
+        self.world_manager.launch_objects()
+
     @property
     def world_node(self):
         """ワールドノードへの参照を提供"""

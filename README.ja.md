@@ -14,7 +14,7 @@ CubicPyは、Pythonコードを使って3D空間にオブジェクトを配置�
 
 ![CubicPy Sample Animation Gif](https://creativival.github.io/CubicPy/assets/cubicpy_sample.gif)
 
-作成したオブジェクト建築物は、地面を傾けたり、オブジェクトを消すことで物理演算を使ったリアルな崩壊過程を観察できます。また、重力係数を変更することで、異なる重力環境下での物理挙動を確認できます。
+作成したオブジェクト建築物は、地面を傾けたり、オブジェクトを消すことで物理演算を使ったリアルな崩壊過程を観察できます。また、重力係数を変更することで、異なる重力環境下での物理挙動を確認できます。さらに、オブジェクトに初速度ベクトルを設定して発射することも可能です。
 
 ## インストール方法
 
@@ -75,21 +75,36 @@ for i in range(10):
     })
 ```
 
+### 初速度ベクトルを使ったオブジェクトの発射
+
+```python
+# 発射体を作成
+body_data.append({
+    'type': 'sphere',
+    'pos': (5, 5, 2),  # 位置: x, y, z
+    'scale': (1, 1, 1),  # サイズ
+    'color': (1, 0, 0),  # 赤色
+    'mass': 5,  # 質量
+    'vec': (10, -5, 3)  # 初速度ベクトル: x, y, z方向
+})
+```
+
 ## オブジェクト定義の詳細（cubicコマンド用）
 
 `body_data`リストに追加するオブジェクト定義の詳細：
 
-| パラメータ           | 説明                                     | 必須 | デフォルト値               |
-|-----------------|----------------------------------------|------|----------------------|
-| `type`          | オブジェクトの種類: 'cube', 'sphere', 'cylinder' | 必須 | -                    |
-| `pos`           | 位置座標 (x, y, z)                         | 必須 | -                    |
-| `scale`         | 大きさ (幅, 奥行き, 高さ)                       | 任意 | (1, 1, 1)            |
-| `color`         | 色 (赤, 緑, 青) - 各値は0〜1                   | 任意 | (0.5, 0.5, 0.5)      |
-| `mass`          | 質量 (0: 固定物体)                           | 任意 | 1                    |
-| `color_alpha`   | 透明度 (0: 透明 〜 1: 不透明)                   | 任意 | 1                    |
-| `hpr`           | 回転角度 (heading, pitch, roll)            | 任意 | (0, 0, 0)            |
-| `base_point` | 配置するときの位置基準                            | 任意 | 0 |
-| `remove`        | 削除するオブジェクト                             | 任意 | False                |
+| パラメータ       | 説明                                     | 必須 | デフォルト値         |
+|--------------|----------------------------------------|------|----------------|
+| `type`       | オブジェクトの種類: 'cube', 'sphere', 'cylinder' | 必須 | -              |
+| `pos`        | 位置座標 (x, y, z)                         | 必須 | -              |
+| `scale`      | 大きさ (幅, 奥行き, 高さ)                       | 任意 | (1, 1, 1)      |
+| `color`      | 色 (赤, 緑, 青) - 各値は0〜1                   | 任意 | (0.5, 0.5, 0.5) |
+| `mass`       | 質量 (0: 固定物体)                           | 任意 | 1              |
+| `color_alpha`| 透明度 (0: 透明 〜 1: 不透明)                   | 任意 | 1              |
+| `hpr`        | 回転角度 (heading, pitch, roll)            | 任意 | (0, 0, 0)      |
+| `base_point` | 配置するときの位置基準                            | 任意 | 0              |
+| `remove`     | 削除するオブジェクト                             | 任意 | False          |
+| `vec`        | 初速度ベクトル (x, y, z)                      | 任意 | (0, 0, 0)      |
 
 ※ `base_point`は以下の値が指定可能:
 - `0`: 原点に近い角が基準
@@ -116,6 +131,15 @@ app = CubicPyApp(gravity_factor=0.01)
 app.add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
 app.add_sphere(position=(2, 0, 0),  scale=(1, 1, 1), color=(0, 1, 0))
 app.add_cylinder(position=(4, 0, 0),  scale=(1, 1, 1), color=(0, 0, 1))
+
+# 初速度ベクトルを設定したオブジェクトを追加
+app.add_sphere(
+    position=(5, 5, 2),
+    scale=(1, 1, 1),
+    color=(1, 0, 0),
+    mass=5,
+    vec=(10, -5, 3)  # スペースキーを押すと、この速度で発射される
+)
 
 # 複数オブジェクトの追加（ループ）
 for i in range(10):
@@ -156,7 +180,7 @@ CubicPyApp(code_file=None, gravity_factor=1)
 
 #### 箱を追加
 ```python
-add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False, vec=(0, 0, 0))
 ```
 - `position`: 位置座標 (x, y, z)
 - `scale`: 大きさ (幅, 奥行き, 高さ)
@@ -165,17 +189,18 @@ add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, col
 - `color_alpha`: 透明度 (0: 透明 〜 1: 不透明)
 - `hpr`: 回転角度 (heading, pitch, roll)
 - `base_point`: 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
-- `remove`: 削除するオブジェクト(真偽値)
+- `remove`: 削除するオブジェクト(真偽値) - Xキーで削除可能
+- `vec`: 初速度ベクトル (x, y, z) - スペースキーを押すと適用される
 
 #### 球体を追加
 ```python
-add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False, vec=(0, 0, 0))
 ```
 - パラメータは`add_cube`と同様
 
 #### 円柱を追加
 ```python
-add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False, vec=(0, 0, 0))
 ```
 - パラメータは`add_cube`と同様
 
@@ -198,12 +223,14 @@ add(obj_type, **kwargs)
   - mass: 質量
   - color_alpha: 透明度
   - remove: 削除するオブジェクト
+  - vec: 初速度ベクトル
 
 ### ワールド操作メソッド
 
 ```python
 run()  # ワールドを構築して実行
 reset()  # ワールドをリセット
+launch_objects()  # 初速度設定されたオブジェクトを発射（スペースキーでも実行可能）
 ```
 
 ## APIモードでワールドを構築する方法
@@ -223,13 +250,13 @@ reset()  # ワールドをリセット
 - **R**: リセット
 - **Z**: デバッグ表示切替
 - **X**: 選択したオブジェクトを削除
+- **スペースキー**: 初速度ベクトル(`vec`)が設定されたオブジェクトを発射
 - **ESC**: 終了
 
 ## 必須条件
 
 - Python 3.9以上
 - Panda3D
-- Panda3D-Bullet物理エンジン
 - NumPy
 
 これらの依存パッケージは`pip install cubicpy`で自動的にインストールされます。

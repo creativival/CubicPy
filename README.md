@@ -14,7 +14,7 @@ CubicPy is an application that allows you to place objects in 3D space using Pyt
 
 ![CubicPy Sample Animation Gif](https://creativival.github.io/CubicPy/assets/cubicpy_sample.gif)
 
-The constructed objects and structures can be observed undergoing realistic collapse processes by tilting the ground or removing objects using physics simulations. You can also change the gravity factor to observe physical behavior under different gravitational environments.
+The constructed objects and structures can be observed undergoing realistic collapse processes by tilting the ground or removing objects using physics simulations. You can also change the gravity factor to observe physical behavior under different gravitational environments. Additionally, you can set initial velocity vectors for objects and launch them.
 
 ## Installation
 
@@ -60,7 +60,6 @@ cubicpy --window-size 1280,720 -e cube_tower_sample
 
 ![Sample cube tower](https://creativival.github.io/CubicPy/assets/cube_tower.png)
 
-
 ```python
 # Create an array of object data
 body_data = []
@@ -76,21 +75,36 @@ for i in range(10):
     })
 ```
 
+### Launching Objects with Initial Velocity Vectors
+
+```python
+# Create a projectile
+body_data.append({
+    'type': 'sphere',
+    'pos': (5, 5, 2),  # Position: x, y, z
+    'scale': (1, 1, 1),  # Size
+    'color': (1, 0, 0),  # Red color
+    'mass': 5,  # Mass
+    'vec': (10, -5, 3)  # Initial velocity vector: x, y, z direction
+})
+```
+
 ## Object Definition Details (for cubicpy command)
 
 Details of object definitions to add to the `body_data` list:
 
-| Parameter       | Description                                   | Required | Default Value        |
-|-----------------|-----------------------------------------------|------|----------------------|
-| `type`          | Object type: 'cube', 'sphere', 'cylinder'      | Required | -                    |
-| `pos`           | Position coordinates (x, y, z)                | Required | -                    |
-| `scale`         | Size (width, depth, height)                   | Optional | (1, 1, 1)            |
-| `color`         | Color (red, green, blue) - values from 0 to 1 | Optional | (0.5, 0.5, 0.5)      |
-| `mass`          | Mass (0: fixed object)                        | Optional | 1                    |
-| `color_alpha`   | Transparency (0: transparent to 1: opaque)    | Optional | 1                    |
-| `hpr`           | Rotation degree angles (heading, pitch, roll) | Optional | (0, 0, 0)            |
-| `base_point` | Position reference point                      | Optional | 0 |
-| `remove`        | Removed Object                                | Optional | False                |
+| Parameter    | Description                                   | Required | Default Value     |
+|--------------|-----------------------------------------------|----------|-------------------|
+| `type`       | Object type: 'cube', 'sphere', 'cylinder'     | Required | -                 |
+| `pos`        | Position coordinates (x, y, z)                | Required | -                 |
+| `scale`      | Size (width, depth, height)                   | Optional | (1, 1, 1)         |
+| `color`      | Color (red, green, blue) - values from 0 to 1 | Optional | (0.5, 0.5, 0.5)   |
+| `mass`       | Mass (0: fixed object)                        | Optional | 1                 |
+| `color_alpha`| Transparency (0: transparent to 1: opaque)    | Optional | 1                 |
+| `hpr`        | Rotation degree angles (heading, pitch, roll) | Optional | (0, 0, 0)         |
+| `base_point` | Position reference point                      | Optional | 0                 |
+| `remove`     | Removed Object                                | Optional | False             |
+| `vec`        | Initial velocity vector (x, y, z)             | Optional | (0, 0, 0)         |
 
 ※ `base_point` can be set to the following values:
 - `0`: The corner nearest to the origin is the reference
@@ -117,6 +131,15 @@ app = CubicPyApp(gravity_factor=0.01)
 app.add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
 app.add_sphere(position=(2, 0, 0),  scale=(1, 1, 1), color=(0, 1, 0))
 app.add_cylinder(position=(4, 0, 0),  scale=(1, 1, 1), color=(0, 0, 1))
+
+# Add an object with initial velocity vector
+app.add_sphere(
+    position=(5, 5, 2),
+    scale=(1, 1, 1),
+    color=(1, 0, 0),
+    mass=5,
+    vec=(10, -5, 3)  # Will be launched when space key is pressed
+)
 
 # Adding multiple objects (loop)
 for i in range(10):
@@ -157,7 +180,7 @@ CubicPyApp(code_file=None, gravity_factor=1)
 
 #### Adding a Box
 ```python
-add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False, vec=(0, 0, 0))
 ```
 - `position`: Position coordinates (x, y, z)
 - `scale`: Size (width, depth, height)
@@ -167,16 +190,17 @@ add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, col
 - `hpr`: Rotation degree angles (heading, pitch, roll)
 - `base_point`: Position reference point
 - `remove`: Removed object (Boolean)
+- `vec`: Initial velocity vector (x, y, z) - applied when space key is pressed
 
 #### Adding a Sphere
 ```python
-add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False, vec=(0, 0, 0))
 ```
 - Parameters are the same as `add_cube`
 
 #### Adding a Cylinder
 ```python
-add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False, vec=(0, 0, 0))
 ```
 - Parameters are the same as `add_cube`
 
@@ -193,9 +217,10 @@ add(obj_type, **kwargs)
   - color: Color
   - mass: Mass
   - color_alpha: Transparency
-  - hpr: Rotation degree angles (heading, pitch, roll)          | 
+  - hpr: Rotation degree angles (heading, pitch, roll)
   - base_point: Position reference
-  - remove: Removed Object
+  - remove: Removed Object - can be deleted with the X key
+  - vec: Initial velocity vector - applied when space key is pressed
 
 #### Building Objects from body_data List
 ```python
@@ -208,6 +233,7 @@ from_body_data(body_data)
 ```python
 run()  # Build and run the world
 reset()  # Reset the world
+launch_objects()  # Launch objects with initial velocity vectors (also triggered by space key)
 ```
 
 ## Building Worlds with API Mode
@@ -227,6 +253,7 @@ reset()  # Reset the world
 - **R**: Reset
 - **Z**: Toggle debug display
 - **X**: Remove selected objects
+- **Space key**: Launch objects with velocity vectors (`vec`)
 - **ESC**: Exit
 
 ## Requirements

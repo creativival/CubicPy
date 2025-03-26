@@ -1,3 +1,4 @@
+from panda3d.core import Vec3
 from . import Cube, Sphere, Cylinder, SafeExec
 
 
@@ -156,3 +157,11 @@ class WorldManager:
 
                 # 物理エンジンを即座に更新  # TODO 削除の毎回実行すべきか？
                 self.app.physics.bullet_world.doPhysics(0)
+
+    def launch_objects(self):
+        """初速度ベクトルが設定されたオブジェクトを発射"""
+        for body in self.body_objects:
+            obj = body['object']
+            if hasattr(obj, 'vec') and obj.vec != Vec3(0, 0, 0):
+                obj.apply_velocity()
+                print(f"オブジェクトを速度 {obj.vec} で発射しました")

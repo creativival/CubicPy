@@ -7,7 +7,8 @@ class ApiMethod:
         self.app = app
         self.object_data = []  # リセット用にオブジェクトデータを保存
 
-    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
+    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """箱を追加"""
         cube_data = {
             'type': 'cube',
@@ -18,12 +19,14 @@ class ApiMethod:
             'color_alpha': color_alpha,
             'hpr': hpr,
             'base_point': base_point,
-            'remove': remove
+            'remove': remove,
+            'vec': vec
         }
         self.object_data.append(cube_data)
         return cube_data
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """球を追加"""
         sphere_data = {
             'type': 'sphere',
@@ -34,12 +37,14 @@ class ApiMethod:
             'color_alpha': color_alpha,
             'hpr': hpr,
             'base_point': base_point,
-            'remove': remove
+            'remove': remove,
+            'vec': vec
         }
         self.object_data.append(sphere_data)
         return sphere_data
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """円柱を追加"""
         cylinder_data = {
             'type': 'cylinder',
@@ -50,7 +55,8 @@ class ApiMethod:
             'color_alpha': color_alpha,
             'hpr': hpr,
             'base_point': base_point,
-            'remove': remove
+            'remove': remove,
+            'vec': vec
         }
         self.object_data.append(cylinder_data)
         return cylinder_data
@@ -78,12 +84,14 @@ class ApiMethod:
         hpr = kwargs.get('hpr', (0, 0, 0))
         base_point = kwargs.get('base_point', 0)
         remove = kwargs.get('remove', False)
+        vec = kwargs.get('vec', (0, 0, 0))
+
         if obj_type == 'cube':
-            self.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove)
+            self.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
         elif obj_type == 'sphere':
-            self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove)
+            self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
         elif obj_type == 'cylinder':
-            self.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove)
+            self.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
         else:
             raise ValueError(f"未知のオブジェクトタイプ: {obj_type}")

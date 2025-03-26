@@ -17,6 +17,8 @@ class Cube:
         # 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
         self.base_point = cube['base_point'] if 'base_point' in cube else 0
         self.remove_selected = cube['remove'] if 'remove' in cube else False
+        # 初速度ベクトルの設定を追加
+        self.vec = Vec3(cube['vec']) if 'vec' in cube else Vec3(0, 0, 0)
 
         # 配置位置の計算
         self.node_pos = Vec3(cube['pos']) + get_position_offset(self)
@@ -57,3 +59,8 @@ class Cube:
         self.cube_node.removeNode()
         del self.cube_node
         del self.cube_shape  # 削除処理
+
+    def apply_velocity(self):
+        """オブジェクトに初速を与える"""
+        if self.vec != Vec3(0, 0, 0):
+            self.cube_node.node().setLinearVelocity(self.vec)
