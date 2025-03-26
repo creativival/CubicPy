@@ -102,8 +102,8 @@ class CubicPyApp(ShowBase):
     def change_gravity(self, value):
         # 物理エンジンの重力を変更
         self.physics.change_gravity(value)
-        # # そしてワールドを再構築  # TODO 重力を変えたときに物理エンジンを即座に更新することで不要になったか？
-        # self.world_manager.rebuild()
+        # そしてワールドを再構築  # この行は削除すると、地面を傾けても崩壊しない
+        self.world_manager.rebuild()
 
     def reset_all(self):
         """すべてをリセット"""
