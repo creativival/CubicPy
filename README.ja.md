@@ -39,26 +39,26 @@ cubicpy --list
 cubicpy -l
 
 # 特定のサンプルを実行
-cubicpy --example box_tower_sample
-cubicpy -e box_tower_sample
+cubicpy --example cube_tower_sample
+cubicpy -e cube_tower_sample
 
 # 自作のPythonファイルを実行
-cubicpy your_box_data_script.py
+cubicpy your_body_data_script.py
 
 # 重力係数を変更して実行（重力に10の何乗倍を掛けるか指定する）
-cubicpy --gravity 0.01 --example box_tower_sample
-cubicpy -g 0.01 -e box_tower_sample
+cubicpy --gravity 0.01 --example cube_tower_sample
+cubicpy -g 0.01 -e cube_tower_sample
 
 # カスタムウィンドウサイズ(1280x720)で実行
-cubicpy -e box_tower_sample -w 1280,720
-cubicpy --window-size 1280,720 -e box_tower_sample
+cubicpy -e cube_tower_sample -w 1280,720
+cubicpy --window-size 1280,720 -e cube_tower_sample
 ```
 
 ## サンプルコードの解説
 
-### 箱の塔を作る (box_tower_sample.py)
+### 箱の塔を作る (cube_tower_sample.py)
 
-![Sample box tower](https://creativival.github.io/CubicPy/assets/box_tower.png)
+![Sample cube tower](https://creativival.github.io/CubicPy/assets/cube_tower.png)
 
 ```python
 # 物体データの配列を作成
@@ -67,7 +67,7 @@ body_data = []
 # 10段の箱を積み上げる
 for i in range(10):
     body_data.append({
-        'type': 'box',
+        'type': 'cube',
         'pos': (0, 0, i),  # 位置: x, y, z
         'scale': (1, 1, 1),  # サイズ: 幅, 奥行き, 高さ
         'color': (i/10, 0, 1-i/10),  # 色: 赤, 緑, 青 (0〜1)
@@ -81,7 +81,7 @@ for i in range(10):
 
 | パラメータ           | 説明                                     | 必須 | デフォルト値               |
 |-----------------|----------------------------------------|------|----------------------|
-| `type`          | オブジェクトの種類: 'box', 'sphere', 'cylinder' | 必須 | -                    |
+| `type`          | オブジェクトの種類: 'cube', 'sphere', 'cylinder' | 必須 | -                    |
 | `pos`           | 位置座標 (x, y, z)                         | 必須 | -                    |
 | `scale`         | 大きさ (幅, 奥行き, 高さ)                       | 任意 | (1, 1, 1)            |
 | `color`         | 色 (赤, 緑, 青) - 各値は0〜1                   | 任意 | (0.5, 0.5, 0.5)      |
@@ -113,13 +113,13 @@ app = CubicPyApp(gravity_factor=0.01)
 
 # 単独オブジェクトの追加
 # APIを使ってオブジェクトを追加
-app.add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
+app.add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
 app.add_sphere(position=(2, 0, 0),  scale=(1, 1, 1), color=(0, 1, 0))
 app.add_cylinder(position=(4, 0, 0),  scale=(1, 1, 1), color=(0, 0, 1))
 
 # 複数オブジェクトの追加（ループ）
 for i in range(10):
-    app.add_box(
+    app.add_cube(
         position=(0, 5, i),
         color=(i/10, 0, 1-i/10)
     )
@@ -128,7 +128,7 @@ for i in range(10):
 body_data = []
 for i in range(10):
     body_data.append({
-        'type': 'box',
+        'type': 'cube',
         'pos': (0, 10, i),
         'scale': (1, 1, 1),
         'color': (i / 10, 0, 1 - i / 10),
@@ -156,7 +156,7 @@ CubicPyApp(code_file=None, gravity_factor=1)
 
 #### 箱を追加
 ```python
-add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - `position`: 位置座標 (x, y, z)
 - `scale`: 大きさ (幅, 奥行き, 高さ)
@@ -171,13 +171,13 @@ add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, colo
 ```python
 add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
-- パラメータは`add_box`と同様
+- パラメータは`add_cube`と同様
 
 #### 円柱を追加
 ```python
 add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
-- パラメータは`add_box`と同様
+- パラメータは`add_cube`と同様
 
 #### body_dataリストからオブジェクトを構築
 ```python
@@ -190,7 +190,7 @@ from_body_data(body_data)
 add(obj_type, **kwargs)
 ```
 
--obj_type: オブジェクトの種類 ('box', 'sphere', 'cylinder')
+-obj_type: オブジェクトの種類 ('cube', 'sphere', 'cylinder')
 - **kwargs: オブジェクトのパラメータ（以下のキーワード引数が使用可能）
   - positionまたはpos: 位置座標
   - scale: 大きさ
@@ -209,7 +209,7 @@ reset()  # ワールドをリセット
 ## APIモードでワールドを構築する方法
 
 1. Pythonスクリプトで`CubicPyApp`のインスタンスを作成
-2. `add_box()`、`add_sphere()`などのメソッドでオブジェクトを追加
+2. `add_cube()`、`add_sphere()`などのメソッドでオブジェクトを追加
 3. `run()`メソッドを呼び出してワールドを構築・実行
 4. 必要に応じて`reset()`メソッドで再構築可能
 5. `python your_script.py`で実行

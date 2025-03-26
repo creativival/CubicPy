@@ -3,7 +3,7 @@ from cubicpy.app import CubicPyApp
 
 if __name__ == '__main__':
     user_code_file = 'cubicpy/examples/falling_sphere_sample.py'
-    user_code_file = 'cubicpy/examples/box_tower_sample.py'
+    user_code_file = 'cubicpy/examples/cube_tower_sample.py'
     # user_code_file = 'cubicpy/examples/sphere_tower_sample.py'
     # user_code_file = 'cubicpy/examples/cylinder_tower_sample.py'
     # user_code_file = 'cubicpy/examples/box_building_sample.py'

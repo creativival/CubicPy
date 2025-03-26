@@ -12,7 +12,7 @@ for k in range(step_num):
                 pos_y_beam = (i * 9.5, 0.5, 9 + k * 10)
                 scale_y_beam = (0.5, 9, 1)
                 body_data.append({
-                    'type': 'box',
+                    'type': 'cube',
                     'pos': pos_y_beam,
                     'scale': scale_y_beam,
                     'color': (1, 0, 0),
@@ -24,7 +24,7 @@ for k in range(step_num):
                 pos_x_beam = (0, j * 9.5, 9 + k * 10)
                 scale_x_beam = (10, 0.5, 1)
                 body_data.append({
-                    'type': 'box',
+                    'type': 'cube',
                     'pos': pos_x_beam,
                     'scale': scale_x_beam,
                     'color': (1, 0, 0),
@@ -35,7 +35,7 @@ for k in range(step_num):
             pos_pillar = (i * 9, j * 9, k * 10)
             scale_pillar = (1, 1, 9)
             body_data.append({
-                'type': 'box',
+                'type': 'cube',
                 'pos': pos_pillar,
                 'scale': scale_pillar,
                 'color': (i, j, k),

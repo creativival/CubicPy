@@ -1,7 +1,7 @@
 DEFAULT_GRAVITY_FACTOR = 1
 
 from .base_point import get_position_offset
-from .box import Box
+from .cube import Cube
 from .sphere import Sphere
 from .cylinder import Cylinder
 from .camera import CameraControl

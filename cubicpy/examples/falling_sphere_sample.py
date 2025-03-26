@@ -3,7 +3,7 @@ from random import randint
 # Create an array of object data
 body_data = []
 
-# Stack 10 levels of boxes
+# Stack 10 levels of cubees
 
 body_data.append({
     'type': 'sphere',

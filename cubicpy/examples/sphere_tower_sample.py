@@ -1,7 +1,7 @@
 # Create an array of object data
 body_data = []
 
-# Stack 10 levels of boxes
+# Stack 10 levels of cubees
 for i in range(10):
     body_data.append({
         'type': 'sphere',

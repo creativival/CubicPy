@@ -2,8 +2,8 @@ from cubicpy.app import CubicPyApp
 
 
 if __name__ == '__main__':
-    user_code_file = 'cubicpy/examples/delete_box_tower_sample.py'
-    user_code_file = 'cubicpy/examples/delete_box_building_sample.py'
+    user_code_file = 'cubicpy/examples/delete_cube_tower_sample.py'
+    user_code_file = 'cubicpy/examples/delete_cube_building_sample.py'
     user_code_file = 'cubicpy/examples/delete_column_building_2x2_sample.py'
     user_code_file = 'cubicpy/examples/delete_column_building_3x3_sample.py'
 

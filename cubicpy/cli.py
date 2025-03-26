@@ -14,8 +14,8 @@ from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_F
 MESSAGES = {
     'ja': {
         'description': 'CubicPy - コードで物理オブジェクトを配置・構築する3Dプログラミング学習アプリ',
-        'epilog': '例: cubicpy -e box_tower_sample または cubicpy my_script.py',
-        'example_help': '実行するサンプル名（例: box_tower_sample）',
+        'epilog': '例: cubicpy -e cube_tower_sample または cubicpy my_script.py',
+        'example_help': '実行するサンプル名（例: cube_tower_sample）',
         'list_help': '利用可能なサンプル一覧を表示',
         'gravity_help': '重力係数（デフォルト: 0）',
         'window_size_help': 'ウィンドウサイズをカンマ区切りで指定（例: 1280,720）デフォルト: 900,600',
@@ -34,8 +34,8 @@ MESSAGES = {
     },
     'en': {
         'description': 'CubicPy - 3D programming learning app: place physics objects with code and build',
-        'epilog': 'Example: cubicpy -e box_tower_sample or cubicpy my_script.py',
-        'example_help': 'Sample name to run (e.g. box_tower_sample)',
+        'epilog': 'Example: cubicpy -e cube_tower_sample or cubicpy my_script.py',
+        'example_help': 'Sample name to run (e.g. cube_tower_sample)',
         'list_help': 'Display list of available samples',
         'gravity_help': 'Gravity factor (default: 0)',
         'window_size_help': 'Window size as comma-separated values (e.g. 1280,720) default: 900,600',
@@ -149,7 +149,7 @@ def main():
         print(msgs['running_file'].format(file_path))
     else:
         # デフォルトサンプル - 最初のサンプルを使用
-        default_sample = random.choice(list_samples()) if list_samples() else 'box_tower_sample'
+        default_sample = random.choice(list_samples()) if list_samples() else 'cube_tower_sample'
         try:
             file_path = get_sample_path(default_sample)
             print(msgs['running_default_sample'].format(default_sample))

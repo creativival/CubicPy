@@ -39,36 +39,36 @@ cubicpy --list
 cubicpy -l
 
 # Run a specific sample
-cubicpy --example box_tower_sample
-cubicpy -e box_tower_sample
+cubicpy --example cube_tower_sample
+cubicpy -e cube_tower_sample
 
 # Run your own Python file
-cubicpy your_box_data_script.py
+cubicpy your_body_data_script.py
 
 # Run with modified gravity factor (specifies the power of 10 to multiply gravity by)
-cubicpy --gravity 0.01 --example box_tower_sample
-cubicpy -g 0.01 -e box_tower_sample
+cubicpy --gravity 0.01 --example cube_tower_sample
+cubicpy -g 0.01 -e cube_tower_sample
 
 # Run with custom window size (1280x720)
-cubicpy -e box_tower_sample -w 1280,720
-cubicpy --window-size 1280,720 -e box_tower_sample
+cubicpy -e cube_tower_sample -w 1280,720
+cubicpy --window-size 1280,720 -e cube_tower_sample
 ```
 
 ## Sample Code Examples
 
-### Creating a Tower of Boxes (box_tower_sample.py)
+### Creating a Tower of Boxes (cube_tower_sample.py)
 
-![Sample box tower](https://creativival.github.io/CubicPy/assets/box_tower.png)
+![Sample cube tower](https://creativival.github.io/CubicPy/assets/cube_tower.png)
 
 
 ```python
 # Create an array of object data
 body_data = []
 
-# Stack 10 levels of boxes
+# Stack 10 levels of cubes
 for i in range(10):
     body_data.append({
-        'type': 'box',
+        'type': 'cube',
         'pos': (0, 0, i),  # Position: x, y, z
         'scale': (1, 1, 1),  # Size: width, depth, height
         'color': (i/10, 0, 1-i/10),  # Color: red, green, blue (0-1)
@@ -82,7 +82,7 @@ Details of object definitions to add to the `body_data` list:
 
 | Parameter       | Description                                   | Required | Default Value        |
 |-----------------|-----------------------------------------------|------|----------------------|
-| `type`          | Object type: 'box', 'sphere', 'cylinder'      | Required | -                    |
+| `type`          | Object type: 'cube', 'sphere', 'cylinder'      | Required | -                    |
 | `pos`           | Position coordinates (x, y, z)                | Required | -                    |
 | `scale`         | Size (width, depth, height)                   | Optional | (1, 1, 1)            |
 | `color`         | Color (red, green, blue) - values from 0 to 1 | Optional | (0.5, 0.5, 0.5)      |
@@ -114,13 +114,13 @@ app = CubicPyApp(gravity_factor=0.01)
 
 # Adding individual objects
 # Add objects using API
-app.add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
+app.add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
 app.add_sphere(position=(2, 0, 0),  scale=(1, 1, 1), color=(0, 1, 0))
 app.add_cylinder(position=(4, 0, 0),  scale=(1, 1, 1), color=(0, 0, 1))
 
 # Adding multiple objects (loop)
 for i in range(10):
-    app.add_box(
+    app.add_cube(
         position=(0, 5, i),
         color=(i/10, 0, 1-i/10)
     )
@@ -129,7 +129,7 @@ for i in range(10):
 body_data = []
 for i in range(10):
     body_data.append({
-        'type': 'box',
+        'type': 'cube',
         'pos': (0, 10, i),
         'scale': (1, 1, 1),
         'color': (i / 10, 0, 1 - i / 10),
@@ -157,7 +157,7 @@ CubicPyApp(code_file=None, gravity_factor=1)
 
 #### Adding a Box
 ```python
-add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
+add_cube(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
 - `position`: Position coordinates (x, y, z)
 - `scale`: Size (width, depth, height)
@@ -172,13 +172,13 @@ add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, colo
 ```python
 add_sphere(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
-- Parameters are the same as `add_box`
+- Parameters are the same as `add_cube`
 
 #### Adding a Cylinder
 ```python
 add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0), base_point=0, remove=False)
 ```
-- Parameters are the same as `add_box`
+- Parameters are the same as `add_cube`
 
 ### Generic Object Addition
 
@@ -186,7 +186,7 @@ add_cylinder(position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1,
 add(obj_type, **kwargs)
 ```
 
-- obj_type: Type of object ('box', 'sphere', 'cylinder')
+- obj_type: Type of object ('cube', 'sphere', 'cylinder')
 - **kwargs: Object parameters (the following keyword arguments can be used)
   - position or pos: Position coordinates
   - scale: Size
@@ -213,7 +213,7 @@ reset()  # Reset the world
 ## Building Worlds with API Mode
 
 1. Create a CubicPyApp instance in your Python script
-2. Add objects using methods like `add_box()`, `add_sphere()`, etc.
+2. Add objects using methods like `add_cube()`, `add_sphere()`, etc.
 3. Call the `run()` method to build and run the world
 4. If needed, use the `reset()` method to rebuild
 5. Run with `python your_script.py`
