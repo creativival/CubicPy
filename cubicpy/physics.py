@@ -15,6 +15,7 @@ class PhysicsEngine:
         self.setup_debug()
 
         # 重力の設定
+        print(f'Initial Gravity: {self.gravity_vector}')
         self.bullet_world.setGravity(self.gravity_vector)
 
     def setup_debug(self):
@@ -39,7 +40,7 @@ class PhysicsEngine:
         """重力の変更"""
         if value != 0:  # 0でない場合のみ重力を変更
             self.gravity_vector *= value
-            print(f'Gravity: {self.gravity_vector}')
+            print(f'Change Gravity: {self.gravity_vector}')
             self.bullet_world.setGravity(self.gravity_vector)
             # 注意：ここではreset_buildを呼び出さない
             # 代わりにappに通知し、appが適切な処理を行う
@@ -50,6 +51,7 @@ class PhysicsEngine:
     def reset_gravity(self):
         """重力を初期状態に戻す"""
         self.gravity_vector = self.app.GRAVITY_VECTOR * self.app.initial_gravity_factor
+        print(f'Reset Gravity: {self.gravity_vector}')
         self.bullet_world.setGravity(self.gravity_vector)
 
         # 物理エンジンを即座に更新
