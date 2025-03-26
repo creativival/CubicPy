@@ -40,5 +40,5 @@ for k in range(step_num):
                 'scale': scale_pillar,
                 'color': (i, j, k),
                 'mass': 1,
-                'remove': True if i < 6 and j == 0 and k == 0 else False
+                'remove': True if i < 2 and j < 2 and k == 0 else False
             })

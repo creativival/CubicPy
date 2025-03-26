@@ -6,14 +6,14 @@ app = CubicPyApp(gravity_factor=1, window_size=(1800, 1200))
 # 単独オブジェクトの追加
 # APIを使ってオブジェクトを追加
 app.add_box(position=(0, 0, 0), scale=(1, 1, 1), color=(1, 0, 0))
-app.add_sphere(position=(2, 0, 0),  scale=(1, 1, 1), color=(0, 1, 0))
-app.add_cylinder(position=(4, 0, 0),  scale=(1, 1, 1), color=(0, 0, 1))
+app.add_sphere(position=(2, 0, 0), scale=(1, 1, 1), color=(0, 1, 0))
+app.add_cylinder(position=(4, 0, 0), scale=(1, 1, 1), color=(0, 0, 1))
 
 # 複数オブジェクトの追加（ループ）
 for i in range(10):
     app.add_box(
         position=(0, 5, i),
-        color=(i/10, 0, 1-i/10)
+        color=(i / 10, 0, 1 - i / 10)
     )
 
 # cubicpyコマンドと互換性を保つbody_dataの追加
