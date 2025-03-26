@@ -14,7 +14,7 @@ class Sphere:
         self.node_mass = sphere['mass'] if 'mass' in sphere else 1
         self.node_hpr = sphere['hpr'] if 'hpr' in sphere else Vec3(0, 0, 0)
         self.color_alpha = sphere['color_alpha'] if 'color_alpha' in sphere else 1
-        # 配置するときの位置基準（0: corner_near_origin, 1: bottom_center, 2: gravity_center or None）
+        # 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
         self.base_point = sphere['base_point'] if 'base_point' in sphere else 0
         self.remove_selected = sphere['remove'] if 'remove' in sphere else False
 

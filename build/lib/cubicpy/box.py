@@ -14,7 +14,7 @@ class Box:
         self.node_mass = box['mass'] if 'mass' in box else 1
         self.node_hpr = box['hpr'] if 'hpr' in box else Vec3(0, 0, 0)
         self.color_alpha = box['color_alpha'] if 'color_alpha' in box else 1
-        # 配置するときの位置基準（0: corner_near_origin, 1: bottom_center, 2: gravity_center or None）
+        # 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
         self.base_point = box['base_point'] if 'base_point' in box else 0
         self.remove_selected = box['remove'] if 'remove' in box else False
 
