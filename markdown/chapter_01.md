@@ -7,7 +7,7 @@
 
 ## キューパイって何？
 
-「キュービックパイ」、略して「キューパイ」！これは、みなさんがPythonというプログラミング言語を使って、3D空間に物を置いたり、積み上げたり、壊したりできる不思議なアプリです。
+「キュービックパイ」、略して「キューパイ」！これは、みなさんがPythonというプログラミング言語を使って、3D空間に物を置いたり、積み上げたり、壊したりできるプログラミング学習アプリです。
 
 実はね、普通のプログラミングだと「画面に文字を表示する」とか「計算する」とか、ちょっと地味なことから始めることが多いんだ。でも、キューパイなら最初から3D世界で遊べるんだよ！
 
@@ -29,7 +29,6 @@
 
 まずは「Python（パイソン）」と「CubicPy（キュービックパイ）」をインストールしましょう。これが今日の最初の冒険です！
 
-
 ### Pythonのインストール
 
 Pythonはプログラミング言語のひとつで、キューパイを動かすために必要です。
@@ -45,14 +44,18 @@ Windowsの場合は、Pythonをインストールする必要があります。 
 1. [Python公式サイト](https://www.python.org/downloads/)にアクセス
 2. 「Download Python」ボタンをクリック
 3. ダウンロードしたファイルをダブルクリックして実行
-4. **重要！** インストール画面で「Add Python to PATH」にチェックを入れる（Windowsの場合）
+4. **重要！** インストール画面で「Add Python to PATH」にチェックを入れる
 5. 「Install Now」をクリック
 
-> 💡 **先生からのヒント**: 「Add Python to PATH」のチェックを忘れると、あとで魔法が使えなくなっちゃうよ！
+> 💡 **先生からのヒント**: 「Add Python to PATH」のチェックを忘れると、あとで魔法が使えなくなっちゃうよ！　チェックを忘れたときは、Pythonをアンインストールしてから、再インストールします。
 
 ### キューパイ（CubicPy）のインストール
 
-Pythonがインストールできたら、次はキューパイをインストールします。これにはコマンドプロンプト（Windowsの場合）またはターミナル（Macの場合）という、プログラマーの命令を入力する画面を使います。
+Pythonがインストールできたら、次は「キューパイ」ライブラリをインストールします。ライブラリとは、便利な機能がまとめられたプログラムでインターネットから無料でダウンロードして使うことができます。
+
+> 💡 **先生からのヒント**: ライブラリは「魔法の道具箱」みたいなもの。自分で全部作るのではなく、先輩プログラマーが作った便利な機能をそのまま使えるんだ！キューパイもそんなライブラリの一つだよ。
+
+これには、PowerShell（Windowsの場合）またはターミナル（Macの場合）という、プログラマーの命令を文字で入力する画面を使います。映画で凄腕のハッカーが使っているあれです！普段使っているアプリでは操作できない、パソコンの真の力を使うことができます。
 
 #### Windowsの場合：
 1. スタートメニューで「PowerShell」と検索
@@ -75,7 +78,7 @@ python3 -V
 
 Pythonのバージョン番号が表示されたら、Pythonが正しくインストールされています。次に、キューパイをインストールします。
 
-![Windows PowerShell](https://creativival.github.io/CubicPy/assets/mac_pip3_install_cubicpy.png)
+![Windows PowerShell](https://creativival.github.io/CubicPy/assets/terminal_pip3_install_cubicpy.png)
 
 **▲図3▲ WindowsのPowerShell**
 
@@ -85,7 +88,7 @@ Pythonのバージョン番号が表示されたら、Pythonが正しくイン�
 pip install cubicpy
 ```
 
-![Mac Terminal](https://creativival.github.io/CubicPy/assets/mac_pip3_install_cubicpy.png)
+![Mac Terminal](https://creativival.github.io/CubicPy/assets/terminal_pip3_install_cubicpy.png)
 
 **▲図4▲ Macのターミナル**
 
@@ -94,7 +97,7 @@ pip install cubicpy
 pip3 install cubicpy
 ```
 
-cubicpyのバージョンが表示されたら、インストール成功です！
+インストールが完了すると、『Successfully installed cubicpy...』のような成功メッセージが表示されます！
 
 **この後の説明では、コマンドの説明では、Windowsの場合のみを記載します。Macの場合は、コマンドの先頭に`python3` `pip3`を付けることを忘れないでください。**
 
@@ -102,25 +105,21 @@ cubicpyのバージョンが表示されたら、インストール成功です�
 
 ## 最初の呪文を唱えよう
 
-![Cube Tower](https://creativival.github.io/CubicPy/assets/cube_tower_sample.png)
+![Cube Tower](https://creativival.github.io/CubicPy/assets/cube_tower.png)
 
 **▲図5▲ ランダムで選ばれたサンプルプログラムの一例**
 
-さあ、キューパイが正しくインストールされたか確かめてみましょう。コマンドプロンプトまたはターミナルで、次の呪文を唱えます。
+さあ、キューパイが正しくインストールされたか確かめてみましょう。PowerShellまたはターミナルで、次の呪文を唱えます。
 
 ```bash
 cubicpy
 ```
 
-ワオ！画面に3D世界が現れましたか？▲図3▲は、ランダムに選ばれたサンプルプログラムです。cubicpyコマンドを実行するたびに、ランダムで選ばれた別のプログラムが実行されます。
+ワオ！画面に3D世界が現れましたか？▲図5▲は、ランダムに選ばれたサンプルプログラムです。cubicpyコマンドを実行するたびに、ランダムで選ばれた別のプログラムが実行されます。
 
 ## 3D世界を操作しよう
 
 矢印キーでカメラ角度を変えたり、W/A/S/Dキーで地面を傾けたりしてみよう！
-
-![Breaking Cube Tower](https://creativival.github.io/CubicPy/assets/breaking_cube_tower_sample.png)
-
-**▲図6▲ 床を傾けて、キューブ建築を破壊する**
 
 > 🎮 **操作方法**:
 > - **矢印キー**: カメラ角度の変更
@@ -129,6 +128,12 @@ cubicpy
 > - **F/G**: 重力の強さを変更
 > - **R**: リセット
 > - **ESC**: 終了
+
+![Breaking Cube Tower](https://creativival.github.io/CubicPy/assets/breaking_cube_tower_sample.png)
+
+**▲図6▲ 床を傾けて、キューブ建築を破壊する**
+
+▲図6▲は、Aキーを押して地面と傾けて、キューブタワーを崩している様子です。
 
 ## サンプルで遊んでみよう
 
@@ -152,21 +157,33 @@ cubicpy --example cube_tower_sample
 cubicpy -e cube_tower_sample
 ```
 
-cubicpyを終了するには、`ESC`キーを押すか、コマンドプロンプト/ターミナルで`Ctrl+C`を入力します。
+cubicpyを終了するには、`ESC`キーを押すか、PowerShell/ターミナルで`Ctrl+C`を入力します。
 
 cubicpyコマンドはこれまで示したもの以外にも、複数の機能が含まれています。詳細は、この連載記事の中で説明していきます！
-
-```bash
 
 ## 見て見て！先輩たちの作った作品
 
 これからあなたが作れるようになる素敵な作品の例を見てみましょう。
 
-1. **虹色の超高層タワー**：100階建ての巨大タワーを崩すと、まるで花火のよう！
-2. **ドミノ倒し装置**：一つのブロックを倒すと、連鎖反応で全部倒れていく快感！
-3. **お城と大砲**：球を発射して、お城の壁を崩すシミュレーション
+1. **ピラミッドのフレーム**：簡単なプログラムから、立体的な作品を作ることができます。
 
-次回からは、あなた自身がこういう作品を作れるようになりますよ！
+![Pyramid Frame](https://creativival.github.io/CubicPy/assets/cube_pyramid_frame.png)
+
+**▲図8▲ ピラミッドのフレーム**
+
+2. **円錐（コーン）の塔**：徐々に半径を小さくすることで、円錐の形を作ることができます。
+
+![Pyramid Frame](https://creativival.github.io/CubicPy/assets/cube_cone.png)
+
+**▲図9▲ 円錐の塔**
+
+3. **ねじれた塔**：トグロをまく蛇ような塔を作ることもできます。
+
+![Pyramid Frame](https://creativival.github.io/CubicPy/assets/cube_twisted_tower.png)
+
+**▲図10▲ ねじれた塔**
+
+次回から、あなた自身がこういう作品を作れるようになりますよ！
 
 ## 次回予告
 
@@ -178,7 +195,7 @@ cubicpyコマンドはこれまで示したもの以外にも、複数の機能�
 
 もしエラーが出たら、こんなことを確認してみよう。
 
-- Pythonは正しくインストールされている？コマンドプロンプト/ターミナルで `python --version` と入力すると、バージョンが表示されるはず
+- Pythonは正しくインストールされている？PowerShell/ターミナルで `python --version` と入力すると、バージョンが表示されるはず
 - キューパイのインストールは成功した？`pip show cubicpy` と入力するとインストール情報が見られるよ
 - コマンドを入力するとき、スペースや大文字・小文字にも注意しよう
 
