@@ -8,7 +8,7 @@ import os
 import sys
 import locale
 import random
-from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR
+from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR, __version__
 
 # 言語に応じたメッセージ
 MESSAGES = {
@@ -20,6 +20,8 @@ MESSAGES = {
         'gravity_help': '重力係数（デフォルト: 0）',
         'window_size_help': 'ウィンドウサイズをカンマ区切りで指定（例: 1280,720）デフォルト: 900,600',
         'file_help': '実行するPythonファイル（オプション）',
+        'version_help': 'バージョン情報を表示',
+        'version_info': 'CubicPy バージョン {0}',
         'available_samples': '利用可能なサンプル:',
         'running_sample': "サンプル '{0}' を実行します",
         'error_sample_not_found': "エラー: {0}",
@@ -40,6 +42,8 @@ MESSAGES = {
         'gravity_help': 'Gravity factor (default: 0)',
         'window_size_help': 'Window size as comma-separated values (e.g. 1280,720) default: 900,600',
         'file_help': 'Python file to run (optional)',
+        'version_help': 'Display version information',
+        'version_info': 'CubicPy version {0}',
         'available_samples': 'Available samples:',
         'running_sample': "Running sample '{0}'",
         'error_sample_not_found': "Error: {0}",
@@ -108,10 +112,17 @@ def main():
                         help=msgs['gravity_help'])
     parser.add_argument('--window-size', '-w', default="900,600",
                         help=msgs['window_size_help'])
+    parser.add_argument('--version', '-v', action='store_true',
+                        help=msgs['version_help'])
     parser.add_argument('file', nargs='?',
                         help=msgs['file_help'])
 
     args = parser.parse_args()
+
+    # バージョン情報の表示
+    if args.version:
+        print(msgs['version_info'].format(__version__))
+        return 0
 
     # ウィンドウサイズのパース
     window_size = parse_window_size(args.window_size, lang)
