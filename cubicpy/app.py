@@ -64,17 +64,20 @@ class CubicPyApp(ShowBase):
         return task.cont
 
     # ApiMethodクラスのメソッドを統合
-    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
+    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """箱を追加"""
-        return self.api.add_cube(position, scale, color, mass, color_alpha)
+        return self.api.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """球を追加"""
-        return self.api.add_sphere(position, scale, color, mass, color_alpha)
+        return self.api.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """円柱を追加"""
-        return self.api.add_cylinder(position, scale, color, mass, color_alpha)
+        return self.api.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
     def add_ground(self, color=(0, 1, 0), color_alpha=0.3):
         """地面を追加"""
@@ -88,6 +91,7 @@ class CubicPyApp(ShowBase):
         """オブジェクトデータからボディを構築"""
         self.api.from_body_data(body_data)
 
+    # WorldManagerクラスのメソッドを統合
     def reset(self):
         """オブジェクトをリセット"""
         # ワールドを再構築
@@ -97,6 +101,7 @@ class CubicPyApp(ShowBase):
     def tilt_ground(self, dx, dy):
         self.world_manager.tilt_ground(dx, dy)
 
+    # PhysicsEngineクラスのメソッドを統合
     def toggle_debug(self):
         self.physics.toggle_debug()
 
@@ -106,6 +111,7 @@ class CubicPyApp(ShowBase):
         # そしてワールドを再構築  # この行は削除すると、地面を傾けても崩壊しない
         self.world_manager.rebuild()
 
+    # ワールドのリセット
     def reset_all(self):
         """すべてをリセット"""
         self.physics.reset_gravity()

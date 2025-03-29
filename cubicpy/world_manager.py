@@ -113,25 +113,6 @@ class WorldManager:
         # 物理エンジンを即座に更新
         self.app.physics.bullet_world.doPhysics(0)
 
-    @staticmethod
-    def add_default_ground(body_data):
-        """デフォルトの地面を追加（必要な場合）"""
-        # 地面がまだ存在しない場合は追加
-        has_ground = any(data.get('mass', 1) == 0 and
-                          data.get('type') == 'cube' and
-                          abs(data.get('scale', (1, 1, 1))[0]) > 500
-                          for data in body_data)
-
-        if not has_ground:
-            body_data.append({
-                'type': 'cube',
-                'pos': (-500, -500, -1),
-                'scale': (1000, 1000, 1),
-                'color': (0, 1, 0),
-                'mass': 0,
-                'color_alpha': 0.3
-            })
-
     def rebuild_from_api_data(self):
         """APIデータからワールドを再構築"""
         # 既存のオブジェクトを削除
@@ -166,3 +147,22 @@ class WorldManager:
             if hasattr(obj, 'vec') and obj.vec != Vec3(0, 0, 0):
                 obj.apply_velocity()
                 print(f"オブジェクトを速度 {obj.vec} で発射しました")
+
+    @staticmethod
+    def add_default_ground(body_data):
+        """デフォルトの地面を追加（必要な場合）"""
+        # 地面がまだ存在しない場合は追加
+        has_ground = any(data.get('mass', 1) == 0 and
+                          data.get('type') == 'cube' and
+                          abs(data.get('scale', (1, 1, 1))[0]) > 500
+                          for data in body_data)
+
+        if not has_ground:
+            body_data.append({
+                'type': 'cube',
+                'pos': (-500, -500, -1),
+                'scale': (1000, 1000, 1),
+                'color': (0, 1, 0),
+                'mass': 0,
+                'color_alpha': 0.3
+            })
