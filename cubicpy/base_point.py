@@ -10,10 +10,11 @@ class BasePoint(Enum):
 def get_position_offset(self):
     """ `base_point` に基づいてオフセットを返す """
     half_scale = self.node_scale / 2
-    if self.base_point == BasePoint.CORNER_NEAR_ORIGIN:
+    if self.base_point == BasePoint.CORNER_NEAR_ORIGIN.value:
         return half_scale  # 原点側の角
-    elif self.base_point == BasePoint.BOTTOM_CENTER:
+    elif self.base_point == BasePoint.BOTTOM_CENTER.value:
         return Vec3(0, 0, half_scale.z)  # 底面の中心
-    elif self.base_point == BasePoint.GRAVITY_CENTER:
+    elif self.base_point == BasePoint.GRAVITY_CENTER.value:
         return Vec3(0, 0, 0)  # 重心
+    print('CORNER_NEAR_ORIGIN')
     return half_scale  # デフォルト（原点側の角）
