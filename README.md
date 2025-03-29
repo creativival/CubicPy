@@ -234,6 +234,88 @@ from_body_data(body_data)
 ```
 - `body_data`: List of object definitions (dictionaries) as used by the cubicpy command
 
+### Coordinate Transformation Methods
+
+CubicPy provides coordinate transformation methods that work similarly to Processing, allowing you to place objects relative to different coordinate systems. These methods make complex object positioning much easier.
+
+#### List of Transformation Methods
+
+```python
+push_matrix()   # Saves the current transformation state to the stack and creates a new transformation node
+pop_matrix()    # Restores the transformation state from the stack
+translate(x, y, z)    # Moves to the specified position
+rotate_hpr(h, p, r)   # Rotates using HPR (Heading-Pitch-Roll)
+reset_matrix()   # Resets all transformations
+```
+
+#### Usage Example
+
+Here's an example that places three towers at different positions using coordinate transformations:
+
+```python
+from cubicpy import CubicPyApp
+
+# Instantiate
+app = CubicPyApp(gravity_factor=1, window_size=(1800, 1200))
+
+# First tower (placed at the origin)
+for i in range(10):
+    app.add_cube(
+        position=(0, 0, i),
+        color=(i / 10, 0, 1 - i / 10)
+    )
+
+# First transformation
+app.push_matrix()
+app.translate(5, 5, 0)  # Move coordinate system to position (5,5,0)
+
+# Second tower (placed relative to position (5,5,0))
+for i in range(10):
+    app.add_cube(
+        position=(0, 0, i),  # This position is relative to the new coordinate system
+        color=(i / 10, 1 - i / 10, 0)
+    )
+
+# Second transformation
+app.push_matrix()
+app.translate(5, 5, 0)  # Move another (5,5,0) (total of (10,10,0) from original origin)
+app.rotate_hpr(45, 10, 0)  # Rotate 45 degrees around Y-axis, 10 degrees around X-axis
+
+# Third tower (placed relative to the newest coordinate system with rotation applied)
+for i in range(10):
+    app.add_cube(
+        position=(0, 0, i),  # This position is relative to the latest coordinate system
+        color=(0, i / 10, 1 - i / 10)
+    )
+
+# Return from second transformation
+app.pop_matrix()
+
+# Return from first transformation
+app.pop_matrix()
+
+# Run simulation
+app.run()
+```
+
+#### How Coordinate Transformations Work
+
+Coordinate transformations are managed using a stack structure:
+
+1. When you call `push_matrix()`, the current transformation state is saved to the stack and a new transformation node is created
+2. You modify the coordinate system using `translate()` or `rotate_hpr()`
+3. Objects you add are placed relative to the current coordinate system
+4. When you call `pop_matrix()`, you return to the previous coordinate system
+5. `reset_matrix()` clears the entire stack and returns to the initial state
+
+This functionality makes it easy to build complex structures using relative coordinates. For example, it's useful when you want to place different parts of a house (walls, roof, windows) in relative positions and then move the entire house.
+
+#### Important Notes
+
+- Always use `push_matrix()` and `pop_matrix()` in pairs
+- Pay attention to the order of `pop_matrix()` calls when creating multiple layers
+- Use `reset_matrix()` to reset the state during debugging
+
 ### World Operation Methods
 
 ```python
