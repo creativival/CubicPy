@@ -4,7 +4,7 @@ from . import get_position_offset
 
 
 class Sphere:
-    def __init__(self, app, sphere):
+    def __init__(self, app, sphere, parent_node=None):
         # print(sphere)
         self.app = app
 
@@ -41,8 +41,12 @@ class Sphere:
         if self.vec != Vec3(0, 0, 0):
             self.rigid_sphere.setDeactivationEnabled(False)
 
-        # ノードパス
-        self.sphere_node = self.app.world_node.attachNewNode(self.rigid_sphere)
+        # ノードパス - 親ノードが指定されている場合はその下に配置
+        if parent_node:
+            self.sphere_node = parent_node.attachNewNode(self.rigid_sphere)
+        else:
+            self.sphere_node = self.app.world_node.attachNewNode(self.rigid_sphere)
+
         self.sphere_node.setPos(self.node_pos)
         self.sphere_node.setScale(self.node_scale)
         self.sphere_node.setColor(*self.node_color, self.color_alpha)

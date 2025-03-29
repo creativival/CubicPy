@@ -4,7 +4,7 @@ from . import get_position_offset
 
 
 class Cylinder:
-    def __init__(self, app, cylinder):
+    def __init__(self, app, cylinder, parent_node=None):
         # print(cylinder)
         self.app = app
 
@@ -38,8 +38,12 @@ class Cylinder:
         self.rigid_cylinder.setFriction(self.app.FRICTION)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_cylinder)
 
-        # ノードパス
-        self.cylinder_node = self.app.world_node.attachNewNode(self.rigid_cylinder)
+        # ノードパス - 親ノードが指定されている場合はその下に配置
+        if parent_node:
+            self.cylinder_node = parent_node.attachNewNode(self.rigid_cylinder)
+        else:
+            self.cylinder_node = self.app.world_node.attachNewNode(self.rigid_cylinder)
+
         self.cylinder_node.setPos(self.node_pos)
         self.cylinder_node.setScale(self.node_scale)
         self.cylinder_node.setColor(*self.node_color, self.color_alpha)
@@ -63,4 +67,10 @@ class Cylinder:
     def apply_velocity(self):
         """オブジェクトに初速を与える"""
         if self.vec != Vec3(0, 0, 0):
+            # 剛体をアクティブ化
+            self.cylinder_node.node().setActive(True)
+            # 寝ている状態からの自動移行を無効化
+            self.cylinder_node.node().setDeactivationEnabled(False)
+            # 速度を設定
             self.cylinder_node.node().setLinearVelocity(self.vec)
+            print(f"円柱に速度 {self.vec} を適用しました")

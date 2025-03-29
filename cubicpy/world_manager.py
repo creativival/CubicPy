@@ -56,14 +56,18 @@ class WorldManager:
     def build_body_data(self, body_data):
         """オブジェクトデータからボディを構築"""
         for body in body_data:
+            # 親ノードの取得（APIで設定された場合）
+            parent_node = body.get('parent_node', None)
+
             if body['type'] == 'cube':
-                body_object = Cube(self.app, body)
+                body_object = Cube(self.app, body, parent_node)
             elif body['type'] == 'sphere':
-                body_object = Sphere(self.app, body)
+                body_object = Sphere(self.app, body, parent_node)
             elif body['type'] == 'cylinder':
-                body_object = Cylinder(self.app, body)
+                body_object = Cylinder(self.app, body, parent_node)
             else:
-                body_object = Cube(self.app, body)
+                body_object = Cube(self.app, body, parent_node)
+
             self.body_objects.append({'type': body['type'], 'object': body_object})
 
     def rebuild(self):
@@ -153,9 +157,9 @@ class WorldManager:
         """デフォルトの地面を追加（必要な場合）"""
         # 地面がまだ存在しない場合は追加
         has_ground = any(data.get('mass', 1) == 0 and
-                          data.get('type') == 'cube' and
-                          abs(data.get('scale', (1, 1, 1))[0]) > 500
-                          for data in body_data)
+                         data.get('type') == 'cube' and
+                         abs(data.get('scale', (1, 1, 1))[0]) > 500
+                         for data in body_data)
 
         if not has_ground:
             body_data.append({
@@ -164,5 +168,6 @@ class WorldManager:
                 'scale': (1000, 1000, 1),
                 'color': (0, 1, 0),
                 'mass': 0,
-                'color_alpha': 0.3
+                'color_alpha': 0.3,
+                'parent_node': None  # 地面は常にワールドの子
             })

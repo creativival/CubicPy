@@ -5,7 +5,7 @@ from . import (
     DEFAULT_GRAVITY_FACTOR,
     CameraControl, Axis, InputHandler,
     ModelManager, PhysicsEngine, WorldManager,
-    ApiMethod
+    ApiMethod, TransformManager
 )
 
 
@@ -34,11 +34,17 @@ class CubicPyApp(ShowBase):
         self.model_manager = ModelManager(self)
         self.physics = PhysicsEngine(self)
 
+        # ワールド管理システムの初期化
+        self.world_manager = WorldManager(self)
+
+        # 座標変換マネージャーの初期化
+        self.transform_manager = TransformManager(self)
+
         # APIメソッドの初期化（オブジェクト配置用）
         self.api = ApiMethod(self)
 
-        # ワールド管理システムの初期化
-        self.world_manager = WorldManager(self)
+        # APIに座標変換マネージャーへの参照を設定
+        self.api.transform_manager = self.transform_manager
 
         # 入力ハンドラの設定
         self.input_handler = InputHandler(self)
@@ -91,13 +97,33 @@ class CubicPyApp(ShowBase):
         """オブジェクトデータからボディを構築"""
         self.api.from_body_data(body_data)
 
+    # 座標変換関連メソッド
+    def push_matrix(self):
+        """現在の変換状態をスタックに保存"""
+        return self.api.push_matrix()
+
+    def pop_matrix(self):
+        """スタックから変換状態を復元"""
+        return self.api.pop_matrix()
+
+    def translate(self, x, y, z):
+        """指定した位置に移動"""
+        return self.api.translate(x, y, z)
+
+    def rotate_hpr(self, h, p, r):
+        """HPR（Heading-Pitch-Roll）で回転"""
+        return self.api.rotate_hpr(h, p, r)
+
+    def reset_matrix(self):
+        """変換をリセット"""
+        return self.api.reset_matrix()
+
     # WorldManagerクラスのメソッドを統合
     def reset(self):
         """オブジェクトをリセット"""
         # ワールドを再構築
         self.world_manager.rebuild_from_api_data()
 
-    # 既存の委譲メソッド - WorldManagerへ転送
     def tilt_ground(self, dx, dy):
         self.world_manager.tilt_ground(dx, dy)
 
