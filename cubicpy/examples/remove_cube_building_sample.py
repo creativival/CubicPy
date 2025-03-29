@@ -26,5 +26,5 @@ for l in range(10):
                     'pos': (k * 9, j * 9, i + l * 11),
                     'scale': (1, 1, 1),
                     'color': (i / 10, 0, 1 - i / 10),
-                    'remove': True if i == 0 and j == 0 and k == 0 and l == 0 else False
+                    'remove': True if l == 0 else False
                 })

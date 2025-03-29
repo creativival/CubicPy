@@ -52,6 +52,10 @@ cubicpy -g 0.01 -e cube_tower_sample
 # Run with custom window size (1280x720)
 cubicpy -e cube_tower_sample -w 1280,720
 cubicpy --window-size 1280,720 -e cube_tower_sample
+
+# Run with specific camera lens type (perspective or orthographic)
+cubicpy -e cube_tower_sample -c orthographic
+cubicpy --camera-lens orthographic -e cube_tower_sample
 ```
 
 ## Sample Code Examples
@@ -171,10 +175,12 @@ app.run()
 ### CubicPyApp Class
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=1)
+CubicPyApp(code_file=None, gravity_factor=1, window_size=(900, 600), camera_lens='perspective')
 ```
 - `code_file`: Path to Python file to execute (optional)
 - `gravity_factor`: Gravity factor (optional, default: 1)
+- `window_size`: Window size (optional, default: (900, 600))
+- `camera_lens`: Camera lens type ('perspective' or 'orthographic', optional, default: 'perspective')
 
 ### Object Addition Methods
 
@@ -247,12 +253,14 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 ## Application Controls
 
 - **Arrow keys**: Change camera angle
-- **Mouse wheel**: Zoom in/out
+- **SHIFT + Arrow keys**: Move camera target point
+- **SHIFT + Page Up/Down**: Move camera target point forward/backward
+- **Mouse wheel**: Zoom in/out (perspective mode) or change display range (orthographic mode)
 - **W/S/A/D**: Tilt the ground
 - **F/G**: Change gravity strength
-- **R**: Reset
+- **R**: Reset (also resets camera position and target point)
 - **Z**: Toggle debug display
-- **X**: Remove selected objects
+- **X**: Remove selected objects one by one
 - **Space key**: Launch objects with velocity vectors (`vec`)
 - **ESC**: Exit
 
@@ -260,7 +268,6 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 
 - Python 3.9 or higher
 - Panda3D
-- Panda3D-Bullet physics engine
 - NumPy
 
 These dependencies are automatically installed with `pip install cubicpy`.

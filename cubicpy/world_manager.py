@@ -157,6 +157,7 @@ class WorldManager:
 
                 # 物理エンジンを即座に更新  # TODO 削除の毎回実行すべきか？
                 self.app.physics.bullet_world.doPhysics(0)
+                break
 
     def launch_objects(self):
         """初速度ベクトルが設定されたオブジェクトを発射"""

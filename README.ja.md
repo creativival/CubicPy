@@ -52,6 +52,10 @@ cubicpy -g 0.01 -e cube_tower_sample
 # カスタムウィンドウサイズ(1280x720)で実行
 cubicpy -e cube_tower_sample -w 1280,720
 cubicpy --window-size 1280,720 -e cube_tower_sample
+
+# カメラレンズの種類を指定して実行（perspective または orthographic）
+cubicpy -e cube_tower_sample -c orthographic
+cubicpy --camera-lens orthographic -e cube_tower_sample
 ```
 
 ## サンプルコードの解説
@@ -171,10 +175,12 @@ app.run()
 ### CubicPyAppクラス
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=1)
+CubicPyApp(code_file=None, gravity_factor=1, window_size=(900, 600), camera_lens='perspective')
 ```
 - `code_file`: 実行するPythonファイルのパス（任意）
 - `gravity_factor`: 重力係数（任意、デフォルト: 1）
+- `window_size`: ウィンドウサイズ（任意、デフォルト: (900, 600)）
+- `camera_lens`: カメラレンズのタイプ（'perspective'または'orthographic'、任意、デフォルト: 'perspective'）
 
 ### オブジェクト追加メソッド
 
@@ -244,12 +250,14 @@ launch_objects()  # 初速度設定されたオブジェクトを発射（スペ
 ## アプリの操作方法
 
 - **矢印キー**: カメラ角度の変更
-- **マウスホイール**: ズームイン/アウト
+- **SHIFT + 矢印キー**: カメラの注視点（目標点）を移動
+- **SHIFT + Page Up/Down**: カメラの注視点を前後方向に移動
+- **マウスホイール**: ズームイン/アウト（perspective モード）または表示範囲の拡大/縮小（orthographic モード）
 - **W/S/A/D**: 地面を傾ける
 - **F/G**: 重力の強さを変更
-- **R**: リセット
+- **R**: リセット（カメラ位置と注視点もリセット）
 - **Z**: デバッグ表示切替
-- **X**: 選択したオブジェクトを削除
+- **X**: 選択したオブジェクトを一つずつ削除
 - **スペースキー**: 初速度ベクトル(`vec`)が設定されたオブジェクトを発射
 - **ESC**: 終了
 
