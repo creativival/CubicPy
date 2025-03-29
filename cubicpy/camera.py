@@ -18,11 +18,13 @@ class CameraControl:
         self.camera_phi = self.BASE_PHI
         self.camera_set_pos()
 
-        # # カメラを平行投影に変更
-        # self.lens = OrthographicLens()
-        # self.film_size = self.BASE_FILM_SIZE
-        # self.lens.setFilmSize(*self.film_size)  # 表示範囲のサイズを設定
-        # self.app.cam.node().setLens(self.lens)
+        # カメラを平行投影に変更
+        if app.camera_lens == 'orthographic':
+            print('Set OrthographicLens')
+            self.lens = OrthographicLens()
+            self.film_size = self.BASE_FILM_SIZE
+            self.lens.setFilmSize(*self.film_size)  # 表示範囲のサイズを設定
+            self.app.cam.node().setLens(self.lens)
 
         self.app.accept('arrow_right', self.change_camera_angle, [0, 1])
         self.app.accept('arrow_left', self.change_camera_angle, [0, -1])
@@ -32,9 +34,14 @@ class CameraControl:
         self.app.accept('arrow_left-repeat', self.change_camera_angle, [0, -1])
         self.app.accept('arrow_up-repeat', self.change_camera_angle, [-1, 0])
         self.app.accept('arrow_down-repeat', self.change_camera_angle, [1, 0])
-        self.app.accept('wheel_up', self.change_camera_radius, [1.1])
-        self.app.accept('wheel_down', self.change_camera_radius, [0.9])
         self.app.accept('r', self.reset_camera)
+
+        if app.camera_lens == 'orthographic':
+            self.app.accept('wheel_up', self.change_film_size, [1.1])
+            self.app.accept('wheel_down', self.change_film_size, [0.9])
+        else:
+            self.app.accept('wheel_up', self.change_camera_radius, [1.1])
+            self.app.accept('wheel_down', self.change_camera_radius, [0.9])
 
     def change_camera_angle(self, theta, phi):
         self.camera_theta += theta
@@ -49,10 +56,10 @@ class CameraControl:
         self.camera_radius *= ratio
         self.camera_set_pos()
 
-    # def change_film_size(self, rate):
-    #     self.film_size = tuple([int(size * rate) for size in self.film_size])
-    #     self.lens.setFilmSize(*self.film_size)  # 表示範囲のサイズを設定
-    #     self.app.cam.node().setLens(self.lens)
+    def change_film_size(self, rate):
+        self.film_size = tuple([int(size * rate) for size in self.film_size])
+        self.lens.setFilmSize(*self.film_size)  # 表示範囲のサイズを設定
+        self.app.cam.node().setLens(self.lens)
 
     def camera_set_pos(self):
         radius = self.camera_radius

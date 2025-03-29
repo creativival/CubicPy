@@ -16,11 +16,12 @@ class CubicPyApp(ShowBase):
     RESTITUTION = 0.5  # 反発係数
     FRICTION = 0.5  # 摩擦係数
 
-    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE):
+    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE, camera_lens='perspective'):
         ShowBase.__init__(self)
         self.code_file = code_file
         self.initial_gravity_factor = gravity_factor
         self.window_size = window_size
+        self.camera_lens = camera_lens
 
         # ウィンドウ設定
         self.setup_window("CubicPy World", self.window_size)

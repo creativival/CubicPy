@@ -20,6 +20,7 @@ MESSAGES = {
         'gravity_help': '重力係数（デフォルト: 0）',
         'window_size_help': 'ウィンドウサイズをカンマ区切りで指定（例: 1280,720）デフォルト: 900,600',
         'file_help': '実行するPythonファイル（オプション）',
+        'camera_lens_help': 'カメラレンズのタイプ（perspective または orthographic）デフォルト: perspective',
         'version_help': 'バージョン情報を表示',
         'version_info': 'CubicPy バージョン {0}',
         'available_samples': '利用可能なサンプル:',
@@ -42,6 +43,7 @@ MESSAGES = {
         'gravity_help': 'Gravity factor (default: 0)',
         'window_size_help': 'Window size as comma-separated values (e.g. 1280,720) default: 900,600',
         'file_help': 'Python file to run (optional)',
+        'camera_lens_help': 'Camera lens type (perspective or orthographic) default: perspective',
         'version_help': 'Display version information',
         'version_info': 'CubicPy version {0}',
         'available_samples': 'Available samples:',
@@ -116,6 +118,9 @@ def main():
                         help=msgs['version_help'])
     parser.add_argument('file', nargs='?',
                         help=msgs['file_help'])
+    parser.add_argument('--camera-lens', '-c', choices=['perspective', 'orthographic'],
+                        default='perspective',
+                        help=msgs['camera_lens_help'])
 
     args = parser.parse_args()
 
@@ -172,7 +177,8 @@ def main():
 
     try:
         # アプリを起動
-        app = CubicPyApp(file_path, gravity_factor=args.gravity, window_size=window_size)
+        app = CubicPyApp(
+            file_path, gravity_factor=args.gravity, window_size=window_size, camera_lens=args.camera_lens)
         app.run()
     except Exception as e:
         print(msgs['error_application'].format(e))

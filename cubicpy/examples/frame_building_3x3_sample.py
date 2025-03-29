@@ -32,13 +32,12 @@ for k in range(step_num):
                 })
 
             # 柱の作成
-            pos_pillar = (i * 9, j * 9, k * 10)
-            scale_pillar = (1, 1, 9)
+            pos_beam = (i * 9, j * 9, k * 10)
+            scale_beam = (1, 1, 9)
             body_data.append({
                 'type': 'cube',
-                'pos': pos_pillar,
-                'scale': scale_pillar,
-                'color': (i, j, k),
-                'mass': 1,
-                'remove': True if i < 2 and j < 2 and k == 0 else False
+                'pos': pos_beam,
+                'scale': scale_beam,
+                'color': (i, j, k / step_num),
+                'mass': 1
             })
