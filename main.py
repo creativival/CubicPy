@@ -16,5 +16,5 @@ if __name__ == '__main__':
     # user code file
     # user_code_file = 'codes/cube_twisted_tower.py'
 
-    app = CubicPyApp(user_code_file, gravity_factor=1, window_size=(1800, 1200), camera_lens='orthographic')
+    app = CubicPyApp(user_code_file, gravity_factor=1, window_size=(1800, 1200))
     app.run()
