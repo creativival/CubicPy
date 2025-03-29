@@ -5,7 +5,7 @@ from . import (
     DEFAULT_GRAVITY_FACTOR,
     CameraControl, Axis, InputHandler,
     ModelManager, PhysicsEngine, WorldManager,
-    ApiMethod
+    ApiMethod, TransformManager
 )
 
 
@@ -16,11 +16,12 @@ class CubicPyApp(ShowBase):
     RESTITUTION = 0.5  # 反発係数
     FRICTION = 0.5  # 摩擦係数
 
-    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE):
+    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE, camera_lens='perspective'):
         ShowBase.__init__(self)
         self.code_file = code_file
         self.initial_gravity_factor = gravity_factor
         self.window_size = window_size
+        self.camera_lens = camera_lens
 
         # ウィンドウ設定
         self.setup_window("CubicPy World", self.window_size)
@@ -33,11 +34,17 @@ class CubicPyApp(ShowBase):
         self.model_manager = ModelManager(self)
         self.physics = PhysicsEngine(self)
 
+        # ワールド管理システムの初期化
+        self.world_manager = WorldManager(self)
+
+        # 座標変換マネージャーの初期化
+        self.transform_manager = TransformManager(self)
+
         # APIメソッドの初期化（オブジェクト配置用）
         self.api = ApiMethod(self)
 
-        # ワールド管理システムの初期化
-        self.world_manager = WorldManager(self)
+        # APIに座標変換マネージャーへの参照を設定
+        self.api.transform_manager = self.transform_manager
 
         # 入力ハンドラの設定
         self.input_handler = InputHandler(self)
@@ -63,17 +70,20 @@ class CubicPyApp(ShowBase):
         return task.cont
 
     # ApiMethodクラスのメソッドを統合
-    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
+    def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """箱を追加"""
-        return self.api.add_cube(position, scale, color, mass, color_alpha)
+        return self.api.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """球を追加"""
-        return self.api.add_sphere(position, scale, color, mass, color_alpha)
+        return self.api.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, remove=False):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
+                 base_point=0, remove=False, vec=(0, 0, 0)):
         """円柱を追加"""
-        return self.api.add_cylinder(position, scale, color, mass, color_alpha)
+        return self.api.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
 
     def add_ground(self, color=(0, 1, 0), color_alpha=0.3):
         """地面を追加"""
@@ -87,15 +97,37 @@ class CubicPyApp(ShowBase):
         """オブジェクトデータからボディを構築"""
         self.api.from_body_data(body_data)
 
+    # 座標変換関連メソッド
+    def push_matrix(self):
+        """現在の変換状態をスタックに保存"""
+        return self.api.push_matrix()
+
+    def pop_matrix(self):
+        """スタックから変換状態を復元"""
+        return self.api.pop_matrix()
+
+    def translate(self, x, y, z):
+        """指定した位置に移動"""
+        return self.api.translate(x, y, z)
+
+    def rotate_hpr(self, h, p, r):
+        """HPR（Heading-Pitch-Roll）で回転"""
+        return self.api.rotate_hpr(h, p, r)
+
+    def reset_matrix(self):
+        """変換をリセット"""
+        return self.api.reset_matrix()
+
+    # WorldManagerクラスのメソッドを統合
     def reset(self):
         """オブジェクトをリセット"""
         # ワールドを再構築
         self.world_manager.rebuild_from_api_data()
 
-    # 既存の委譲メソッド - WorldManagerへ転送
     def tilt_ground(self, dx, dy):
         self.world_manager.tilt_ground(dx, dy)
 
+    # PhysicsEngineクラスのメソッドを統合
     def toggle_debug(self):
         self.physics.toggle_debug()
 
@@ -105,6 +137,7 @@ class CubicPyApp(ShowBase):
         # そしてワールドを再構築  # この行は削除すると、地面を傾けても崩壊しない
         self.world_manager.rebuild()
 
+    # ワールドのリセット
     def reset_all(self):
         """すべてをリセット"""
         self.physics.reset_gravity()

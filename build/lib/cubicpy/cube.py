@@ -4,7 +4,7 @@ from . import get_position_offset
 
 
 class Cube:
-    def __init__(self, app, cube):
+    def __init__(self, app, cube, parent_node=None):
         # print(cube)
         self.app = app
 
@@ -38,8 +38,12 @@ class Cube:
         self.rigid_cube.setFriction(self.app.FRICTION)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_cube)
 
-        # ノードパス
-        self.cube_node = self.app.world_node.attachNewNode(self.rigid_cube)
+        # ノードパス - 親ノードが指定されている場合はその下に配置
+        if parent_node:
+            self.cube_node = parent_node.attachNewNode(self.rigid_cube)
+        else:
+            self.cube_node = self.app.world_node.attachNewNode(self.rigid_cube)
+
         self.cube_node.setPos(self.node_pos)
         self.cube_node.setScale(self.node_scale)
         self.cube_node.setColor(*self.node_color, self.color_alpha)

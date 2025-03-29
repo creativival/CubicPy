@@ -1,3 +1,4 @@
+from math import sin, cos, pi
 from panda3d.core import *
 
 

@@ -1,9 +1,14 @@
-DEFAULT_GRAVITY_FACTOR = 1
+# CubicPy パッケージの初期化
 
-from .base_point import get_position_offset
-from .cube import Cube
-from .sphere import Sphere
-from .cylinder import Cylinder
+__version__ = '0.1.9'
+
+# デフォルト設定
+DEFAULT_GRAVITY_FACTOR = 1.0
+
+# 位置計算用関数
+from .base_point import BasePoint, get_position_offset
+
+# メインクラス（循環参照を回避するために遅延インポート）
 from .camera import CameraControl
 from .axis import Axis
 from .geom_utils import *
@@ -11,8 +16,19 @@ from .safe_exec import SafeExec
 from .input_handler import InputHandler
 from .model_manager import ModelManager
 from .physics import PhysicsEngine
-from .world_manager import WorldManager
+from .transform import TransformManager
 from .api_method import ApiMethod
+
+# オブジェクトクラス
+from .cube import Cube
+from .sphere import Sphere
+from .cylinder import Cylinder
+from .safe_exec import SafeExec
+
+# ワールド管理
+from .world_manager import WorldManager
+
+# メインアプリケーション
 from .app import CubicPyApp
 
 # サンプル関連機能をエクスポート
@@ -29,5 +45,3 @@ def run_sample(sample_name, gravity_factor=DEFAULT_GRAVITY_FACTOR):
     """
     app = CubicPyApp(get_sample_path(sample_name), gravity_factor=gravity_factor)
     app.run()
-
-__version__ = "0.1.8"
