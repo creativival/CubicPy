@@ -5,8 +5,8 @@ import math
 body_data = []
 
 # 都市設定パラメータ
-MIN_FLOOR_HEIGHT = 4  # 各階の最小高さ
-MAX_FLOOR_HEIGHT = 5  # 各階の最大高さ
+MIN_FLOOR_HEIGHT = 8  # 各階の最小高さ
+MAX_FLOOR_HEIGHT = 12  # 各階の最大高さ
 CITY_WIDTH = 100  # 都市の幅
 CITY_LENGTH = 100  # 都市の長さ
 DISTRICTS_PER_ROW = 4  # 1行あたりの区画数
@@ -19,19 +19,29 @@ district_templates = [
         'size': (25, 40),  # 区画のサイズ (幅, 奥行き)
         'buildings': [
             {
-                'size': (23, 18),  # ビルのサイズ (幅, 奥行き)
-                'pos': (1, 1),  # 区画内の位置 (x, y)
-                'floor_num': 20  # 階数
+                'size': (25, 20),  # ビルのサイズ (幅, 奥行き)
+                'pos': (0, 0),  # 区画内の位置 (x, y)
+                'num_floors': 5  # 階数
             },
             {
-                'size': (13, 18),
-                'pos': (1, 21),
-                'floor_num': 10
+                'size': (15, 20),  'pos': (0, 20), 'num_floors': 4
             },
             {
-                'size': (8, 18),
-                'pos': (16, 21),
-                'floor_num': 18
+                'size': (10, 20),  'pos': (15, 20), 'num_floors': 3
+            },
+        ]
+    },
+    {
+        'size': (25, 40),  # 区画のサイズ (幅, 奥行き)
+        'buildings': [
+            {
+                'size': (25, 20), 'pos': (0, 20), 'num_floors': 5
+            },
+            {
+                'size': (15, 20),  'pos': (0, 0), 'num_floors': 4
+            },
+            {
+                'size': (10, 20),  'pos': (15, 0), 'num_floors': 3
             },
         ]
     },
@@ -39,19 +49,10 @@ district_templates = [
         'size': (25, 40),
         'buildings': [
             {
-                'size': (23, 18),
-                'pos': (1, 21),
-                'floor_num': 20
+                'size': (25, 30),  'pos': (0, 0), 'num_floors': 4
             },
             {
-                'size': (13, 18),
-                'pos': (1, 1),
-                'floor_num': 10
-            },
-            {
-                'size': (8, 18),
-                'pos': (16, 1),
-                'floor_num': 18
+                'size': (25, 10),  'pos': (0, 30), 'num_floors': 3
             },
         ]
     },
@@ -59,29 +60,10 @@ district_templates = [
         'size': (25, 40),
         'buildings': [
             {
-                'size': (23, 28),
-                'pos': (1, 1),
-                'floor_num': 16
+                'size': (25, 30),  'pos': (0, 10), 'num_floors': 4
             },
             {
-                'size': (23, 8),
-                'pos': (1, 31),
-                'floor_num': 6
-            },
-        ]
-    },
-    {
-        'size': (25, 40),
-        'buildings': [
-            {
-                'size': (23, 28),
-                'pos': (1, 11),
-                'floor_num': 16
-            },
-            {
-                'size': (23, 8),
-                'pos': (1, 1),
-                'floor_num': 6
+                'size': (25, 10),  'pos': (0, 0), 'num_floors': 3
             },
         ]
     },
@@ -89,30 +71,6 @@ district_templates = [
 
 
 def create_building(x_pos, y_pos, z_pos, width, depth, floor_height, num_floors, target_data):
-    """
-    指定された位置とサイズでビルを生成し、target_dataリストに追加する
-
-    Parameters:
-    -----------
-    x_pos: float
-        ビルのX座標（左端）
-    y_pos: float
-        ビルのY座標（手前端）
-    z_pos: float
-        ビルのZ座標（底面）
-    width: float
-        ビルの幅（X方向のサイズ）
-    depth: float
-        ビルの奥行き（Y方向のサイズ）
-    floor_height: float
-        各階の高さ
-    num_floors: int
-        ビルの階数
-    target_data: list
-        生成したオブジェクトデータを追加するリスト
-    """
-    print(f'Creating building at ({x_pos}, {y_pos}) with size {width}x{depth}, {num_floors} floors')
-
     # 各階ごとに処理
     for floor in range(num_floors):
         # Y軸方向の繰り返し（手前と奥の2点）
@@ -174,8 +132,15 @@ for row in range(DISTRICT_ROWS):
         for building_data in selected_district['buildings']:
             # ビルの各パラメータを取得
             building_width, building_depth = building_data['size']
+            building_width -= random.randint(3, 5)  # 幅をランダムに調整
+            building_depth -= random.randint(3, 5)  # 奥行きをランダムに調整
+
             building_x, building_y = building_data['pos']
-            floor_count = building_data['floor_num']
+            building_x += random.randint(0, 3)  # X座標をランダムに調整
+            building_y += random.randint(0, 3)  # Y座標をランダムに調整
+
+            num_floors = building_data['num_floors']
+            num_floors += random.randint(-2, 2)  # 階数をランダムに調整
 
             # 階高をランダムに決定
             floor_height = random.randint(MIN_FLOOR_HEIGHT, MAX_FLOOR_HEIGHT)
@@ -186,7 +151,7 @@ for row in range(DISTRICT_ROWS):
             base_z = 0  # 地面レベル
 
             # ビルを生成
-            create_building(absolute_x, absolute_y, base_z, building_width, building_depth, floor_height, floor_count,
+            create_building(absolute_x, absolute_y, base_z, building_width, building_depth, floor_height, num_floors,
                             body_data)
 
         # 次の区画のX座標を更新（区画の幅 + 間隔）
@@ -204,7 +169,7 @@ print(f"都市の生成完了: {len(body_data)}個のオブジェクトを作成
 #     'pos': (CITY_WIDTH / 2, CITY_LENGTH / 2, 200),
 #     'scale': (50, 50, 50),
 #     'color': (1, 1, 1),
-#     'mass': 1000,
+#     'mass': 100,
 #     'base_point': 2,
 #     'vec': (0, 0, -100),
 # })
@@ -215,7 +180,7 @@ body_data.append({
     'pos': (-200, 50, 25),
     'scale': (50, 50, 50),
     'color': (1, 1, 1),
-    'mass': 1000,
+    'mass': 100,
     'base_point': 2,
     'vec': (100, 0, 0),
 })

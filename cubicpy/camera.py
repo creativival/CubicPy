@@ -42,21 +42,24 @@ class CameraControl:
     self.app.accept('arrow_up-repeat', self.change_camera_angle, [-1, 0])
     self.app.accept('arrow_down-repeat', self.change_camera_angle, [1, 0])
 
-    # SHIFTキー + 矢印キーで注視点移動
-    self.app.accept('shift-arrow_right', self.move_camera_target, [self.LOOK_STEP, 0, 0])
-    self.app.accept('shift-arrow_left', self.move_camera_target, [-self.LOOK_STEP, 0, 0])
-    self.app.accept('shift-arrow_up', self.move_camera_target, [0, 0, self.LOOK_STEP])
-    self.app.accept('shift-arrow_down', self.move_camera_target, [0, 0, -self.LOOK_STEP])
-    self.app.accept('shift-arrow_right-repeat', self.move_camera_target, [self.LOOK_STEP, 0, 0])
-    self.app.accept('shift-arrow_left-repeat', self.move_camera_target, [-self.LOOK_STEP, 0, 0])
-    self.app.accept('shift-arrow_up-repeat', self.move_camera_target, [0, 0, self.LOOK_STEP])
-    self.app.accept('shift-arrow_down-repeat', self.move_camera_target, [0, 0, -self.LOOK_STEP])
+    # カメラの注視点移動をShift+W/S/A/D/Q/E組み合わせで統一
+    # 左右移動
+    self.app.accept('shift-a', self.move_camera_target, [-self.LOOK_STEP, 0, 0])  # 左
+    self.app.accept('shift-d', self.move_camera_target, [self.LOOK_STEP, 0, 0])  # 右
+    self.app.accept('shift-a-repeat', self.move_camera_target, [-self.LOOK_STEP, 0, 0])
+    self.app.accept('shift-d-repeat', self.move_camera_target, [self.LOOK_STEP, 0, 0])
 
-    # Page Up/Downで前後方向の移動
-    self.app.accept('shift-page_up', self.move_camera_target, [0, self.LOOK_STEP, 0])
-    self.app.accept('shift-page_down', self.move_camera_target, [0, -self.LOOK_STEP, 0])
-    self.app.accept('shift-page_up-repeat', self.move_camera_target, [0, self.LOOK_STEP, 0])
-    self.app.accept('shift-page_down-repeat', self.move_camera_target, [0, -self.LOOK_STEP, 0])
+    # 前後移動
+    self.app.accept('shift-w', self.move_camera_target, [0, self.LOOK_STEP, 0])  # 前
+    self.app.accept('shift-s', self.move_camera_target, [0, -self.LOOK_STEP, 0])  # 後
+    self.app.accept('shift-w-repeat', self.move_camera_target, [0, self.LOOK_STEP, 0])
+    self.app.accept('shift-s-repeat', self.move_camera_target, [0, -self.LOOK_STEP, 0])
+
+    # 上下移動
+    self.app.accept('shift-e', self.move_camera_target, [0, 0, self.LOOK_STEP])  # 上
+    self.app.accept('shift-q', self.move_camera_target, [0, 0, -self.LOOK_STEP])  # 下
+    self.app.accept('shift-e-repeat', self.move_camera_target, [0, 0, self.LOOK_STEP])
+    self.app.accept('shift-q-repeat', self.move_camera_target, [0, 0, -self.LOOK_STEP])
 
     self.app.accept('r', self.reset_camera)
 

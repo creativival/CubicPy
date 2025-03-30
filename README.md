@@ -335,8 +335,7 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 ## Application Controls
 
 - **Arrow keys**: Change camera angle
-- **SHIFT + Arrow keys**: Move camera target point
-- **SHIFT + Page Up/Down**: Move camera target point forward/backward
+- **SHIFT + W/S/A/D/Q/E**: Move camera target point
 - **Mouse wheel**: Zoom in/out (perspective mode) or change display range (orthographic mode)
 - **W/S/A/D**: Tilt the ground
 - **F/G**: Change gravity strength
