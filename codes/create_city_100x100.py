@@ -171,7 +171,7 @@ print(f"都市の生成完了: {len(body_data)}個のオブジェクトを作成
 #     'color': (1, 1, 1),
 #     'mass': 100,
 #     'base_point': 2,
-#     'vec': (0, 0, -100),
+#     'velocity': (0, 0, -100),
 # })
 
 # ボーリングのボールを生成
@@ -182,5 +182,5 @@ body_data.append({
     'color': (1, 1, 1),
     'mass': 100,
     'base_point': 2,
-    'vec': (100, 0, 0),
+    'velocity': (100, 0, 0),
 })

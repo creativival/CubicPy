@@ -71,19 +71,19 @@ class CubicPyApp(ShowBase):
 
     # ApiMethodクラスのメソッドを統合
     def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
-                 base_point=0, remove=False, vec=(0, 0, 0)):
+                 base_point=0, remove=False, velocity=(0, 0, 0)):
         """箱を追加"""
-        return self.api.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
+        return self.api.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
 
     def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
-                 base_point=0, remove=False, vec=(0, 0, 0)):
+                 base_point=0, remove=False, velocity=(0, 0, 0)):
         """球を追加"""
-        return self.api.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
+        return self.api.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
 
     def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
-                 base_point=0, remove=False, vec=(0, 0, 0)):
+                 base_point=0, remove=False, velocity=(0, 0, 0)):
         """円柱を追加"""
-        return self.api.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
+        return self.api.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
 
     def add_ground(self, color=(0, 1, 0), color_alpha=0.3):
         """地面を追加"""

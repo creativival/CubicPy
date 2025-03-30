@@ -18,7 +18,7 @@ class Cylinder:
         self.base_point = cylinder['base_point'] if 'base_point' in cylinder else 0
         self.remove_selected = cylinder['remove'] if 'remove' in cylinder else False
         # 初速度ベクトルの設定を追加
-        self.vec = Vec3(cylinder['vec']) if 'vec' in cylinder else Vec3(0, 0, 0)
+        self.velocity = Vec3(cylinder['velocity']) if 'velocity' in cylinder else Vec3(0, 0, 0)
 
         # 配置位置の計算
         self.node_pos = Vec3(cylinder['pos']) + get_position_offset(self)
@@ -66,11 +66,10 @@ class Cylinder:
 
     def apply_velocity(self):
         """オブジェクトに初速を与える"""
-        if self.vec != Vec3(0, 0, 0):
+        if self.velocity != Vec3(0, 0, 0):
             # 剛体をアクティブ化
             self.cylinder_node.node().setActive(True)
             # 寝ている状態からの自動移行を無効化
             self.cylinder_node.node().setDeactivationEnabled(False)
             # 速度を設定
-            self.cylinder_node.node().setLinearVelocity(self.vec)
-            print(f"円柱に速度 {self.vec} を適用しました")
+            self.cylinder_node.node().setLinearVelocity(self.velocity)

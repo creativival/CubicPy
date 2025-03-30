@@ -23,7 +23,7 @@ class ApiMethod:
             'hpr': hpr,
             'base_point': base_point,
             'remove': remove,
-            'vec': vec,
+            'velocity': vec,
             'parent_node': parent_node
         }
         self.object_data.append(cube_data)
@@ -46,7 +46,7 @@ class ApiMethod:
             'hpr': hpr,
             'base_point': base_point,
             'remove': remove,
-            'vec': vec,
+            'velocity': vec,
             'parent_node': parent_node
         }
         self.object_data.append(sphere_data)
@@ -69,7 +69,7 @@ class ApiMethod:
             'hpr': hpr,
             'base_point': base_point,
             'remove': remove,
-            'vec': vec,
+            'velocity': vec,
             'parent_node': parent_node
         }
         self.object_data.append(cylinder_data)
@@ -100,7 +100,7 @@ class ApiMethod:
         hpr = kwargs.get('hpr', (0, 0, 0))
         base_point = kwargs.get('base_point', 0)
         remove = kwargs.get('remove', False)
-        vec = kwargs.get('vec', (0, 0, 0))
+        vec = kwargs.get('velocity', (0, 0, 0))
 
         if obj_type == 'cube':
             return self.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)

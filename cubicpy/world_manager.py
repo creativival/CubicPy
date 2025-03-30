@@ -148,9 +148,9 @@ class WorldManager:
         """初速度ベクトルが設定されたオブジェクトを発射"""
         for body in self.body_objects:
             obj = body['object']
-            if hasattr(obj, 'vec') and obj.vec != Vec3(0, 0, 0):
+            if hasattr(obj, 'velocity') and obj.velocity != Vec3(0, 0, 0):
                 obj.apply_velocity()
-                print(f"オブジェクトを速度 {obj.vec} で発射しました")
+                print(f"オブジェクトを速度 {obj.velocity} で発射しました")
 
     @staticmethod
     def add_default_ground(body_data):

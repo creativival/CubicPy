@@ -8,7 +8,7 @@ class ApiMethod:
         self.transform_manager = None
 
     def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
-                 base_point=0, remove=False, vec=(0, 0, 0)):
+                 base_point=0, remove=False, velocity=(0, 0, 0)):
         """箱を追加"""
         # 現在の変換ノードを取得（設定されている場合）
         parent_node = self._get_parent_node()
@@ -23,7 +23,7 @@ class ApiMethod:
             'hpr': hpr,
             'base_point': base_point,
             'remove': remove,
-            'vec': vec,
+            'velocity': velocity,
             'parent_node': parent_node
         }
         self.object_data.append(cube_data)
@@ -31,7 +31,7 @@ class ApiMethod:
 
     def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1,
                    hpr=(0, 0, 0),
-                   base_point=0, remove=False, vec=(0, 0, 0)):
+                   base_point=0, remove=False, velocity=(0, 0, 0)):
         """球を追加"""
         # 現在の変換ノードを取得（設定されている場合）
         parent_node = self._get_parent_node()
@@ -46,7 +46,7 @@ class ApiMethod:
             'hpr': hpr,
             'base_point': base_point,
             'remove': remove,
-            'vec': vec,
+            'velocity': velocity,
             'parent_node': parent_node
         }
         self.object_data.append(sphere_data)
@@ -54,7 +54,7 @@ class ApiMethod:
 
     def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1,
                      hpr=(0, 0, 0),
-                     base_point=0, remove=False, vec=(0, 0, 0)):
+                     base_point=0, remove=False, velocity=(0, 0, 0)):
         """円柱を追加"""
         # 現在の変換ノードを取得（設定されている場合）
         parent_node = self._get_parent_node()
@@ -69,7 +69,7 @@ class ApiMethod:
             'hpr': hpr,
             'base_point': base_point,
             'remove': remove,
-            'vec': vec,
+            'velocity': velocity,
             'parent_node': parent_node
         }
         self.object_data.append(cylinder_data)
@@ -100,14 +100,14 @@ class ApiMethod:
         hpr = kwargs.get('hpr', (0, 0, 0))
         base_point = kwargs.get('base_point', 0)
         remove = kwargs.get('remove', False)
-        vec = kwargs.get('vec', (0, 0, 0))
+        velocity = kwargs.get('velocity', (0, 0, 0))
 
         if obj_type == 'cube':
-            return self.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
+            return self.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
         elif obj_type == 'sphere':
-            return self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
+            return self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
         elif obj_type == 'cylinder':
-            return self.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, vec)
+            return self.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
         else:
             raise ValueError(f"未知のオブジェクトタイプ: {obj_type}")
 

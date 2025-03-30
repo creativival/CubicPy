@@ -18,7 +18,7 @@ class Cube:
         self.base_point = cube['base_point'] if 'base_point' in cube else 0
         self.remove_selected = cube['remove'] if 'remove' in cube else False
         # 初速度ベクトルの設定を追加
-        self.vec = Vec3(cube['vec']) if 'vec' in cube else Vec3(0, 0, 0)
+        self.vec = Vec3(cube['velocity']) if 'velocity' in cube else Vec3(0, 0, 0)
 
         # 配置位置の計算
         self.node_pos = Vec3(cube['pos']) + get_position_offset(self)

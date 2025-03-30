@@ -89,7 +89,7 @@ body_data.append({
     'scale': (1, 1, 1),  # Size
     'color': (1, 0, 0),  # Red color
     'mass': 5,  # Mass
-    'vec': (10, -5, 3)  # Initial velocity vector: x, y, z direction
+    'velocity': (10, -5, 3)  # Initial velocity vector: x, y, z direction
 })
 ```
 

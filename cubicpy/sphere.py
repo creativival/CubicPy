@@ -18,7 +18,7 @@ class Sphere:
         self.base_point = sphere['base_point'] if 'base_point' in sphere else 0
         self.remove_selected = sphere['remove'] if 'remove' in sphere else False
         # 初速度ベクトルの設定を追加
-        self.vec = Vec3(sphere['vec']) if 'vec' in sphere else Vec3(0, 0, 0)
+        self.velocity = Vec3(sphere['velocity']) if 'velocity' in sphere else Vec3(0, 0, 0)
 
         # 配置位置の計算
         self.node_pos = Vec3(sphere['pos']) + get_position_offset(self)
@@ -38,7 +38,7 @@ class Sphere:
         self.rigid_sphere.setFriction(self.app.FRICTION)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_sphere)
         # 速度ベクトルがある場合は、剛体を適切に設定
-        if self.vec != Vec3(0, 0, 0):
+        if self.velocity != Vec3(0, 0, 0):
             self.rigid_sphere.setDeactivationEnabled(False)
 
         # ノードパス - 親ノードが指定されている場合はその下に配置
@@ -69,7 +69,7 @@ class Sphere:
 
     def apply_velocity(self):
         """オブジェクトに初速を与える"""
-        if self.vec != Vec3(0, 0, 0):
+        if self.velocity != Vec3(0, 0, 0):
             # 剛体をアクティブ化
             self.sphere_node.node().setActive(True)
             # 寝ている状態からの自動移行を無効化
@@ -78,5 +78,4 @@ class Sphere:
             self.sphere_node.node().setCcdMotionThreshold(1e-7)
             self.sphere_node.node().setCcdSweptSphereRadius(0.5)
             # 速度を設定
-            self.sphere_node.node().setLinearVelocity(self.vec)
-            print(f"球に速度 {self.vec} を適用しました")
+            self.sphere_node.node().setLinearVelocity(self.velocity)
