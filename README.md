@@ -353,6 +353,16 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 
 These dependencies are automatically installed with `pip install cubicpy`.
 
+## About the Font
+
+This application uses "PixelMplus" font, which is a TrueType font designed to recreate the appearance of 8-bit gaming console bitmap fonts.
+
+### License Information
+PixelMplus font is provided under the M+ FONT LICENSE. This license allows free use, copying, and redistribution with or without modification, including for commercial purposes (without warranty).
+
+For more information and font downloads, please visit:
+https://github.com/itouhiro/PixelMplus
+
 ## Copyright
 
 Released under the MIT License. See the [LICENSE](LICENSE) file for details.

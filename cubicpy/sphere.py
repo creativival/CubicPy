@@ -56,6 +56,10 @@ class Sphere:
         if self.color_alpha < 1:
             self.sphere_node.setTransparency(1)  # 半透明を有効化
 
+        # テキスト表示を変更
+        if 'velocity' in sphere:
+            app.top_left_text.setText('Press "Space" to start')
+
     def update(self):
         """ 物理エンジンの位置を更新 """
         self.sphere_node.setPos(self.sphere_node.node().getPos())

@@ -53,6 +53,10 @@ class Cylinder:
         if self.color_alpha < 1:
             self.cylinder_node.setTransparency(1)  # 半透明を有効化
 
+        # テキスト表示を変更
+        if 'velocity' in cylinder:
+            app.top_left_text.setText('Press "Space" to start')
+
     def update(self):
         """ 物理エンジンの位置を更新 """
         self.cylinder_node.setPos(self.cylinder_node.node().getPos())

@@ -53,6 +53,10 @@ class Cube:
         if self.color_alpha < 1:
             self.cube_node.setTransparency(1)  # 半透明を有効化
 
+        # テキスト表示を変更
+        if 'velocity' in cube:
+            app.top_left_text.setText('Press "Space" to start')
+
     def update(self):
         """ 物理エンジンの位置を更新 """
         self.cube_node.setPos(self.cube_node.node().getPos())

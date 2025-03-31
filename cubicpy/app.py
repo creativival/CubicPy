@@ -1,3 +1,4 @@
+from pkg_resources import resource_filename
 from direct.showbase.ShowBase import ShowBase
 from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import *
@@ -5,7 +6,7 @@ from . import (
     DEFAULT_GRAVITY_FACTOR,
     CameraControl, Axis, InputHandler,
     ModelManager, PhysicsEngine, WorldManager,
-    ApiMethod, TransformManager
+    ApiMethod, Draw2DText, TransformManager
 )
 
 
@@ -51,6 +52,17 @@ class CubicPyApp(ShowBase):
 
         # 物理シミュレーションタスクの開始
         self.taskMgr.add(self.update_physics, 'update_physics')
+
+        # テキスト表示
+        # フォントパスを取得
+        font_path = resource_filename('cubicpy', 'font/PixelMplus10-Regular.ttf')
+
+        # フォントローダーを使用してファイルからフォントを読み込む
+        self.font = self.loader.loadFont(font_path)
+
+        # アプリ情報をテキスト表示
+        self.top_left_text = Draw2DText(self.font, self.a2dTopLeft, '')
+        self.bottom_left_text = Draw2DText(self.a2dBottomLeft, '', pos=(0.05, 0.1))
 
         # コードファイルが指定されていれば、ワールド構築
         if code_file:

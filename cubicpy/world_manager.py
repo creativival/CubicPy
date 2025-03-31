@@ -150,6 +150,7 @@ class WorldManager:
             obj = body['object']
             if hasattr(obj, 'velocity') and obj.velocity != Vec3(0, 0, 0):
                 obj.apply_velocity()
+                self.app.top_left_text.setText('')
                 print(f"オブジェクトを速度 {obj.velocity} で発射しました")
 
     @staticmethod
