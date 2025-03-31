@@ -234,6 +234,26 @@ from_body_data(body_data)
 ```
 - `body_data`: List of object definitions (dictionaries) as used by the cubicpy command
 
+### Text Display API Methods
+
+You can display text on the application screen.
+
+```python
+set_top_left_text(text)
+```
+
+Displays text at the top-left corner of the screen.
+
+- text: The text to display
+
+```python
+set_bottom_left_text(text)
+```
+
+Displays text at the bottom-left corner of the screen.
+
+- text: The text to display
+
 ### Coordinate Transformation Methods
 
 CubicPy provides coordinate transformation methods that work similarly to Processing, allowing you to place objects relative to different coordinate systems. These methods make complex object positioning much easier.

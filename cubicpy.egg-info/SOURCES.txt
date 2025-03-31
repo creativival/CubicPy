@@ -11,6 +11,7 @@ cubicpy/cli.py
 cubicpy/cone.py
 cubicpy/cube.py
 cubicpy/cylinder.py
+cubicpy/draw_text.py
 cubicpy/geom_utils.py
 cubicpy/input_handler.py
 cubicpy/model_manager.py

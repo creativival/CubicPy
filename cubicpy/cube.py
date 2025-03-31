@@ -54,7 +54,7 @@ class Cube:
             self.cube_node.setTransparency(1)  # 半透明を有効化
 
         # テキスト表示を変更
-        if 'velocity' in cube:
+        if self.velocity != Vec3(0, 0, 0):
             app.top_left_text.setText('Press "Space" to start')
 
     def update(self):

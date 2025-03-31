@@ -114,7 +114,7 @@ body_data.append({
     'scale': (1, 1, 1),  # Size
     'color': (1, 0, 0),  # Red color
     'mass': 5,  # Mass
-    'vec': (10, -5, 3)  # Initial velocity vector: x, y, z direction
+    'velocity': (10, -5, 3)  # Initial velocity vector: x, y, z direction
 })
 ```
 
@@ -360,8 +360,7 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 ## Application Controls
 
 - **Arrow keys**: Change camera angle
-- **SHIFT + Arrow keys**: Move camera target point
-- **SHIFT + Page Up/Down**: Move camera target point forward/backward
+- **SHIFT + W/S/A/D/Q/E**: Move camera target point
 - **Mouse wheel**: Zoom in/out (perspective mode) or change display range (orthographic mode)
 - **W/S/A/D**: Tilt the ground
 - **F/G**: Change gravity strength
@@ -378,6 +377,16 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 - NumPy
 
 These dependencies are automatically installed with `pip install cubicpy`.
+
+## About the Font
+
+This application uses "PixelMplus" font, which is a TrueType font designed to recreate the appearance of 8-bit gaming console bitmap fonts.
+
+### License Information
+PixelMplus font is provided under the M+ FONT LICENSE. This license allows free use, copying, and redistribution with or without modification, including for commercial purposes (without warranty).
+
+For more information and font downloads, please visit:
+https://github.com/itouhiro/PixelMplus
 
 ## Copyright
 

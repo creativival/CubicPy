@@ -30,5 +30,8 @@ for i in range(10):
 
 app.from_body_data(body_data)
 
+# タイトルの設定
+app.set_top_left_text('CubicPy API Sample')
+
 # シミュレーション実行
 app.run()

@@ -62,7 +62,7 @@ class CubicPyApp(ShowBase):
 
         # アプリ情報をテキスト表示
         self.top_left_text = Draw2DText(self.font, self.a2dTopLeft, '')
-        self.bottom_left_text = Draw2DText(self.a2dBottomLeft, '', pos=(0.05, 0.1))
+        self.bottom_left_text = Draw2DText(self.font, self.a2dBottomLeft, '', pos=(0.05, 0.1))
 
         # コードファイルが指定されていれば、ワールド構築
         if code_file:
@@ -148,6 +148,13 @@ class CubicPyApp(ShowBase):
         self.physics.change_gravity(value)
         # そしてワールドを再構築  # この行は削除すると、地面を傾けても崩壊しない
         self.world_manager.rebuild()
+
+    # Draw2DTextクラスのメソッドを統合
+    def set_top_left_text(self, text):
+        self.top_left_text.setText(text)
+
+    def set_bottom_left_text(self, text):
+        self.bottom_left_text.setText(text)
 
     # ワールドのリセット
     def reset_all(self):
