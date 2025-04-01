@@ -1,5 +1,4 @@
 import random
-import math
 
 # 全体のオブジェクトデータを格納するリスト
 body_data = []
@@ -163,24 +162,24 @@ for row in range(DISTRICT_ROWS):
 
 print(f"都市の生成完了: {len(body_data)}個のオブジェクトを作成しました")
 
-# # 隕石を生成
-# body_data.append({
-#     'type': 'sphere',
-#     'pos': (CITY_WIDTH / 2, CITY_LENGTH / 2, 200),
-#     'scale': (50, 50, 50),
-#     'color': (1, 1, 1),
-#     'mass': 100,
-#     'base_point': 2,
-#     'velocity': (0, 0, -100),
-# })
-
-# ボーリングのボールを生成
+# 隕石を生成
 body_data.append({
     'type': 'sphere',
-    'pos': (-200, 50, 25),
+    'pos': (CITY_WIDTH / 2, CITY_LENGTH / 2, 200),
     'scale': (50, 50, 50),
     'color': (1, 1, 1),
     'mass': 100,
     'base_point': 2,
-    'velocity': (100, 0, 0),
+    'velocity': (0, 0, -100),
 })
+
+# # ボーリングのボールを生成
+# body_data.append({
+#     'type': 'sphere',
+#     'pos': (-200, 50, 25),
+#     'scale': (50, 50, 50),
+#     'color': (1, 1, 1),
+#     'mass': 100,
+#     'base_point': 2,
+#     'velocity': (100, 0, 0),
+# })
