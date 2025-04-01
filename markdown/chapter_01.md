@@ -115,7 +115,7 @@ pip3 install cubicpy
 cubicpy
 ```
 
-ワオ！画面に3D世界が現れましたか？▲図5▲は、ランダムに選ばれたサンプルプログラムです。cubicpyコマンドを実行するたびに、ランダムで選ばれた別のプログラムが実行されます。
+ワオ！画面に3D世界が現れましたか？▲図5▲は、ランダム（無作為）に選ばれたサンプルプログラムです。cubicpyコマンドを実行するたびに、ランダムで選ばれた別のプログラムが実行されます。
 
 ## 3D世界を操作しよう
 
@@ -123,6 +123,7 @@ cubicpy
 
 > 🎮 **操作方法**:
 > - **矢印キー**: カメラ角度の変更
+> - **Shift + W/A/S/D/Q/E**: カメラの移動
 > - **マウスホイール**: ズームイン/アウト
 > - **W/S/A/D**: 地面を傾ける（崩れる！）
 > - **F/G**: 重力の強さを変更
@@ -139,15 +140,16 @@ cubicpy
 
 キューパイにはいろんなサンプルが用意されています。サンプル一覧を見るには、
 
-![Sample List](https://creativival.github.io/CubicPy/assets/display_sample_list.png)
-
-**▲図7▲ 初めから用意されているサンプルプログラムのリストを表示する**
-
 ```bash
 cubicpy --list
 # または省略形
 cubicpy -l
 ```
+と入力します。すると、たくさんのサンプルが表示されます（▲図7▲）。
+
+![Sample List](https://creativival.github.io/CubicPy/assets/display_sample_list.png)
+
+**▲図7▲ 初めから用意されているサンプルプログラムのリストを表示する**
 
 特定のサンプルを実行するには、
 
@@ -156,6 +158,8 @@ cubicpy --example cube_tower_sample
 # または省略形
 cubicpy -e cube_tower_sample
 ```
+
+を入力します。すると、cube_tower_sampleのサンプルコードが実行されます。
 
 cubicpyを終了するには、`ESC`キーを押すか、PowerShell/ターミナルで`Ctrl+C`を入力します。
 
