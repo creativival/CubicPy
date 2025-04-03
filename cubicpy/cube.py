@@ -55,7 +55,7 @@ class Cube:
 
         # テキスト表示を変更
         if self.velocity != Vec3(0, 0, 0):
-            app.top_left_text.setText('Press "Space" to start')
+            self.app.top_left_text.setText('Press "Space" to start')
 
     def update(self):
         """ 物理エンジンの位置を更新 """
@@ -71,4 +71,12 @@ class Cube:
     def apply_velocity(self):
         """オブジェクトに初速を与える"""
         if self.velocity != Vec3(0, 0, 0):
+            # 剛体をアクティブ化
+            self.cube_node.node().setActive(True)
+            # 寝ている状態からの自動移行を無効化
+            self.cube_node.node().setDeactivationEnabled(False)
+            # 連続衝突検出の設定
+            self.cube_node.node().setCcdMotionThreshold(1e-7)
+            self.cube_node.node().setCcdSweptSphereRadius(0.5)
+            # 速度を設定
             self.cube_node.node().setLinearVelocity(self.velocity)

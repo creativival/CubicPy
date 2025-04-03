@@ -58,7 +58,7 @@ class Sphere:
 
         # テキスト表示を変更
         if self.velocity != Vec3(0, 0, 0):
-            app.top_left_text.setText('Press "Space" to start')
+            self.app.top_left_text.setText('Press "Space" to start')
 
     def update(self):
         """ 物理エンジンの位置を更新 """
