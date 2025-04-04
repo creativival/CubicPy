@@ -4,10 +4,10 @@ from panda3d.core import TextNode, PandaNode
 
 
 class Draw2DText(OnscreenText):
-    def __init__(self, font, parent, text='', scale=0.1, pos=(0.05, -0.1), fg=(1, 1, 1, 1)):
+    def __init__(self, font, parent, text='', scale=0.1, pos=(0.05, -0.1), fg=(1, 1, 1, 1), frame=None):
 
 
-        super().__init__(font=font, parent=parent, text=text, scale=scale, pos=pos,
+        super().__init__(font=font, parent=parent, text=text, scale=scale, pos=pos, frame=frame,
                          fg=fg, align=TextNode.ALeft, mayChange=True)
 
 

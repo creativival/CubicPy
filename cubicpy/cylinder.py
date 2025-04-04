@@ -7,6 +7,7 @@ class Cylinder:
     def __init__(self, app, cylinder, parent_node=None):
         # print(cylinder)
         self.app = app
+        self.type = 'cylinder'
 
         # スケール・色・質量の設定
         self.node_scale = Vec3(cylinder['scale']) if 'scale' in cylinder else (1, 1, 1)
@@ -56,9 +57,13 @@ class Cylinder:
         if self.color_alpha < 1:
             self.cylinder_node.setTransparency(1)  # 半透明を有効化
 
-        # テキスト表示を変更
+        # スペースボタンを表示
         if self.velocity != Vec3(0, 0, 0):
-            self.app.top_left_text.setText('Press "Space" to start')
+            self.app.space_button_text.show()
+
+        # Xボタンを表示
+        if self.remove_selected:
+            self.app.x_button_text.show()
 
     def update(self):
         """ 物理エンジンの位置を更新 """
@@ -83,3 +88,16 @@ class Cylinder:
             self.cylinder_node.node().setCcdSweptSphereRadius(0.5)
             # 速度を設定
             self.cylinder_node.node().setLinearVelocity(self.velocity)
+
+    def has_moved(self, tolerance=0.01):
+        """オブジェクトが初期位置から動いたかどうかを確認します"""
+        # 現在の位置を取得
+        current_pos = self.cylinder_node.getPos()
+
+        # 初期位置との差を計算
+        dx = abs(current_pos.x - self.node_pos.x)
+        dy = abs(current_pos.y - self.node_pos.y)
+        dz = abs(current_pos.z - self.node_pos.z)
+
+        # いずれかの軸で許容誤差より大きく動いていたら、動いたと判断
+        return dx > tolerance or dy > tolerance or dz > tolerance

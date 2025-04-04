@@ -63,6 +63,10 @@ class CubicPyApp(ShowBase):
         # アプリ情報をテキスト表示
         self.top_left_text = Draw2DText(self.font, self.a2dTopLeft, '')
         self.bottom_left_text = Draw2DText(self.font, self.a2dBottomLeft, '', pos=(0.05, 0.1))
+        self.space_button_text = Draw2DText(self.font, self.a2dTopRight, 'Space', pos=(-0.3, -1.0), fg=(1, 0, 0, 1), frame=(1, 0, 0, 1))
+        self.space_button_text.hide()
+        self.x_button_text = Draw2DText(self.font, self.a2dTopRight, 'x', pos=(-0.4, -1.0), fg=(1, 0, 0, 1), frame=(1, 0, 0, 1))
+        self.x_button_text.hide()
 
         # コードファイルが指定されていれば、ワールド構築
         if code_file:
@@ -150,11 +154,11 @@ class CubicPyApp(ShowBase):
         self.world_manager.rebuild()
 
     # Draw2DTextクラスのメソッドを統合
-    def set_top_left_text(self, text):
-        self.top_left_text.setText(text)
+    def set_top_left_text(self, display_text):
+        self.top_left_text.setText(display_text)
 
-    def set_bottom_left_text(self, text):
-        self.bottom_left_text.setText(text)
+    def set_bottom_left_text(self, display_text):
+        self.bottom_left_text.setText(display_text)
 
     # ワールドのリセット
     def reset_all(self):
