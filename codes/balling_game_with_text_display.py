@@ -1,6 +1,4 @@
 from cubicpy import CubicPyApp
-# import threading
-# import time
 
 # アプリケーションのインスタンスを作成
 app = CubicPyApp()
@@ -35,55 +33,15 @@ app.add_sphere(
 app.set_top_left_text('ボウリングゲーム')
 app.set_bottom_left_text("操作方法: 矢印キーでカメラ移動、R でリセット")
 
-# アプリを実行
-app.run()
+# # アプリを実行
+# app.run()
 
-# # 終了フラグ（スレッド間の通信用）
-# stop_thread = False
-#
-# def is_nearly_equal(v1, v2, tolerance=0.01):
-#     """二つのベクトルがほぼ同じかチェック"""
-#     dx = abs(v1.x - v2.x)
-#     dy = abs(v1.y - v2.y)
-#     dz = abs(v1.z - v2.z)
-#     return dx < tolerance and dy < tolerance and dz < tolerance
-#
-#
-# # 別スレッドで実行する関数
-# def game_logic():
-#     while not stop_thread:
-#         try:
-#             print("ボウリングゲームを実行中...")
-#
-#             # 位置情報の取得
-#             num_moved = 0
-#             for obj in app.world_manager.body_objects:
-#                 if obj['type'] == 'cylinder':
-#                     # 追加したメソッドを使用してピンが動いたかチェック
-#                     if obj['object'].has_moved(tolerance=0.1):  # より大きな許容誤差を使用
-#                         num_moved += 1
-#
-#             if num_moved > 0:
-#                 app.set_bottom_left_text(f"スコア: {num_moved}")
-#
-#             # スレッドの負荷を下げるために少し待機
-#             time.sleep(0.1)
-#
-#         except Exception as e:
-#             print(f"エラーが発生しました: {e}")
-#             time.sleep(1)  # エラー時は少し長めに待機
-#
-#
-# # ゲームロジックのスレッドを開始
-# logic_thread = threading.Thread(target=game_logic)
-# logic_thread.daemon = True  # メインスレッドが終了したら、このスレッドも終了
-# logic_thread.start()
-#
-# try:
-#     # シミュレーションを実行（メインスレッド）
-#     app.run()
-# finally:
-#     # スレッドを終了するためのフラグをセット
-#     stop_thread = True
-#     # スレッドが終了するのを待つ
-#     logic_thread.join(timeout=1.0)
+# ゲームロジックを追加して、移動したピンの数をスコア表示する
+try:
+    app.game_logic.target_type = 'cylinder'  # ターゲットをピンに設定
+    app.game_logic.start()
+    # シミュレーションを実行（メインスレッド）
+    app.run()
+finally:
+    # ゲームロジックの停止
+    app.game_logic.stop()

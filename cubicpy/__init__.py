@@ -29,6 +29,9 @@ from .safe_exec import SafeExec
 # ワールド管理
 from .world_manager import WorldManager
 
+# ゲームロジック
+from .game_logic import GameLogic
+
 # メインアプリケーション
 from .app import CubicPyApp
 

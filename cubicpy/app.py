@@ -6,7 +6,7 @@ from . import (
     DEFAULT_GRAVITY_FACTOR,
     CameraControl, Axis, InputHandler,
     ModelManager, PhysicsEngine, WorldManager,
-    ApiMethod, Draw2DText, TransformManager
+    ApiMethod, Draw2DText, TransformManager, GameLogic
 )
 
 
@@ -49,6 +49,9 @@ class CubicPyApp(ShowBase):
 
         # 入力ハンドラの設定
         self.input_handler = InputHandler(self)
+
+        # ゲームロジックの初期化
+        self.game_logic = GameLogic(self)
 
         # 物理シミュレーションタスクの開始
         self.taskMgr.add(self.update_physics, 'update_physics')
