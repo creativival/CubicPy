@@ -32,8 +32,8 @@ class Box:
         self.rigid_box = BulletRigidBodyNode('Box')
         self.rigid_box.setMass(self.node_mass)
         self.rigid_box.addShape(self.box_shape)
-        self.rigid_box.setRestitution(self.app.RESTITUTION)
-        self.rigid_box.setFriction(self.app.FRICTION)
+        self.rigid_box.setRestitution(self.app.restitution)
+        self.rigid_box.setFriction(self.app.friction)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_box)
 
         # ノードパス

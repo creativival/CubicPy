@@ -35,8 +35,8 @@ class Cylinder:
         self.rigid_cylinder = BulletRigidBodyNode('Cylinder')
         self.rigid_cylinder.setMass(self.node_mass)
         self.rigid_cylinder.addShape(self.cylinder_shape)
-        self.rigid_cylinder.setRestitution(self.app.RESTITUTION)
-        self.rigid_cylinder.setFriction(self.app.FRICTION)
+        self.rigid_cylinder.setRestitution(self.app.restitution)
+        self.rigid_cylinder.setFriction(self.app.friction)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_cylinder)
         # 速度ベクトルがある場合は、剛体を適切に設定
         if self.velocity != Vec3(0, 0, 0):

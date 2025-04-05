@@ -14,13 +14,13 @@ if __name__ == '__main__':
     user_code_file = 'cubicpy/examples/throwing_sphere_sample.py'
     user_code_file = 'cubicpy/examples/remove_cube_tower_sample.py'
     user_code_file = 'cubicpy/examples/remove_frame_building_2x2_sample.py'
-    # user_code_file = 'cubicpy/examples/remove_frame_building_3x3_sample.py'
+    user_code_file = 'cubicpy/examples/remove_frame_building_3x3_sample.py'
 
     # # user code file
-    # user_code_file = 'codes/cube_twisted_tower.py'
-    # user_code_file = 'codes/cube_cone.py'
-    # user_code_file = 'codes/cube_pyramid_frame.py'
-    # user_code_file = 'codes/cube_cylinder_shape_tower.py'
+    user_code_file = 'codes/cube_twisted_tower.py'
+    user_code_file = 'codes/cube_cone.py'
+    user_code_file = 'codes/cube_pyramid_frame.py'
+    user_code_file = 'codes/cube_cylinder_shape_tower.py'
     # user_code_file = 'codes/frame_building_2x2.py.py'
     # user_code_file = 'codes/frame_building_2x2_resized.py'
     # user_code_file = 'codes/five_random_buildings.py'

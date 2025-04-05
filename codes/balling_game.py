@@ -33,17 +33,17 @@ app.add_sphere(
 app.set_top_left_text('ボウリングゲーム')
 app.set_bottom_left_text("操作方法: 矢印キーでカメラ移動、R でリセット")
 
-# # アプリを実行
-# app.run()
+# アプリを実行
+app.run()
 
-# ゲームロジックを追加して、移動したピンの数をスコア表示する
-try:
-    app.game_logic.target_type = 'cylinder'  # ターゲットをピンに設定
-    app.game_logic.motion_state = 'fallen'  # 倒れた状態を監視
-    app.game_logic.angle_tolerance = 45  # 倒れたとみなす角度
-    app.game_logic.start()
-    # シミュレーションを実行（メインスレッド）
-    app.run()
-finally:
-    # ゲームロジックの停止
-    app.game_logic.stop()
+# # ゲームロジックを追加して、移動したピンの数をスコア表示する
+# try:
+#     app.game_logic.target_type = 'cylinder'  # ターゲットをピンに設定
+#     app.game_logic.motion_state = 'fallen'  # 倒れた状態を監視
+#     app.game_logic.angle_tolerance = 45  # 倒れたとみなす角度
+#     app.game_logic.start()
+#     # シミュレーションを実行（メインスレッド）
+#     app.run()
+# finally:
+#     # ゲームロジックの停止
+#     app.game_logic.stop()

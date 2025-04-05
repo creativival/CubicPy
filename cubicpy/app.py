@@ -17,12 +17,16 @@ class CubicPyApp(ShowBase):
     RESTITUTION = 0.5  # 反発係数
     FRICTION = 0.5  # 摩擦係数
 
-    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE, camera_lens='perspective'):
+    def __init__(self, code_file=None, gravity_factor=DEFAULT_GRAVITY_FACTOR, window_size=DEFAULT_WINDOW_SIZE,
+                 camera_lens='perspective', restitution=RESTITUTION, friction=FRICTION):
         ShowBase.__init__(self)
         self.code_file = code_file
         self.initial_gravity_factor = gravity_factor
         self.window_size = window_size
         self.camera_lens = camera_lens
+        self.custom_key_handler = None
+        self.restitution = restitution
+        self.friction = friction
 
         # ウィンドウ設定
         self.setup_window("CubicPy World", self.window_size)
@@ -66,9 +70,11 @@ class CubicPyApp(ShowBase):
         # アプリ情報をテキスト表示
         self.top_left_text = Draw2DText(self.font, self.a2dTopLeft, '')
         self.bottom_left_text = Draw2DText(self.font, self.a2dBottomLeft, '', pos=(0.05, 0.1))
-        self.space_button_text = Draw2DText(self.font, self.a2dTopRight, 'Space', pos=(-0.3, -1.0), fg=(1, 0, 0, 1), frame=(1, 0, 0, 1))
+        self.space_button_text = Draw2DText(self.font, self.a2dTopRight, 'Space', pos=(-0.3, -1.0), fg=(1, 0, 0, 1),
+                                            frame=(1, 0, 0, 1))
         self.space_button_text.hide()
-        self.x_button_text = Draw2DText(self.font, self.a2dTopRight, 'x', pos=(-0.4, -1.0), fg=(1, 0, 0, 1), frame=(1, 0, 0, 1))
+        self.x_button_text = Draw2DText(self.font, self.a2dTopRight, 'x', pos=(-0.4, -1.0), fg=(1, 0, 0, 1),
+                                        frame=(1, 0, 0, 1))
         self.x_button_text.hide()
 
         # コードファイルが指定されていれば、ワールド構築
@@ -88,19 +94,40 @@ class CubicPyApp(ShowBase):
         self.physics.update(dt)
         return task.cont
 
+    # カスタムキーハンドラの設定メソッド
+    def set_key_handler(self, handler):
+        """カスタムキーハンドラを設定"""
+        self.custom_key_handler = handler
+
+        # InputHandlerクラスのカスタムハンドラ設定メソッドを使用
+        if hasattr(self.input_handler, 'set_custom_handler'):
+            self.input_handler.set_custom_handler(handler)
+        else:
+            # フォールバック: InputHandlerが対応していない場合
+            print("Warning: InputHandler does not support custom handlers. Some functionality may be limited.")
+
+            # 基本的なキーをバインド
+            for key in "abcdefghijklmnopqrstuvwxyz":
+                self.accept(key, lambda k=key: handler(k))
+
+            # 特殊キー
+            self.accept("space", lambda: handler("space"))
+
     # ApiMethodクラスのメソッドを統合
     def add_cube(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
                  base_point=0, remove=False, velocity=(0, 0, 0)):
         """箱を追加"""
         return self.api.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
 
-    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
-                 base_point=0, remove=False, velocity=(0, 0, 0)):
+    def add_sphere(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1,
+                   hpr=(0, 0, 0),
+                   base_point=0, remove=False, velocity=(0, 0, 0)):
         """球を追加"""
         return self.api.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
 
-    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1, hpr=(0, 0, 0),
-                 base_point=0, remove=False, velocity=(0, 0, 0)):
+    def add_cylinder(self, position=(0, 0, 0), scale=(1, 1, 1), color=(0.5, 0.5, 0.5), mass=1, color_alpha=1,
+                     hpr=(0, 0, 0),
+                     base_point=0, remove=False, velocity=(0, 0, 0)):
         """円柱を追加"""
         return self.api.add_cylinder(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
 
@@ -171,8 +198,16 @@ class CubicPyApp(ShowBase):
         self.world_manager.rebuild()
 
     # メソッドをオーバーライド
-    def run(self):
-        """世界を構築して実行"""
+    def run(self, key_handler=None):
+        """
+        世界を構築して実行
+
+        Args:
+            key_handler (function, optional): キー入力時に呼び出されるコールバック関数
+        """
+        if key_handler:
+            self.set_key_handler(key_handler)
+
         if self.code_file is None:
             # APIからのオブジェクトデータでワールドを構築
             self.world_manager.build_from_api_data()

@@ -35,8 +35,8 @@ class Cube:
         self.rigid_cube = BulletRigidBodyNode('Cube')
         self.rigid_cube.setMass(self.node_mass)
         self.rigid_cube.addShape(self.cube_shape)
-        self.rigid_cube.setRestitution(self.app.RESTITUTION)
-        self.rigid_cube.setFriction(self.app.FRICTION)
+        self.rigid_cube.setRestitution(self.app.restitution)
+        self.rigid_cube.setFriction(self.app.friction)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_cube)
 
         # ノードパス - 親ノードが指定されている場合はその下に配置

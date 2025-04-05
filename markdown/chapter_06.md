@@ -215,7 +215,7 @@ create_house(12, 0, 10, 9, 8, roof_angle=60)  # 右側に大きな家
 app.run()
 ```
 
-このコードでは、`create_house`関数内で座標変換を使って、「家」という複雑な構造物を作っています。異なる位置に、異なるサイズの家を簡単に配置できることに注目してください。実行してみましょう。
+このコードでは、`create_house`関数内で座標変換を使って、「家」という複雑な構造物を作っています。異なる位置に、異なるサイズの家を簡単に配置できることに注目してください。次のコマンドで実行してみましょう。
 
 ```bash
 python house_with_matrix.py
@@ -231,123 +231,52 @@ python house_with_matrix.py
 
 ## テキスト表示機能の活用
 
-APIモードでは、画面上にテキストを表示することができます。これは、ゲームのスコア表示や、操作方法の説明などに便利です。balling_game_with_text_display.py という名前でファイルを作成し、次のコードを入力してください。
+APIモードでは、画面上にテキストを表示することができます。これは、ゲームのスコア表示や、操作方法の説明などに便利です。thrower_with_text_display.py という名前でファイルを作成し、次のコードを入力してください。
 
 ```python
 from cubicpy import CubicPyApp
-import time
 
 # アプリケーションのインスタンスを作成
 app = CubicPyApp()
 
-# 簡単なボウリングゲームのセットアップ
+# 壁を追加
+for j in range(20):
+    for i in range(20):
+        app.add_cube(
+            position=(20, i, j),  # 位置
+            scale=(1, 1, 1),     # サイズ
+            color=(0.5, 0.5, 0.5)  # 色（灰色）
+        )
 
-# ピンを配置
-pin_positions = [
-    (0, 0, 0),      # 一番前のピン
-    (-1, 1, 0), (1, 1, 0),  # 2列目
-    (-2, 2, 0), (0, 2, 0), (2, 2, 0),  # 3列目
-]
-
-for pos in pin_positions:
-    app.add_cylinder(
-        position=(pos[0], pos[1], 1),
-        scale=(0.5, 0.5, 2),
-        color=(1, 1, 1)  # 白
+# 投擲機を追加
+for i in range(10):
+    app.add_sphere(
+        position=(0, i * 2, 0),  # 位置
+        scale=(2, 2, 2),     # サイズ
+        color=(0.8, 0.2, 0.2),  # 色（赤）
+        mass=10,  # 質量
+        velocity=(i, 0, i)  # 初速
     )
 
-# ボールを作成
-app.add_sphere(
-    position=(0, -10, 1),
-    scale=(1, 1, 1),
-    color=(0.3, 0.3, 0.8),  # 青
-    mass=10,
-    vec=(0, 10, 0)  # 前方向に発射
-)
-
 # テキスト表示
-app.set_top_left_text("ボウリングゲーム: スペースキーでボールを発射！")
+app.set_top_left_text('投擲機シミュレーション: スペースキーで発射！')
 app.set_bottom_left_text("操作方法: 矢印キーでカメラ移動、R でリセット")
 
-# シミュレーションを実行
+# アプリを実行
 app.run()
 ```
 
-このコードでは、画面の左上と左下にテキストを表示しています。ゲームの説明やヒントなど、様々な用途に使うことができます。
+このコードでは、画面の左上と左下にテキストを表示しています。ゲームの説明やヒントなど、様々な用途に使うことができます。次のコマンドでアプリを実行します。
 
-![Text Display](https://creativival.github.io/CubicPy/assets/text_display.png)
-
-**▲図5▲ 画面上にテキストを表示したボウリングゲーム**
-
-> 💡 **先生からのヒント**: テキスト表示は、あなたが作ったアプリケーションをより使いやすくするために重要です。特に複雑な操作が必要なゲームやシミュレーションでは、ユーザーへの指示を表示するのに役立ちます！
-
-## オブジェクトの動的操作
-
-APIモードでは、オブジェクトを動的に操作することもできます。例えば、オブジェクトの発射やリセット機能を自分でコントロールできます。dynamic_control.py という名前でファイルを作成し、次のコードを入力してください。
-
-```python
-from cubicpy import CubicPyApp
-import time
-
-# アプリケーションのインスタンスを作成
-app = CubicPyApp()
-
-# ターゲットとなる箱を配置
-for i in range(5):
-    for j in range(3):
-        app.add_cube(
-            position=(i*2, j*2, 0),
-            scale=(1, 1, 1),
-            color=(0.8, 0.2, 0.2)  # 赤
-        )
-
-# 動的に球を発射する関数
-def launch_sequence():
-    # カウントダウンのテキスト表示
-    for count in range(3, 0, -1):
-        app.set_top_left_text(f"発射まであと{count}秒...")
-        time.sleep(1)
-    
-    app.set_top_left_text("発射！")
-    
-    # 球を作成して発射
-    app.add_sphere(
-        position=(-5, 5, 1),
-        scale=(1, 1, 1),
-        color=(0.2, 0.2, 0.8),  # 青
-        mass=10,
-        vec=(15, -5, 0)  # 右下向きに発射
-    )
-    
-    # 球が発射された瞬間に実際に動かす
-    app.launch_objects()
-    
-    # メッセージを更新
-    time.sleep(1)
-    app.set_top_left_text("Rキーでリセット、もう一度発射するには何かキーを押してください")
-
-# 初期情報を表示
-app.set_top_left_text("何かキーを押して発射シーケンスを開始...")
-
-# カスタムキーハンドラを設定（コールバック関数）
-# 注: これは上級者向けの技術で、一般的なAPIの一部ではありません
-# この例のみ参考用として提供します
-def key_handler(key):
-    if key != 'r':  # リセットキー以外が押されたとき
-        launch_sequence()
-
-# シミュレーションを実行（任意のキーハンドラ付き）
-# 注: key_handler引数は一般的なAPIの一部ではなく、学習目的としてのみ提供
-app.run(key_handler=key_handler)
+```bash
+python thrower_with_text_display.py
 ```
 
-このコードでは、キーボード入力に応じて球を発射するシーケンスを開始する例を示しています。`launch_objects()`メソッドを使うことで、初速度を持つオブジェクトを任意のタイミングで発射できます。
+![Text Display](https://creativival.github.io/CubicPy/assets/thrower_with_text_display.png)
 
-![Dynamic Control](https://creativival.github.io/CubicPy/assets/dynamic_control.png)
+**▲図5▲ 画面上にテキストを表示した投擲機シミュレーション**
 
-**▲図6▲ 動的にオブジェクトを操作するアプリケーション**
-
-> 🚀 **すごいね！**: 時間の経過に合わせてオブジェクトを操作したり、メッセージを変更したりできるようになりました。この技術を使えば、本格的なゲームやシミュレーションも作れるようになります！
+> 💡 **先生からのヒント**: テキスト表示は、あなたが作ったアプリケーションをより使いやすくするために重要です。特に複雑な操作が必要なゲームやシミュレーションでは、ユーザーへの指示を表示するのに役立ちます！
 
 ## コードの書き方が変わる！より自由度の高い表現
 
@@ -401,192 +330,199 @@ APIモードの力を使って、より複雑な建築物を作ってみまし�
 
 ```python
 from cubicpy import CubicPyApp
-import math
 
 # アプリケーションのインスタンスを作成（低重力設定）
 app = CubicPyApp(gravity_factor=0.1)
+
 
 # 神社を作成する関数
 def create_shrine(pos_x, pos_y, size):
     # 座標系を神社の位置に移動
     app.push_matrix()
     app.translate(pos_x, pos_y, 0)
-    
+
     # 基壇（土台）
     platform_height = size * 0.2
     platform_width = size * 3
     platform_depth = size * 2
     app.add_cube(
-        position=(0, 0, platform_height/2),
+        position=(0, 0, 0),
         scale=(platform_width, platform_depth, platform_height),
-        color=(0.7, 0.7, 0.7)  # 灰色
+        color=(0.7, 0.7, 0.7),  # 灰色
+        base_point=1,  # 底面中心
     )
-    
+
     # 神社本体
     main_width = size * 2
     main_depth = size * 1.5
     main_height = size * 1.2
     app.add_cube(
-        position=(0, 0, platform_height + main_height/2),
+        position=(0, 0, platform_height),
         scale=(main_width, main_depth, main_height),
-        color=(0.8, 0.3, 0.2)  # 朱色
+        color=(0.8, 0.3, 0.2),  # 朱色
+        base_point=1,  # 底面中心
     )
-    
+
     # 屋根
     roof_width = main_width * 1.3
     roof_depth = main_depth * 1.3
     roof_height = size * 0.8
-    
+
     # 屋根の基部
     roof_base_height = size * 0.1
     app.add_cube(
-        position=(0, 0, platform_height + main_height + roof_base_height/2),
+        position=(0, 0, platform_height + main_height),
         scale=(roof_width, roof_depth, roof_base_height),
-        color=(0.1, 0.1, 0.1)  # 黒
+        color=(0.1, 0.1, 0.1),  # 黒
+        base_point=1,  # 底面中心
     )
-    
-    # 反り屋根を表現（複数の立方体を重ねて表現）
+
+    # 屋根を表現（複数の立方体を重ねて表現）
     roof_layers = 10
     for i in range(roof_layers):
-        progress = i / (roof_layers - 1)
+        progress = (i + 1) / (roof_layers - 1)
         layer_width = roof_width * (1 - 0.4 * progress)
         layer_depth = roof_depth * (1 - 0.4 * progress)
         layer_height = roof_height / roof_layers
-        
-        curve_factor = 4 * progress * (1 - progress)  # 放物線状の曲線を作る係数
-        
+
         layer_z = platform_height + main_height + roof_base_height + \
-                 i * layer_height + curve_factor * roof_height * 0.2
-        
+                  i * layer_height
+
         app.add_cube(
             position=(0, 0, layer_z),
             scale=(layer_width, layer_depth, layer_height),
-            color=(0.1, 0.1, 0.1)  # 黒
+            color=(0.1, 0.1, 0.1),  # 黒
+            base_point=1,  # 底面中心
         )
-    
+
     # 鳥居
     torii_height = size * 2
     torii_width = size * 1.5
     pillar_thickness = size * 0.1
-    
+
     # 鳥居の位置（神社の手前）
     app.push_matrix()
-    app.translate(0, platform_depth, 0)
-    
+    app.translate(0, -platform_depth, 0)
+
     # 柱（左右）
     app.add_cube(
-        position=(-torii_width/2, 0, torii_height/2),
+        position=(-torii_width / 2, 0, 0),
         scale=(pillar_thickness, pillar_thickness, torii_height),
-        color=(0.9, 0.2, 0.1)  # 朱色
+        color=(0.9, 0.2, 0.1),  # 朱色
+        base_point=1,  # 底面中心
     )
-    
+
     app.add_cube(
-        position=(torii_width/2, 0, torii_height/2),
+        position=(torii_width / 2, 0, 0),
         scale=(pillar_thickness, pillar_thickness, torii_height),
-        color=(0.9, 0.2, 0.1)  # 朱色
+        color=(0.9, 0.2, 0.1),  # 朱色
+        base_point=1,  # 底面中心
     )
-    
+
     # 上部の横木
     app.add_cube(
-        position=(0, 0, torii_height - pillar_thickness/2),
-        scale=(torii_width + pillar_thickness, pillar_thickness, pillar_thickness),
-        color=(0.9, 0.2, 0.1)  # 朱色
+        position=(0, 0, torii_height),
+        scale=(torii_width + pillar_thickness + 4, pillar_thickness, pillar_thickness),
+        color=(0.9, 0.2, 0.1),  # 朱色
+        base_point=1,  # 底面中心
     )
-    
+
     # 中間の横木
     app.add_cube(
-        position=(0, 0, torii_height - pillar_thickness*3),
-        scale=(torii_width + pillar_thickness*2, pillar_thickness, pillar_thickness*2),
-        color=(0.9, 0.2, 0.1)  # 朱色
+        position=(0, -pillar_thickness, torii_height - pillar_thickness * 3),
+        scale=(torii_width + pillar_thickness + 4, pillar_thickness, pillar_thickness),
+        color=(0.9, 0.2, 0.1),  # 朱色
+        base_point=1,  # 底面中心
     )
-    
+
     # 鳥居の座標系を戻す
     app.pop_matrix()
-    
+
     # 参道（アプローチ通路）
     path_length = size * 5
     path_width = main_width * 0.6
     path_height = size * 0.05
-    
+
     app.add_cube(
-        position=(0, platform_depth + path_length/2, path_height/2),
+        position=(0, -(platform_depth + path_length) / 2, 0),
         scale=(path_width, path_length, path_height),
-        color=(0.8, 0.8, 0.7)  # 砂色
+        color=(0.8, 0.8, 0.7),  # 砂色
+        base_point=1,  # 底面中心
     )
-    
+
     # 石灯籠（左右に配置）
     lantern_height = size * 0.8
     lantern_dist = path_width * 0.8
-    
+
     # 座標系を参道の位置に移動
     app.push_matrix()
-    app.translate(0, platform_depth + size, 0)
-    
+    app.translate(0, -(platform_depth + size), path_height)
+
     for side in [-1, 1]:
         app.push_matrix()
-        app.translate(side * lantern_dist/2, 0, 0)
-        
+        app.translate(side * lantern_dist / 2, 0, 0)
+
         # 土台
         app.add_cube(
-            position=(0, 0, lantern_height*0.1),
-            scale=(size*0.3, size*0.3, lantern_height*0.2),
-            color=(0.6, 0.6, 0.6)  # 灰色
+            position=(0, 0, 0),
+            scale=(size * 0.3, size * 0.3, lantern_height * 0.2),
+            color=(0.6, 0.6, 0.6),  # 灰色
+            base_point=1,  # 底面中心
         )
-        
+
         # 柱
         app.add_cylinder(
-            position=(0, 0, lantern_height*0.3),
-            scale=(size*0.1, size*0.1, lantern_height*0.3),
-            color=(0.7, 0.7, 0.7)  # 灰色
+            position=(0, 0, lantern_height * 0.2),
+            scale=(size * 0.1, size * 0.1, lantern_height * 0.3),
+            color=(0.7, 0.7, 0.7),  # 灰色
+            base_point=1,  # 底面中心
         )
-        
+
         # 灯籠本体
         app.add_cube(
-            position=(0, 0, lantern_height*0.55),
-            scale=(size*0.25, size*0.25, lantern_height*0.2),
-            color=(0.7, 0.7, 0.7)  # 灰色
+            position=(0, 0, lantern_height * 0.5),
+            scale=(size * 0.25, size * 0.25, lantern_height * 0.2),
+            color=(0.7, 0.7, 0.7),  # 灰色
+            base_point=1,  # 底面中心
         )
-        
+
         # 灯籠の屋根
         app.add_cube(
-            position=(0, 0, lantern_height*0.7),
-            scale=(size*0.3, size*0.3, lantern_height*0.1),
-            color=(0.6, 0.6, 0.6)  # 灰色
+            position=(0, 0, lantern_height * 0.7),
+            scale=(size * 0.3, size * 0.3, lantern_height * 0.1),
+            color=(0.6, 0.6, 0.6),  # 灰色
+            base_point=1,  # 底面中心
         )
-        
+
         app.pop_matrix()
-    
+
     # 石灯籠の座標系を戻す
     app.pop_matrix()
-    
+
     # 神社全体の座標系を戻す
     app.pop_matrix()
+
 
 # 神社を作成
 create_shrine(0, 0, 4)
 
-# 地面を作成
-ground_size = 50
-app.add_cube(
-    position=(0, 0, -0.1),
-    scale=(ground_size, ground_size, 0.2),
-    color=(0.2, 0.6, 0.2),  # 緑色
-    mass=0  # 固定
-)
-
 # テキスト表示
 app.set_top_left_text("日本の神社モデル")
-app.set_bottom_left_text("操作方法: 矢印キーでカメラ移動、SHIFT+WASDQE でカメラ位置移動")
+app.set_bottom_left_text("矢印キーでカメラ移動、SHIFT+WASDQE でカメラ位置移動")
 
 # シミュレーションを実行
 app.run()
 ```
 
-このコードでは、APIモードの座標変換機能を使って、日本の神社を構成する様々な要素（本殿、鳥居、参道、石灯籠など）を組み合わせています。特に屋根の部分では、複数の立方体を少しずつずらして重ねることで、日本建築の特徴的な反り屋根を表現しています。
+このコードでは、APIモードの座標変換機能を使って、日本の神社を構成する様々な要素（本殿、鳥居、参道、石灯籠など）を組み合わせています。特に屋根の部分では、複数の立方体を少しずつずらして重ねることで、日本建築の特徴的な反り屋根を表現しています。次のコマンドを実行してみましょう。
+
+```bash
+python japanese_shrine.py
+```
 
 ![Japanese Shrine](https://creativival.github.io/CubicPy/assets/japanese_shrine.png)
 
-**▲図7▲ APIモードで作成した日本の神社モデル**
+**▲図6▲ APIモードで作成した日本の神社モデル**
 
 > 🔍 **発見ポイント**: 実際の建築物をモデル化するとき、単純な形状の組み合わせで複雑な形を表現することが重要です。座標変換を使うことで、全体の構造を把握しながら細部を作り込むことができます！
 
@@ -633,14 +569,6 @@ def create_castle(pos_x, pos_y, size):
 # お城を作成
 create_castle(0, 0, 5)
 
-# 地面
-app.add_cube(
-    position=(0, 0, -0.1),
-    scale=(50, 50, 0.2),
-    color=(0.2, 0.6, 0.2),
-    mass=0
-)
-
 # テキスト表示
 app.set_top_left_text("日本のお城モデル")
 
@@ -683,7 +611,7 @@ def create_complex_structure(x, y, size):
 
 ## 次回予告
 
-次回は「発射体でボーリングゲームを作ろう！」です。今回学んだAPIモードの知識を活用して、本格的なボーリングゲームを作成します。球の発射、ピンの配置、そして得点計算までを実装する方法を学びましょう！
+次回は「3Dボーリングゲームを作ろう！」です。今回学んだAPIモードの知識を活用して、本格的なボーリングゲームを作成します。球の発射、ピンの配置、そして得点計算までを実装する方法を学びましょう！
 
 > 🎮 **宿題（やってみよう）**: 今回学んだAPIモードを使って、自分だけのオリジナル建築物を作ってみよう。座標変換を駆使して、複雑な形状にも挑戦してみよう！
 

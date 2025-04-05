@@ -35,8 +35,8 @@ class Sphere:
         self.rigid_sphere = BulletRigidBodyNode('Sphere')
         self.rigid_sphere.setMass(self.node_mass)
         self.rigid_sphere.addShape(self.sphere_shape)
-        self.rigid_sphere.setRestitution(self.app.RESTITUTION)
-        self.rigid_sphere.setFriction(self.app.FRICTION)
+        self.rigid_sphere.setRestitution(self.app.restitution)
+        self.rigid_sphere.setFriction(self.app.friction)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_sphere)
         # 速度ベクトルがある場合は、剛体を適切に設定
         if self.velocity != Vec3(0, 0, 0):
