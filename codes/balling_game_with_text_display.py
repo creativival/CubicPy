@@ -22,7 +22,7 @@ for pos in pin_positions:
 # ボールを作成
 app.add_sphere(
     position=(0, -20, 0),
-    scale=(2, 2, 2),
+    scale=(1.2, 1.2, 1.2),
     color=(0.3, 0.3, 0.8),  # 青
     mass=10,
     velocity=(0, 10, 0),  # 前方向に発射
@@ -39,6 +39,8 @@ app.set_bottom_left_text("操作方法: 矢印キーでカメラ移動、R で�
 # ゲームロジックを追加して、移動したピンの数をスコア表示する
 try:
     app.game_logic.target_type = 'cylinder'  # ターゲットをピンに設定
+    app.game_logic.motion_state = 'fallen'  # 倒れた状態を監視
+    app.game_logic.angle_tolerance = 45  # 倒れたとみなす角度
     app.game_logic.start()
     # シミュレーションを実行（メインスレッド）
     app.run()
