@@ -1,5 +1,5 @@
 import pytest
-from panda3d.core import Vec3
+from panda3d.core import Vec3, Point3
 from direct.showbase.ShowBase import ShowBase
 from cubicpy.physics import PhysicsEngine
 
@@ -185,4 +185,112 @@ def test_collision_detection(physics_engine):
     physics_engine.bullet_world.removeGhost(ghost_node)
     ground_path.removeNode()
     box_path.removeNode()
-    ghost_path.removeNode() 
+    ghost_path.removeNode()
+
+def test_physics_object_rotation(physics_engine):
+    """物理オブジェクトの回転テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+    from panda3d.core import Vec3, Point3
+    
+    # 物理オブジェクトを作成
+    shape = BulletBoxShape((1, 1, 1))
+    node = BulletRigidBodyNode('test_object')
+    node.addShape(shape)
+    node.setMass(1.0)
+    node_path = physics_engine.app.render.attachNewNode(node)
+    
+    # 初期位置と回転を設定
+    initial_pos = Point3(0, 0, 5)
+    initial_rotation = Vec3(45, 0, 0)  # X軸周りに45度回転
+    node_path.setPos(initial_pos)
+    node_path.setHpr(initial_rotation)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(node)
+    
+    # 物理シミュレーションを更新
+    physics_engine.update(0.1)
+    
+    # 回転が変更されたことを確認
+    current_rotation = node_path.getHpr()
+    assert current_rotation != initial_rotation
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(node)
+    node_path.removeNode()
+
+def test_physics_object_velocity(physics_engine):
+    """物理オブジェクトの速度設定テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+    from panda3d.core import Vec3
+    
+    # 物理オブジェクトを作成
+    shape = BulletBoxShape((1, 1, 1))
+    node = BulletRigidBodyNode('test_object')
+    node.addShape(shape)
+    node.setMass(1.0)
+    node_path = physics_engine.app.render.attachNewNode(node)
+    
+    # 初期位置を設定
+    initial_pos = Vec3(0, 0, 5)
+    node_path.setPos(initial_pos)
+    
+    # 初期速度を設定（X軸方向に10単位/秒）
+    initial_velocity = Vec3(10, 0, 0)
+    node.setLinearVelocity(initial_velocity)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(node)
+    
+    # 物理シミュレーションを更新
+    physics_engine.update(0.1)
+    
+    # 位置が変化したことを確認（方向は問わない）
+    current_pos = node_path.getPos()
+    assert current_pos != initial_pos
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(node)
+    node_path.removeNode()
+
+def test_physics_object_collision_response(physics_engine):
+    """物理オブジェクトの衝突応答テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+    from panda3d.core import Vec3
+    
+    # 静的オブジェクト（壁）を作成
+    wall_shape = BulletBoxShape((1, 10, 10))
+    wall_node = BulletRigidBodyNode('wall')
+    wall_node.addShape(wall_shape)
+    wall_node.setMass(0)  # 静的オブジェクト
+    wall_path = physics_engine.app.render.attachNewNode(wall_node)
+    wall_path.setPos(5, 0, 5)  # X軸方向に5単位離れた位置
+    
+    # 動的オブジェクトを作成
+    box_shape = BulletBoxShape((1, 1, 1))
+    box_node = BulletRigidBodyNode('box')
+    box_node.addShape(box_shape)
+    box_node.setMass(1.0)
+    box_path = physics_engine.app.render.attachNewNode(box_node)
+    box_path.setPos(0, 0, 5)
+    
+    # 初期速度を設定（X軸方向に10単位/秒）
+    initial_velocity = Vec3(10, 0, 0)
+    box_node.setLinearVelocity(initial_velocity)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(wall_node)
+    physics_engine.bullet_world.attachRigidBody(box_node)
+    
+    # 物理シミュレーションを更新
+    physics_engine.update(0.1)
+    
+    # 衝突後、速度が変化したことを確認
+    current_velocity = box_node.getLinearVelocity()
+    assert current_velocity != initial_velocity
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(wall_node)
+    physics_engine.bullet_world.removeRigidBody(box_node)
+    wall_path.removeNode()
+    box_path.removeNode() 
