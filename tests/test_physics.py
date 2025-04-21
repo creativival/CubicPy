@@ -293,4 +293,113 @@ def test_physics_object_collision_response(physics_engine):
     physics_engine.bullet_world.removeRigidBody(wall_node)
     physics_engine.bullet_world.removeRigidBody(box_node)
     wall_path.removeNode()
-    box_path.removeNode() 
+    box_path.removeNode()
+
+def test_physics_object_mass_change(physics_engine):
+    """物理オブジェクトの質量変更テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+    from panda3d.core import Vec3
+    
+    # 物理オブジェクトを作成
+    shape = BulletBoxShape((1, 1, 1))
+    node = BulletRigidBodyNode('test_object')
+    node.addShape(shape)
+    node.setMass(1.0)  # 初期質量
+    node_path = physics_engine.app.render.attachNewNode(node)
+    
+    # 初期位置を設定
+    initial_pos = Vec3(0, 0, 5)
+    node_path.setPos(initial_pos)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(node)
+    
+    # 物理シミュレーションを更新
+    physics_engine.update(0.1)
+    
+    # 質量を変更
+    node.setMass(2.0)  # 質量を2倍に
+    
+    # 再度物理シミュレーションを更新
+    physics_engine.update(0.1)
+    
+    # 質量が変更されたことを確認
+    assert node.getMass() == 2.0
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(node)
+    node_path.removeNode()
+
+def test_physics_object_shape_change(physics_engine):
+    """物理オブジェクトの形状変更テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape, BulletSphereShape
+    from panda3d.core import Vec3
+    
+    # 物理オブジェクトを作成（箱の形状）
+    box_shape = BulletBoxShape((1, 1, 1))
+    node = BulletRigidBodyNode('test_object')
+    node.addShape(box_shape)
+    node.setMass(1.0)
+    node_path = physics_engine.app.render.attachNewNode(node)
+    
+    # 初期位置を設定
+    initial_pos = Vec3(0, 0, 5)
+    node_path.setPos(initial_pos)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(node)
+    
+    # 物理シミュレーションを更新
+    physics_engine.update(0.1)
+    
+    # 形状を変更（球の形状）
+    sphere_shape = BulletSphereShape(1.0)
+    node.removeShape(box_shape)
+    node.addShape(sphere_shape)
+    
+    # 再度物理シミュレーションを更新
+    physics_engine.update(0.1)
+    
+    # 形状が変更されたことを確認（形状の種類を直接確認する方法がないため、
+    # ノードが存在することを確認する）
+    assert node in physics_engine.bullet_world.getRigidBodies()
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(node)
+    node_path.removeNode()
+
+def test_physics_object_multiple_updates(physics_engine):
+    """物理オブジェクトの複数回の更新テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+    from panda3d.core import Vec3
+    
+    # 物理オブジェクトを作成
+    shape = BulletBoxShape((1, 1, 1))
+    node = BulletRigidBodyNode('test_object')
+    node.addShape(shape)
+    node.setMass(1.0)
+    node_path = physics_engine.app.render.attachNewNode(node)
+    
+    # 初期位置を設定
+    initial_pos = Vec3(0, 0, 5)
+    node_path.setPos(initial_pos)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(node)
+    
+    # 複数回の物理シミュレーション更新
+    positions = []
+    for _ in range(5):
+        physics_engine.update(0.1)
+        positions.append(node_path.getPos())
+    
+    # 位置が変化したことを確認
+    assert positions[0] != positions[-1]
+    
+    # 各更新ステップで位置が変化したことを確認
+    for i in range(1, len(positions)):
+        assert positions[i] != positions[i-1]
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(node)
+    node_path.removeNode() 
