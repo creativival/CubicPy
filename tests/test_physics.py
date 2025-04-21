@@ -91,3 +91,98 @@ def test_update(physics_engine):
     # 注: 実際の物理演算結果は環境によって異なるため、
     # 単に例外が発生しないことを確認する
     assert physics_engine.bullet_world is not None 
+
+def test_add_physics_object(physics_engine):
+    """物理オブジェクトの追加テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+    
+    # 物理オブジェクトを作成
+    shape = BulletBoxShape((1, 1, 1))
+    node = BulletRigidBodyNode('test_object')
+    node.addShape(shape)
+    node_path = physics_engine.app.render.attachNewNode(node)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(node)
+    
+    # 追加されたことを確認
+    assert node in physics_engine.bullet_world.getRigidBodies()
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(node)
+    node_path.removeNode()
+
+def test_physics_object_movement(physics_engine):
+    """物理オブジェクトの移動テスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
+    from panda3d.core import Vec3
+    
+    # 物理オブジェクトを作成
+    shape = BulletBoxShape((1, 1, 1))
+    node = BulletRigidBodyNode('test_object')
+    node.addShape(shape)
+    node.setMass(1.0)  # 質量を設定
+    node_path = physics_engine.app.render.attachNewNode(node)
+    
+    # 初期位置を設定
+    initial_pos = Vec3(0, 0, 10)
+    node_path.setPos(initial_pos)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(node)
+    
+    # 物理シミュレーションを複数回更新
+    for _ in range(10):  # 複数回更新して確実に落下させる
+        physics_engine.update(0.1)
+    
+    # 位置が変更されたことを確認（重力の影響で落下）
+    assert node_path.getPos().z < initial_pos.z
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(node)
+    node_path.removeNode()
+
+def test_collision_detection(physics_engine):
+    """衝突検出のテスト"""
+    from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape, BulletGhostNode
+    from panda3d.core import Vec3
+    
+    # 静的オブジェクト（地面）を作成
+    ground_shape = BulletBoxShape((10, 10, 0.5))
+    ground_node = BulletRigidBodyNode('ground')
+    ground_node.addShape(ground_shape)
+    ground_node.setMass(0)  # 静的オブジェクト
+    ground_path = physics_engine.app.render.attachNewNode(ground_node)
+    ground_path.setPos(0, 0, -1)
+    
+    # 動的オブジェクトを作成
+    box_shape = BulletBoxShape((1, 1, 1))
+    box_node = BulletRigidBodyNode('box')
+    box_node.addShape(box_shape)
+    box_path = physics_engine.app.render.attachNewNode(box_node)
+    box_path.setPos(0, 0, 5)
+    
+    # 物理ワールドに追加
+    physics_engine.bullet_world.attachRigidBody(ground_node)
+    physics_engine.bullet_world.attachRigidBody(box_node)
+    
+    # 衝突検出用のゴーストノードを作成
+    ghost_node = BulletGhostNode('ghost')
+    ghost_node.addShape(box_shape)
+    ghost_path = physics_engine.app.render.attachNewNode(ghost_node)
+    ghost_path.setPos(0, 0, 0)
+    physics_engine.bullet_world.attachGhost(ghost_node)
+    
+    # 物理シミュレーションを更新
+    physics_engine.update(1.0)
+    
+    # 衝突が検出されたことを確認
+    assert len(ghost_node.getOverlappingNodes()) > 0
+    
+    # クリーンアップ
+    physics_engine.bullet_world.removeRigidBody(ground_node)
+    physics_engine.bullet_world.removeRigidBody(box_node)
+    physics_engine.bullet_world.removeGhost(ghost_node)
+    ground_path.removeNode()
+    box_path.removeNode()
+    ghost_path.removeNode() 
