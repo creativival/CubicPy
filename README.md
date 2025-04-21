@@ -391,6 +391,40 @@ Released under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 Bug reports and feature improvement suggestions are welcome via GitHub Issues or Pull Requests. New sample creation and documentation improvements are also welcome.
 
+## Development and Release Process
+
+### Testing Before Release
+
+Before releasing a new version to PyPI, it's important to run the tests to ensure everything works correctly:
+
+```bash
+# Install development dependencies
+pip install pytest
+
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/test_physics.py
+```
+
+### Publishing to PyPI
+
+After confirming that all tests pass, you can publish the package to PyPI:
+
+```bash
+# Install build tools
+pip install build twine
+
+# Build the package
+python -m build
+
+# Upload to PyPI (requires PyPI account and token)
+python -m twine upload dist/*
+```
+
+For more information about PyPI tokens, see the [PyPI documentation](https://pypi.org/help/#apitoken).
+
 ---
 
 Have fun learning programming with CubicPy!
