@@ -8,6 +8,7 @@ import os
 import sys
 import locale
 import random
+import asyncio
 from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR, __version__, WebSocketServer
 
 # 言語に応じたメッセージ
@@ -95,6 +96,12 @@ def parse_window_size(size_str, lang):
         return None
 
 
+async def run_websocket_server(physics_engine):
+    """WebSocketサーバーを非同期で実行"""
+    server = WebSocketServer(physics_engine, "websocket.voxelamming.com")
+    await server.connect()
+
+
 def main():
     """コマンドラインエントリーポイント"""
     # システムの言語を取得
@@ -178,15 +185,19 @@ def main():
             return 1
 
     try:
+        # アプリを起動
+        app = CubicPyApp(
+            file_path, gravity_factor=args.gravity, window_size=window_size, camera_lens=args.camera_lens)
 
         # 外部通信モードの場合
         if args.external:
             print(f"WebSocketクライアントを開始します")
-            start_websocket_server(app.physics, "websocket.voxelamming.com", 8765, None)
+            # 非同期イベントループを作成
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            # WebSocketサーバーを非同期で実行
+            loop.run_until_complete(run_websocket_server(app.physics))
 
-        # アプリを起動
-        app = CubicPyApp(
-            file_path, gravity_factor=args.gravity, window_size=window_size, camera_lens=args.camera_lens)
         app.run()
     except Exception as e:
         print(msgs['error_application'].format(e))
