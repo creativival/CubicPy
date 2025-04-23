@@ -27,7 +27,10 @@ class WebSocketClient:
 
             # ルーム名を送信
             if not self.room:
-                self.room = str(random.randint(1000, 9999))
+                self.logger.warning("Room number not specified. Using server's default room.")
+                print("ルーム番号が指定されていません。サーバーのデフォルトルームを使用します。")
+                self.room = "default"  # サーバーがデフォルトルームを使用するように指示
+            
             await self.websocket.send(self.room)
             self.logger.debug(f"Sent room name: {self.room}")
 

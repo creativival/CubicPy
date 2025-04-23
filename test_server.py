@@ -4,6 +4,7 @@ import logging
 import json
 import time
 import argparse
+import random
 
 # ロギングの設定
 logging.basicConfig(
@@ -20,11 +21,16 @@ class WebSocketServer:
         self.rooms = {}  # ルーム名とWebSocket接続のマッピング
         self.logger.debug(f"WebSocketServer initialized on {host}:{port}")
         
-        # デフォルトルームが指定されている場合は事前に作成
-        if self.default_room:
-            self.rooms[self.default_room] = set()
-            self.logger.debug(f"Created default room: {self.default_room}")
-            print(f"\nデフォルトルームを作成しました: {self.default_room}")
+        # デフォルトルームが指定されていない場合はランダムなルーム番号を生成
+        if not self.default_room:
+            self.default_room = str(random.randint(1000, 9999))
+            self.logger.debug(f"Generated random room number: {self.default_room}")
+            print(f"\nランダムなルーム番号を生成しました: {self.default_room}")
+        
+        # デフォルトルームを作成
+        self.rooms[self.default_room] = set()
+        self.logger.debug(f"Created default room: {self.default_room}")
+        print(f"\nデフォルトルームを作成しました: {self.default_room}")
 
     async def handle_client(self, websocket, path):
         """クライアントの接続を処理"""
