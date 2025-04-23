@@ -93,6 +93,10 @@ body_data.append({
 })
 ```
 
+## コマンドモードの他のサンプル
+
+追加のサンプルコードは「codes」ディレクトリにあります。`cubicpy your_file.py`コマンドで実行します。
+
 ## オブジェクト定義の詳細（cubicコマンド用）
 
 `body_data`リストに追加するオブジェクト定義の詳細：
@@ -169,6 +173,10 @@ app.from_body_data(body_data)
 # シミュレーション実行
 app.run()
 ```
+
+## APIモードの他のサンプルコード
+
+追加のサンプルコードは「api_codes」ディレクトリにあります。`python your_file.py`コマンドで実行します。
 
 ## APIモードのメソッド詳細
 

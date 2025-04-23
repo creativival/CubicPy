@@ -93,6 +93,10 @@ body_data.append({
 })
 ```
 
+## Other Samples for Command Mode
+
+Additional sample code can be found in the "codes" directory. Run with `cubicpy your_file.py` command.
+
 ## Object Definition Details (for cubicpy command)
 
 Details of object definitions to add to the `body_data` list:
@@ -169,6 +173,10 @@ app.from_body_data(body_data)
 # Run simulation
 app.run()
 ```
+
+## Other Samples for API Mode
+
+Additional sample code can be found in the "api_codes" directory. Run with `python your_file.py` command.
 
 ## API Mode Method Details
 
