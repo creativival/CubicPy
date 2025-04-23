@@ -54,32 +54,35 @@ class WebSocketServer:
                     self.logger.info(f"Received data: {data}")
 
                     # メッセージを処理
-                    if data["type"] == "place_cube":
-                        position = data["position"]
+                    print(data)
+                    if data["boxes"]:
                         size = data["size"]
-                        color = data["color"]
-                        
-                        # 物理エンジンにキューブを追加
-                        if self.app:
-                            self.app.api.add_cube(
-                                position=Vec3(position["x"], position["y"], position["z"]),
-                                scale=size,
-                                color=Vec3(color["r"], color["g"], color["b"]),
-                            )
+                        shape = data["shape"]
+                        object_type = data["shape"] if data["shape"] == "sphere" else "cube"
+                        if shape == "plane":
+                            scale = (size, size, size * 0.001)
+                        else:
+                            scale = (size, size, size)
+
+                        for box in data["boxes"]:
+                            print(box)
+                            x, y, z, r, g, b, alpha, texture = box
+                            # キューブを配置
+                            object_data = {
+                                'position': Vec3(x, -z, y) * size,
+                                'scale': scale,
+                                'color': Vec3(r, g, b),
+                                'color_alpha': alpha
+                            }
+                            self.app.api.add(object_type, **object_data)
 
                         # ワールドを再生成
                         self.app.reset_all()
                         
-                        response = {
-                            "type": "cube_placed",
-                            "position": position,
-                            "size": size,
-                            "color": color,
-                            "message": f"キューブを配置しました: 位置({position['x']}, {position['y']}, {position['z']})"
-                        }
-                        await self.websocket.send(json.dumps(response))
+                        response = 'オブジェクトの配置が完了しました'
+                        await self.websocket.send(response)
                         self.logger.info(f"Processed cube placement: {response}")
-                        print(f"キューブ配置コマンドを受信しました: 位置({position['x']}, {position['y']}, {position['z']})")
+                        print(response)
 
                 except json.JSONDecodeError as e:
                     self.logger.error(f"Invalid JSON message: {message}")
