@@ -63,18 +63,26 @@ class WebSocketServer:
                             scale = (size, size, size * 0.001)
                         else:
                             scale = (size, size, size)
-
+                        
+                        if data["nodeTransform"]:
+                            x, y, z, h, p, r = data["nodeTransform"]
+                            self.app.transform_manager.push_matrix()
+                            self.app.transform_manager.translate(x, z, -y)  # 座標変換
+                            self.app.transform_manager.rotate_hpr(h, p, r)  # 座標変換
                         for box in data["boxes"]:
                             print(box)
                             x, y, z, r, g, b, alpha, texture = box
                             # キューブを配置
                             object_data = {
-                                'position': Vec3(x, -z, y) * size,
+                                'position': Vec3(x, -z, y) * size,  # 座標変換
                                 'scale': scale,
                                 'color': Vec3(r, g, b),
                                 'color_alpha': alpha
                             }
                             self.app.api.add(object_type, **object_data)
+                        
+                        if data["nodeTransform"]:
+                            self.app.transform_manager.pop_matrix()
 
                         # ワールドを再生成
                         self.app.reset_all()
