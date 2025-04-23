@@ -32,6 +32,9 @@ from .world_manager import WorldManager
 # ゲームロジック
 from .game_logic import GameLogic
 
+# WebSocket通信
+from .websocket_server import WebSocketServer
+
 # メインアプリケーション
 from .app import CubicPyApp
 

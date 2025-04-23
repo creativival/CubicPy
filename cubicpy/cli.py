@@ -8,7 +8,7 @@ import os
 import sys
 import locale
 import random
-from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR, __version__
+from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR, __version__, WebSocketServer
 
 # 言語に応じたメッセージ
 MESSAGES = {
@@ -112,6 +112,8 @@ def main():
                         help=msgs['list_help'])
     parser.add_argument('--gravity', '-g', type=float, default=DEFAULT_GRAVITY_FACTOR,
                         help=msgs['gravity_help'])
+    parser.add_argument('--external', '-x', action='store_true',
+                        help='WebSocket通信モードで起動')
     parser.add_argument('--window-size', '-w', default="900,600",
                         help=msgs['window_size_help'])
     parser.add_argument('--version', '-v', action='store_true',
@@ -176,6 +178,12 @@ def main():
             return 1
 
     try:
+
+        # 外部通信モードの場合
+        if args.external:
+            print(f"WebSocketクライアントを開始します")
+            start_websocket_server(app.physics, "websocket.voxelamming.com", 8765, None)
+
         # アプリを起動
         app = CubicPyApp(
             file_path, gravity_factor=args.gravity, window_size=window_size, camera_lens=args.camera_lens)

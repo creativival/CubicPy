@@ -9,15 +9,15 @@ def get_font_files():
 
 setup(
     name="cubicpy",
-    version=__version__,
+    version="0.1.0",
     packages=find_packages(),
     include_package_data=True,
     package_data={
         "cubicpy": ["models/*.egg", "examples/*.py", "font/*.ttf"],
     },
     install_requires=[
-        "panda3d>=1.10.15",
-        "numpy",
+        "panda3d",
+        "websockets",
     ],
     entry_points={
         "console_scripts": [

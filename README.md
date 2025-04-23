@@ -393,6 +393,16 @@ Bug reports and feature improvement suggestions are welcome via GitHub Issues or
 
 ## Development and Release Process
 
+### Testing CLI mode
+
+Before releasing a new version to PyPI, test cli.py on local file.
+
+```
+PYTHONPATH=$PYTHONPATH:. python cubicpy/cli.py
+```
+
+
+
 ### Testing Before Release
 
 Before releasing a new version to PyPI, it's important to run the tests to ensure everything works correctly:
