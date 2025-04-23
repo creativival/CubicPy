@@ -1,5 +1,7 @@
 LICENSE
+MANIFEST.in
 README.md
+pyproject.toml
 setup.py
 cubicpy/__init__.py
 cubicpy/api_method.py

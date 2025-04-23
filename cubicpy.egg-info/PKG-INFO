@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: cubicpy
-Version: 0.1.23
+Version: 0.1.24
 Summary: A Python library for creating 3D basic shape models and animations with Physics.
 Home-page: https://github.com/creativival/CubicPy
 Author: creativival
@@ -17,6 +17,16 @@ Requires-Dist: panda3d
 Requires-Dist: websockets
 Requires-Dist: numpy
 Requires-Dist: scipy
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
 
 # CubicPy
 
