@@ -14,8 +14,8 @@ logging.basicConfig(
 )
 
 class WebSocketServer:
-    def __init__(self, physics_engine, host="websocket.voxelamming.com", room=None):
-        self.physics_engine = physics_engine
+    def __init__(self, api, host="websocket.voxelamming.com", room=None):
+        self.api = api
         # ローカルホストの場合はws://を使用
         protocol = "wss://" if host != "localhost" else f"ws://{host}:8765"
         self.relay_uri = f"{protocol}{host}"
@@ -60,8 +60,8 @@ class WebSocketServer:
                         color = data["color"]
                         
                         # 物理エンジンにキューブを追加
-                        if self.physics_engine:
-                            self.physics_engine.add_cube(
+                        if self.api:
+                            self.api.add_cube(
                                 Vec3(position["x"], position["y"], position["z"]),
                                 size,
                                 color

@@ -172,6 +172,8 @@ def main():
         # 安全なパスに変換
         file_path = os.path.abspath(file_path)
         print(msgs['running_file'].format(file_path))
+    elif args.external:
+        file_path = None
     else:
         # デフォルトサンプル - 最初のサンプルを使用
         default_sample = random.choice(list_samples()) if list_samples() else 'cube_tower_sample'
@@ -196,8 +198,10 @@ def main():
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             # WebSocketサーバーを非同期で実行
-            loop.run_until_complete(run_websocket_server(app.physics))
+            loop.run_until_complete(run_websocket_server(app.api))
 
+        # アプリケーションを実行
+        print(f"アプリケーションを実行します")
         app.run()
     except Exception as e:
         print(msgs['error_application'].format(e))
