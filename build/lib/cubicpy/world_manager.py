@@ -134,23 +134,32 @@ class WorldManager:
 
     def remove_selected(self):
         """選択したオブジェクトを削除"""
-        for body in self.body_objects:
-            remove_selected = getattr(body['object'], 'remove_selected', False)
-            if remove_selected:
-                body['object'].remove()
-                self.body_objects.remove(body)
+        remove_bodies = [body for body in self.body_objects if body['object'].remove_selected]
 
-                # 物理エンジンを即座に更新  # TODO 削除の毎回実行すべきか？
-                self.app.physics.bullet_world.doPhysics(0)
-                break
+        # 削除対象のオブジェクトがない場合は何もしない
+        if not remove_bodies:
+            return
+
+        if len(remove_bodies) == 1:
+            # 削除対象が1つだけの場合、xボタンを非表示にする
+            self.app.x_button_text.hide()
+
+        # 最初に見つかったオブジェクトを削除
+        first_remove_body = remove_bodies[0]
+        first_remove_body['object'].remove()
+        self.body_objects.remove(first_remove_body)
+
+        # 物理エンジンを即座に更新  # TODO 削除の毎回実行すべきか？
+        self.app.physics.bullet_world.doPhysics(0)
 
     def launch_objects(self):
         """初速度ベクトルが設定されたオブジェクトを発射"""
         for body in self.body_objects:
             obj = body['object']
-            if hasattr(obj, 'vec') and obj.vec != Vec3(0, 0, 0):
+            if hasattr(obj, 'velocity') and obj.velocity != Vec3(0, 0, 0):
                 obj.apply_velocity()
-                print(f"オブジェクトを速度 {obj.vec} で発射しました")
+                self.app.space_button_text.hide()
+                print(f"オブジェクトを速度 {obj.velocity} で発射しました")
 
     @staticmethod
     def add_default_ground(body_data):

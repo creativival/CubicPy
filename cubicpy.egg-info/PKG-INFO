@@ -1,27 +1,20 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.1
 Name: cubicpy
-Version: 0.1.9
+Version: 0.1.22
 Summary: A Python library for creating 3D basic shape models and animations with Physics.
 Home-page: https://github.com/creativival/CubicPy
 Author: creativival
+Author-email: creativival@gmail.com
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Intended Audience :: Education
 Classifier: Topic :: Education :: Computer Aided Instruction (CAI)
+Classifier: Operating System :: OS Independent
 Requires-Python: >=3.9
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: panda3d>=1.10.15
 Requires-Dist: numpy
-Dynamic: author
-Dynamic: classifier
-Dynamic: description
-Dynamic: description-content-type
-Dynamic: home-page
-Dynamic: license-file
-Dynamic: requires-dist
-Dynamic: requires-python
-Dynamic: summary
 
 # CubicPy
 
@@ -259,6 +252,26 @@ from_body_data(body_data)
 ```
 - `body_data`: List of object definitions (dictionaries) as used by the cubicpy command
 
+### Text Display API Methods
+
+You can display text on the application screen.
+
+```python
+set_top_left_text(text)
+```
+
+Displays text at the top-left corner of the screen.
+
+- text: The text to display
+
+```python
+set_bottom_left_text(text)
+```
+
+Displays text at the bottom-left corner of the screen.
+
+- text: The text to display
+
 ### Coordinate Transformation Methods
 
 CubicPy provides coordinate transformation methods that work similarly to Processing, allowing you to place objects relative to different coordinate systems. These methods make complex object positioning much easier.
@@ -395,6 +408,40 @@ Released under the MIT License. See the [LICENSE](LICENSE) file for details.
 ## Contribution
 
 Bug reports and feature improvement suggestions are welcome via GitHub Issues or Pull Requests. New sample creation and documentation improvements are also welcome.
+
+## Development and Release Process
+
+### Testing Before Release
+
+Before releasing a new version to PyPI, it's important to run the tests to ensure everything works correctly:
+
+```bash
+# Install development dependencies
+pip install pytest
+
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/test_physics.py
+```
+
+### Publishing to PyPI
+
+After confirming that all tests pass, you can publish the package to PyPI:
+
+```bash
+# Install build tools
+pip install build twine
+
+# Build the package
+python -m build
+
+# Upload to PyPI (requires PyPI account and token)
+python -m twine upload dist/*
+```
+
+For more information about PyPI tokens, see the [PyPI documentation](https://pypi.org/help/#apitoken).
 
 ---
 

@@ -11,7 +11,7 @@ for i in range(10):
         'scale': (1, 1, 1),
         'color': (i / 10, 0, 1 - i / 10),
         'mass': 1,
-        'vec': (i, 0, i)
+        'velocity': (i, 0, i)
     })
 
 # Create target object data

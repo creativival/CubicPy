@@ -7,18 +7,19 @@ class Cylinder:
     def __init__(self, app, cylinder, parent_node=None):
         # print(cylinder)
         self.app = app
+        self.type = 'cylinder'
 
         # スケール・色・質量の設定
         self.node_scale = Vec3(cylinder['scale']) if 'scale' in cylinder else (1, 1, 1)
         self.node_color = cylinder['color'] if 'color' in cylinder else (0.5, 0.5, 0.5)
         self.node_mass = cylinder['mass'] if 'mass' in cylinder else 1
-        self.node_hpr = cylinder['hpr'] if 'hpr' in cylinder else Vec3(0, 0, 0)
+        self.node_hpr = Vec3(cylinder['hpr']) if 'hpr' in cylinder else Vec3(0, 0, 0)
         self.color_alpha = cylinder['color_alpha'] if 'color_alpha' in cylinder else 1
         # 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
         self.base_point = cylinder['base_point'] if 'base_point' in cylinder else 0
         self.remove_selected = cylinder['remove'] if 'remove' in cylinder else False
         # 初速度ベクトルの設定を追加
-        self.vec = Vec3(cylinder['vec']) if 'vec' in cylinder else Vec3(0, 0, 0)
+        self.velocity = Vec3(cylinder['velocity']) if 'velocity' in cylinder else Vec3(0, 0, 0)
 
         # 配置位置の計算
         self.node_pos = Vec3(cylinder['pos']) + get_position_offset(self)
@@ -34,43 +35,69 @@ class Cylinder:
         self.rigid_cylinder = BulletRigidBodyNode('Cylinder')
         self.rigid_cylinder.setMass(self.node_mass)
         self.rigid_cylinder.addShape(self.cylinder_shape)
-        self.rigid_cylinder.setRestitution(self.app.RESTITUTION)
-        self.rigid_cylinder.setFriction(self.app.FRICTION)
+        self.rigid_cylinder.setRestitution(self.app.restitution)
+        self.rigid_cylinder.setFriction(self.app.friction)
         self.app.physics.bullet_world.attachRigidBody(self.rigid_cylinder)
+        # 速度ベクトルがある場合は、剛体を適切に設定
+        if self.velocity != Vec3(0, 0, 0):
+            self.rigid_cylinder.setDeactivationEnabled(False)
 
         # ノードパス - 親ノードが指定されている場合はその下に配置
         if parent_node:
-            self.cylinder_node = parent_node.attachNewNode(self.rigid_cylinder)
+            self.model_node = parent_node.attachNewNode(self.rigid_cylinder)
         else:
-            self.cylinder_node = self.app.world_node.attachNewNode(self.rigid_cylinder)
+            self.model_node = self.app.world_node.attachNewNode(self.rigid_cylinder)
 
-        self.cylinder_node.setPos(self.node_pos)
-        self.cylinder_node.setScale(self.node_scale)
-        self.cylinder_node.setColor(*self.node_color, self.color_alpha)
-        self.cylinder_node.setHpr(self.node_hpr)
-        self.app.model_manager.cylinder_model.copyTo(self.cylinder_node)
+        self.model_node.setPos(self.node_pos)
+        self.model_node.setScale(self.node_scale)
+        self.model_node.setColor(*self.node_color, self.color_alpha)
+        self.model_node.setHpr(self.node_hpr)
+        self.app.model_manager.cylinder_model.copyTo(self.model_node)
 
         if self.color_alpha < 1:
-            self.cylinder_node.setTransparency(1)  # 半透明を有効化
+            self.model_node.setTransparency(1)  # 半透明を有効化
+
+        # スペースボタンを表示
+        if self.velocity != Vec3(0, 0, 0):
+            self.app.space_button_text.show()
+
+        # Xボタンを表示
+        if self.remove_selected:
+            self.app.x_button_text.show()
 
     def update(self):
         """ 物理エンジンの位置を更新 """
-        self.cylinder_node.setPos(self.cylinder_node.node().getPos())
+        self.model_node.setPos(self.model_node.node().getPos())
 
     def remove(self):
         """ ボックスを削除 """
-        self.app.physics.bullet_world.removeRigidBody(self.cylinder_node.node())
-        self.cylinder_node.removeNode()
-        del self.cylinder_node
+        self.app.physics.bullet_world.removeRigidBody(self.model_node.node())
+        self.model_node.removeNode()
+        del self.model_node
         del self.cylinder_shape  # 削除処理
 
     def apply_velocity(self):
         """オブジェクトに初速を与える"""
-        if self.vec != Vec3(0, 0, 0):
+        if self.velocity != Vec3(0, 0, 0):
             # 剛体をアクティブ化
-            self.cylinder_node.node().setActive(True)
+            self.model_node.node().setActive(True)
             # 寝ている状態からの自動移行を無効化
-            self.cylinder_node.node().setDeactivationEnabled(False)
+            self.model_node.node().setDeactivationEnabled(False)
+            # 連続衝突検出の設定
+            self.model_node.node().setCcdMotionThreshold(1e-7)
+            self.model_node.node().setCcdSweptSphereRadius(0.5)
             # 速度を設定
-            self.cylinder_node.node().setLinearVelocity(self.vec)
-            print(f"円柱に速度 {self.vec} を適用しました")
+            self.model_node.node().setLinearVelocity(self.velocity)
+
+    def has_moved(self, tolerance=0.01):
+        """オブジェクトが初期位置から動いたかどうかを確認します"""
+        # 現在の位置を取得
+        current_pos = self.model_node.getPos()
+
+        # 初期位置との差を計算
+        dx = abs(current_pos.x - self.node_pos.x)
+        dy = abs(current_pos.y - self.node_pos.y)
+        dz = abs(current_pos.z - self.node_pos.z)
+
+        # いずれかの軸で許容誤差より大きく動いていたら、動いたと判断
+        return dx > tolerance or dy > tolerance or dz > tolerance

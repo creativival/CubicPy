@@ -1,6 +1,6 @@
 # CubicPy パッケージの初期化
 
-__version__ = '0.1.9'
+__version__ = '0.1.22'
 
 # デフォルト設定
 DEFAULT_GRAVITY_FACTOR = 1.0
@@ -18,6 +18,7 @@ from .model_manager import ModelManager
 from .physics import PhysicsEngine
 from .transform import TransformManager
 from .api_method import ApiMethod
+from .draw_text import Draw2DText, Draw3DText
 
 # オブジェクトクラス
 from .cube import Cube
@@ -27,6 +28,9 @@ from .safe_exec import SafeExec
 
 # ワールド管理
 from .world_manager import WorldManager
+
+# ゲームロジック
+from .game_logic import GameLogic
 
 # メインアプリケーション
 from .app import CubicPyApp

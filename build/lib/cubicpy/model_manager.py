@@ -33,8 +33,9 @@ class ModelManager:
 
     def load_sphere_model(self):
         """球体モデルのロード"""
-        model = self.app.loader.loadModel('misc/sphere.egg')
-        model.setScale(0.5)
+        model_file = resource_filename('cubicpy', 'models/sphere48.egg')
+        model = self.app.loader.loadModel(model_file)
+        model.setScale(1)
         model.setTextureOff(1)
         model.flattenLight()
         return model
