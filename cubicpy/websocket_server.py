@@ -6,6 +6,30 @@ import threading
 from panda3d.core import Vec3
 import argparse
 import random
+import numpy as np
+from scipy.spatial.transform import Rotation as R
+
+def convert_hpr_from_A_to_B(h, p, r):
+    # オイラー角 (Z-X-Y順) → 回転行列（座標系A）
+    # NOTE: rotate_hpr expects angles in degrees
+    rot_a = R.from_euler('zxy', [h, p, r], degrees=True)
+    R_a = rot_a.as_matrix()
+
+    # 座標変換行列（座標系A → B）
+    M = np.array([
+        [1, 0,  0],
+        [0, 0,  1],
+        [0, -1, 0]
+    ])
+    
+    # 相似変換で座標系Bにおける回転行列を得る
+    R_b = M @ R_a @ M.T
+    
+    # 座標系Bでの回転行列 → オイラー角（ZXY順）
+    rot_b = R.from_matrix(R_b)
+    h_b, p_b, r_b = rot_b.as_euler('zxy', degrees=True)
+    
+    return h_b, p_b, r_b
 
 # ロギングの設定
 logging.basicConfig(
@@ -44,6 +68,7 @@ class WebSocketServer:
             self.logger.debug(f"Sent room name: {self.room}")
             print(f"\nルーム番号を生成しました: {self.room}")
             print(f"このルーム番号をクライアントに伝えてください")
+            self.app.set_top_left_text(f"Room: {self.room}")
 
             # メッセージの受信ループ
             while True:
@@ -58,7 +83,8 @@ class WebSocketServer:
                     if data["boxes"]:
                         size = data["size"]
                         shape = data["shape"]
-                        object_type = data["shape"] if data["shape"] == "sphere" else "cube"
+                        object_type = shape if shape == "sphere" else "cube"
+
                         if shape == "plane":
                             scale = (size, size, size * 0.001)
                         else:
@@ -67,8 +93,10 @@ class WebSocketServer:
                         if data["nodeTransform"]:
                             x, y, z, h, p, r = data["nodeTransform"]
                             self.app.transform_manager.push_matrix()
-                            self.app.transform_manager.translate(x, z, -y)  # 座標変換
-                            self.app.transform_manager.rotate_hpr(h, p, r)  # 座標変換
+                            self.app.transform_manager.translate(*(Vec3(x, -z, y) * size))  # 座標変換
+                            h_b, p_b, r_b = convert_hpr_from_A_to_B(h, p, r)  # 座標変換
+                            self.app.transform_manager.rotate_hpr(h_b, p_b, r_b)  # 座標変換
+
                         for box in data["boxes"]:
                             print(box)
                             x, y, z, r, g, b, alpha, texture = box

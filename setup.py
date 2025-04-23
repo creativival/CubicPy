@@ -18,6 +18,8 @@ setup(
     install_requires=[
         "panda3d",
         "websockets",
+        "numpy",
+        "scipy",
     ],
     entry_points={
         "console_scripts": [
