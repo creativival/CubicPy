@@ -61,18 +61,18 @@ class RelayWebSocketClient:
             print(f"予期せぬエラーが発生しました: {e}")
             raise
 
-    async def place_cube(self, x=0, y=0, z=0, size=1.0, color="#FF0000"):
+    async def place_cube(self, x=0, y=0, z=0, size=1.0, r=0, g=0, b=0):
         """キューブを配置するコマンドを送信"""
         try:
             message = {
                 "type": "place_cube",
                 "position": {"x": x, "y": y, "z": z},
                 "size": size,
-                "color": color
+                "color": {"r": r, "g": g, "b": b}
             }
             await self.websocket.send(json.dumps(message))
             self.logger.debug(f"Sent cube placement command: {message}")
-            print(f"キューブを配置しました: 位置({x}, {y}, {z}), サイズ{size}, 色{color}")
+            print(f"キューブを配置しました: 位置({x}, {y}, {z}), サイズ{size}, 色{r}, {g}, {b}")
 
             # サーバーからの応答を待機
             response = await self.websocket.recv()
@@ -104,7 +104,7 @@ async def main():
         await client.connect()
         
         # 原点に赤いキューブを配置
-        await client.place_cube(0, 0, 0, 1.0, "#FF0000")
+        await client.place_cube(0, 0, 0, 1.0, 1, 0, 0)
         
         # 少し待機してから接続を閉じる
         await asyncio.sleep(1)

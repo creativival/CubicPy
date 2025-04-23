@@ -9,6 +9,7 @@ import sys
 import locale
 import random
 import asyncio
+import threading
 from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR, __version__, WebSocketServer
 
 # 言語に応じたメッセージ
@@ -96,10 +97,10 @@ def parse_window_size(size_str, lang):
         return None
 
 
-async def run_websocket_server(physics_engine):
-    """WebSocketサーバーを非同期で実行"""
-    server = WebSocketServer(physics_engine, "websocket.voxelamming.com")
-    await server.connect()
+def run_websocket_server(api):
+    """WebSocketサーバーを実行する関数"""
+    server = WebSocketServer(api)
+    server.start()
 
 
 def main():
@@ -194,11 +195,10 @@ def main():
         # 外部通信モードの場合
         if args.external:
             print(f"WebSocketクライアントを開始します")
-            # 非同期イベントループを作成
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            # WebSocketサーバーを非同期で実行
-            loop.run_until_complete(run_websocket_server(app.api))
+            # WebSocketサーバーを別スレッドで実行
+            websocket_thread = threading.Thread(target=run_websocket_server, args=(app,))
+            websocket_thread.daemon = True  # メインスレッドが終了したら自動的に終了
+            websocket_thread.start()
 
         # アプリケーションを実行
         print(f"アプリケーションを実行します")

@@ -14,8 +14,8 @@ logging.basicConfig(
 )
 
 class WebSocketServer:
-    def __init__(self, api, host="websocket.voxelamming.com", room=None):
-        self.api = api
+    def __init__(self, app, host="websocket.voxelamming.com", room=None):
+        self.app = app
         # ローカルホストの場合はws://を使用
         protocol = "wss://" if host != "localhost" else f"ws://{host}:8765"
         self.relay_uri = f"{protocol}{host}"
@@ -60,12 +60,15 @@ class WebSocketServer:
                         color = data["color"]
                         
                         # 物理エンジンにキューブを追加
-                        if self.api:
-                            self.api.add_cube(
-                                Vec3(position["x"], position["y"], position["z"]),
-                                size,
-                                color
+                        if self.app:
+                            self.app.api.add_cube(
+                                position=Vec3(position["x"], position["y"], position["z"]),
+                                scale=size,
+                                color=Vec3(color["r"], color["g"], color["b"]),
                             )
+
+                        # ワールドを再生成
+                        self.app.reset_all()
                         
                         response = {
                             "type": "cube_placed",
