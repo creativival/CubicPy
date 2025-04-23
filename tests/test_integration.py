@@ -220,4 +220,124 @@ def test_physics_multiple_bodies_integration(physics_engine, mock_app):
     for i, body in enumerate(bodies):
         final_pos = body.getTransform().getPos()
         initial_pos = Point3(i * 2, 0, i * 2)
-        assert final_pos.z < initial_pos.z 
+        assert final_pos.z < initial_pos.z
+
+def test_physics_limits_integration(physics_engine, mock_app):
+    """物理エンジンの制限値テスト"""
+    # 剛体を作成
+    body = BulletRigidBodyNode('test_body')
+    shape = BulletBoxShape((1, 1, 1))
+    body.addShape(shape)
+    body.setMass(1.0)
+    
+    # 初期位置を設定
+    initial_pos = Point3(0, 0, 20)
+    body.setTransform(TransformState.makePos(initial_pos))
+    
+    # 物理エンジンに追加
+    physics_engine.bullet_world.attachRigidBody(body)
+    
+    # 非常に大きな力を適用
+    force = Vec3(1000000, 0, 0)  # 極端に大きな力
+    body.applyCentralForce(force)
+    
+    # 物理シミュレーションを更新
+    for _ in range(120):
+        physics_engine.update(0.016)
+    
+    # 速度が制限されていることを確認
+    velocity = body.getLinearVelocity()
+    assert velocity.length() < 1000  # 速度が適切な範囲内にあることを確認
+
+def test_physics_reset_integration(physics_engine, mock_app):
+    """物理エンジンのリセット機能テスト"""
+    # 剛体を作成
+    body = BulletRigidBodyNode('test_body')
+    shape = BulletBoxShape((1, 1, 1))
+    body.addShape(shape)
+    body.setMass(1.0)
+    
+    # 初期位置を設定
+    initial_pos = Point3(0, 0, 20)
+    body.setTransform(TransformState.makePos(initial_pos))
+    
+    # 物理エンジンに追加
+    physics_engine.bullet_world.attachRigidBody(body)
+    
+    # 力を適用して移動させる
+    force = Vec3(1000, 0, 0)
+    body.applyCentralForce(force)
+    
+    # 物理シミュレーションを更新
+    for _ in range(60):
+        physics_engine.update(0.016)
+    
+    # 位置が変化したことを確認
+    moved_pos = body.getTransform().getPos()
+    assert moved_pos != initial_pos
+    
+    # 物理エンジンから剛体を削除
+    physics_engine.bullet_world.removeRigidBody(body)
+    
+    # 新しい剛体を作成して追加
+    new_body = BulletRigidBodyNode('new_body')
+    new_body.addShape(shape)
+    new_body.setMass(1.0)
+    new_body.setTransform(TransformState.makePos(initial_pos))
+    physics_engine.bullet_world.attachRigidBody(new_body)
+    
+    # リセット後のシミュレーションを更新
+    for _ in range(60):
+        physics_engine.update(0.016)
+    
+    # 新しい剛体が正しく動作することを確認
+    final_pos = new_body.getTransform().getPos()
+    assert final_pos != initial_pos
+
+def test_physics_settings_integration(physics_engine, mock_app):
+    """物理エンジンの設定変更テスト"""
+    # 重力の設定を変更
+    new_gravity = Vec3(0, 0, -4.905)  # 重力を半分に
+    physics_engine.bullet_world.setGravity(new_gravity)
+    
+    # 剛体を作成
+    body = BulletRigidBodyNode('test_body')
+    shape = BulletBoxShape((1, 1, 1))
+    body.addShape(shape)
+    body.setMass(1.0)
+    
+    # 初期位置を設定
+    initial_pos = Point3(0, 0, 20)
+    body.setTransform(TransformState.makePos(initial_pos))
+    
+    # 物理エンジンに追加
+    physics_engine.bullet_world.attachRigidBody(body)
+    
+    # 物理シミュレーションを更新
+    for _ in range(60):
+        physics_engine.update(0.016)
+    
+    # 重力の影響を確認
+    final_pos = body.getTransform().getPos()
+    fall_distance = initial_pos.z - final_pos.z
+    
+    # 元の重力設定に戻す
+    physics_engine.bullet_world.setGravity(mock_app.GRAVITY_VECTOR)
+    
+    # 新しい剛体を作成
+    new_body = BulletRigidBodyNode('new_body')
+    new_body.addShape(shape)
+    new_body.setMass(1.0)
+    new_body.setTransform(TransformState.makePos(initial_pos))
+    physics_engine.bullet_world.attachRigidBody(new_body)
+    
+    # 物理シミュレーションを更新
+    for _ in range(60):
+        physics_engine.update(0.016)
+    
+    # 異なる重力設定での落下距離を比較
+    new_final_pos = new_body.getTransform().getPos()
+    new_fall_distance = initial_pos.z - new_final_pos.z
+    
+    # 重力が半分の場合の落下距離が約半分であることを確認
+    assert abs(fall_distance - new_fall_distance/2) < 1.0  # 許容誤差1.0 
