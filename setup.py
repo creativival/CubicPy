@@ -9,7 +9,7 @@ def get_font_files():
 
 setup(
     name="cubicpy",
-    version="0.1.0",
+    version=__version__,
     packages=find_packages(),
     include_package_data=True,
     package_data={

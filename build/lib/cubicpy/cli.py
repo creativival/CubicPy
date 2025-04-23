@@ -8,7 +8,9 @@ import os
 import sys
 import locale
 import random
-from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR, __version__
+import asyncio
+import threading
+from cubicpy import CubicPyApp, list_samples, get_sample_path, DEFAULT_GRAVITY_FACTOR, __version__, WebSocketServer
 
 # 言語に応じたメッセージ
 MESSAGES = {
@@ -95,6 +97,12 @@ def parse_window_size(size_str, lang):
         return None
 
 
+def run_websocket_server(api):
+    """WebSocketサーバーを実行する関数"""
+    server = WebSocketServer(api)
+    server.start()
+
+
 def main():
     """コマンドラインエントリーポイント"""
     # システムの言語を取得
@@ -112,6 +120,8 @@ def main():
                         help=msgs['list_help'])
     parser.add_argument('--gravity', '-g', type=float, default=DEFAULT_GRAVITY_FACTOR,
                         help=msgs['gravity_help'])
+    parser.add_argument('--external', '-x', action='store_true',
+                        help='WebSocket通信モードで起動')
     parser.add_argument('--window-size', '-w', default="900,600",
                         help=msgs['window_size_help'])
     parser.add_argument('--version', '-v', action='store_true',
@@ -163,6 +173,8 @@ def main():
         # 安全なパスに変換
         file_path = os.path.abspath(file_path)
         print(msgs['running_file'].format(file_path))
+    elif args.external:
+        file_path = None
     else:
         # デフォルトサンプル - 最初のサンプルを使用
         default_sample = random.choice(list_samples()) if list_samples() else 'cube_tower_sample'
@@ -179,6 +191,17 @@ def main():
         # アプリを起動
         app = CubicPyApp(
             file_path, gravity_factor=args.gravity, window_size=window_size, camera_lens=args.camera_lens)
+
+        # 外部通信モードの場合
+        if args.external:
+            print(f"WebSocketクライアントを開始します")
+            # WebSocketサーバーを別スレッドで実行
+            websocket_thread = threading.Thread(target=run_websocket_server, args=(app,))
+            websocket_thread.daemon = True  # メインスレッドが終了したら自動的に終了
+            websocket_thread.start()
+
+        # アプリケーションを実行
+        print(f"アプリケーションを実行します")
         app.run()
     except Exception as e:
         print(msgs['error_application'].format(e))

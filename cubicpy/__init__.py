@@ -1,6 +1,6 @@
 # CubicPy パッケージの初期化
 
-__version__ = '0.1.22'
+__version__ = '0.1.23'
 
 # デフォルト設定
 DEFAULT_GRAVITY_FACTOR = 1.0

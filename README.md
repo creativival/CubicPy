@@ -365,6 +365,72 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 - **Space key**: Launch objects with velocity vectors (`vec`)
 - **ESC**: Exit
 
+## WebSocket Mode
+
+CubicPy can receive object data via WebSocket from external applications. This allows for real-time interaction between CubicPy and other applications.
+
+### Starting WebSocket Server
+
+To start CubicPy in WebSocket mode, use the following command:
+
+```bash
+cubicpy --external
+
+cubicpy -x
+```
+### Example: Sending Data from Voxelamming Client
+
+You can send data to CubicPy from a Voxelamming client application. Here's an example using Python:
+
+```python
+# Import Voxelamming class from voxelamming package
+from voxelamming import Voxelamming
+
+# Specify the room name displayed in the CubicPy application
+room_name = "1000"
+# Create an instance of Voxelamming class
+vox = Voxelamming(room_name)
+
+# Set voxel size
+vox.set_box_size(1)
+# Set voxel placement interval
+vox.set_build_interval(0.01)
+
+# Set position and color for voxel placement
+for i in range(100):
+    vox.create_box(-1, i, 0, r=0, g=1, b=1, alpha=1)
+    vox.create_box(0, i, 0, r=1, g=0, b=0, alpha=1)
+    vox.create_box(1, i, 0, r=1, g=1, b=0, alpha=1)
+    vox.create_box(2, i, 0, r=0, g=1, b=1, alpha=1)
+
+# Set positions for voxel removal
+for i in range(50):
+    vox.remove_box(0, i * 2 + 1, 0)
+    vox.remove_box(1, i * 2, 0)
+
+# Send voxel data to the application
+vox.send_data("main")
+# vox.close_connection()
+```
+
+### Installation and Running
+
+```bash
+# Install voxelamming package
+$ pip install voxelamming
+$ pip install --upgrade voxelamming
+
+# Run the sample
+$ cd sample/python
+$ python main.py
+# or
+$ python3 main.py
+```
+
+For more details, please refer to the Voxelamming official website:
+
+[Voxelamming official](https://creativival.github.io/voxelamming/)
+
 ## Requirements
 
 - Python 3.9 or higher
@@ -400,8 +466,6 @@ Before releasing a new version to PyPI, test cli.py on local file.
 ```
 PYTHONPATH=$PYTHONPATH:. python cubicpy/cli.py
 ```
-
-
 
 ### Testing Before Release
 

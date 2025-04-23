@@ -354,6 +354,73 @@ launch_objects()  # 初速度設定されたオブジェクトを発射（スペ
 - **スペースキー**: 初速度ベクトル(`vec`)が設定されたオブジェクトを発射
 - **ESC**: 終了
 
+## WebSocketモード
+
+CubicPyは外部アプリケーションからWebSocket経由でオブジェクトデータを受け取ることができます。これにより、CubicPyと他のアプリケーション間でリアルタイムな連携が可能になります。
+
+### WebSocketサーバーの起動
+
+WebSocketモードでCubicPyを起動するには、以下のコマンドを使用します：
+
+```bash
+cubicpy --external
+
+cubicpy -x
+```
+
+### 例：Voxelammingクライアントからのデータ送信
+
+VoxelammingクライアントアプリケーションからCubicPyにデータを送信できます。以下はPythonを使用した例です：
+
+```python
+# voxelammingパッケージからVoxelammingクラスをインポート
+from voxelamming import Voxelamming
+
+# CubicPyアプリケーションに表示されるルーム名を指定
+room_name = "1000"
+# Voxelammingクラスのインスタンスを作成
+vox = Voxelamming(room_name)
+
+# ボクセルのサイズを設定
+vox.set_box_size(1)
+# ボクセルの配置間隔を設定
+vox.set_build_interval(0.01)
+
+# ボクセルの配置位置と色を設定
+for i in range(100):
+    vox.create_box(-1, i, 0, r=0, g=1, b=1, alpha=1)
+    vox.create_box(0, i, 0, r=1, g=0, b=0, alpha=1)
+    vox.create_box(1, i, 0, r=1, g=1, b=0, alpha=1)
+    vox.create_box(2, i, 0, r=0, g=1, b=1, alpha=1)
+
+# ボクセルの削除位置を設定
+for i in range(50):
+    vox.remove_box(0, i * 2 + 1, 0)
+    vox.remove_box(1, i * 2, 0)
+
+# ボクセルデータをアプリケーションに送信
+vox.send_data("main")
+# vox.close_connection()
+```
+
+### インストールと実行
+
+```bash
+# voxelammingパッケージのインストール
+$ pip install voxelamming
+$ pip install --upgrade voxelamming
+
+# サンプルの実行
+$ cd sample/python
+$ python main.py
+# または
+$ python3 main.py
+```
+
+詳細については、Voxelamming公式ウェブサイトを参照してください：
+
+[Voxelamming公式](https://creativival.github.io/voxelamming/)
+
 ## 必須条件
 
 - Python 3.9以上
@@ -381,6 +448,14 @@ MITライセンスの下で公開されています。詳細は[LICENSE](LICENSE
 バグ報告や機能改善の提案は、GitHubのIssueやPull Requestでお願いします。また、新しいサンプルの作成や、ドキュメントの改善なども歓迎します。
 
 ## 開発とリリースプロセス
+
+### CLIモードのテスト
+
+PyPIに新しいバージョンをリリースする前に、ローカルファイルでcli.pyをテストします。
+
+```bash
+PYTHONPATH=$PYTHONPATH:. python cubicpy/cli.py
+```
 
 ### リリース前のテスト
 

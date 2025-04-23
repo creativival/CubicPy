@@ -23,6 +23,7 @@ cubicpy/safe_exec.py
 cubicpy/scene.py
 cubicpy/sphere.py
 cubicpy/transform.py
+cubicpy/websocket_server.py
 cubicpy/world_manager.py
 cubicpy.egg-info/PKG-INFO
 cubicpy.egg-info/SOURCES.txt

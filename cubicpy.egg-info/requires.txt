@@ -1,2 +1,4 @@
-panda3d>=1.10.15
+panda3d
+websockets
 numpy
+scipy
