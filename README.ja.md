@@ -56,6 +56,18 @@ cubicpy --window-size 1280,720 -e cube_tower_sample
 # カメラレンズの種類を指定して実行（perspective または orthographic）
 cubicpy -e cube_tower_sample -c orthographic
 cubicpy --camera-lens orthographic -e cube_tower_sample
+
+# WebSocketモードで実行
+cubicpy -e cube_tower_sample --external
+cubicpy -e cube_tower_sample -x
+
+# カスタム反発係数(0-1)で実行
+cubicpy -e cube_tower_sample --restitution 0.8
+cubicpy -e cube_tower_sample -r 0.8
+
+# カスタム摩擦係数(0-1)で実行
+cubicpy -e cube_tower_sample --friction 0.5
+cubicpy -e cube_tower_sample -f 0.5
 ```
 
 ## サンプルコードの解説
@@ -183,12 +195,15 @@ app.run()
 ### CubicPyAppクラス
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=1, window_size=(900, 600), camera_lens='perspective')
+CubicPyApp(code_file=None, gravity_factor=1, window_size=(900, 600), camera_lens='perspective'
+    restitution=0.5, friction=0.5)
 ```
 - `code_file`: 実行するPythonファイルのパス（任意）
 - `gravity_factor`: 重力係数（任意、デフォルト: 1）
 - `window_size`: ウィンドウサイズ（任意、デフォルト: (900, 600)）
 - `camera_lens`: カメラレンズのタイプ（'perspective'または'orthographic'、任意、デフォルト: 'perspective'）
+- `restitution`: 反発係数 (0: 反発なし ～ 1: 完全弾性衝突, デフォルト: 0.5)
+- `friction`: 摩擦係数 (0: 摩擦なし ～ 1: 強い摩擦, デフォルト: 0.5)
 
 ### オブジェクト追加メソッド
 
@@ -366,6 +381,8 @@ launch_objects()  # 初速度設定されたオブジェクトを発射（スペ
 
 CubicPyは外部アプリケーションからWebSocket経由でオブジェクトデータを受け取ることができます。これにより、CubicPyと他のアプリケーション間でリアルタイムな連携が可能になります。
 
+画面左上に表示されたリームネームにより、Websocket通信を確立します。
+
 ### WebSocketサーバーの起動
 
 WebSocketモードでCubicPyを起動するには、以下のコマンドを使用します：
@@ -379,6 +396,8 @@ cubicpy -x
 ### 例：Voxelammingクライアントからのデータ送信
 
 VoxelammingクライアントアプリケーションからCubicPyにデータを送信できます。以下はPythonを使用した例です：
+
+![Websocket mode](https://creativival.github.io/CubicPy/assets/websocket_mode.png)
 
 ```python
 # voxelammingパッケージからVoxelammingクラスをインポート

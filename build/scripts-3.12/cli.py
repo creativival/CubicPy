@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!python
 """
 CubicPy コマンドラインインターフェース
 キューブを積み上げて物理シミュレーションを行う子供向けPython学習ツール

@@ -56,6 +56,18 @@ cubicpy --window-size 1280,720 -e cube_tower_sample
 # Run with specific camera lens type (perspective or orthographic)
 cubicpy -e cube_tower_sample -c orthographic
 cubicpy --camera-lens orthographic -e cube_tower_sample
+
+# Run in websocket mode
+cubicpy -e cube_tower_sample --external
+cubicpy -e cube_tower_sample -x
+
+# Run with custom restitution coefficient (0-1)
+cubicpy -e cube_tower_sample --restitution 0.8
+cubicpy -e cube_tower_sample -r 0.8
+
+# Run with custom friction coefficient (0-1)
+cubicpy -e cube_tower_sample --friction 0.5
+cubicpy -e cube_tower_sample -f 0.5
 ```
 
 ## Sample Code Examples
@@ -183,12 +195,15 @@ Additional sample code can be found in the "api_codes" directory. Run with `pyth
 ### CubicPyApp Class
 
 ```python
-CubicPyApp(code_file=None, gravity_factor=1, window_size=(900, 600), camera_lens='perspective')
+CubicPyApp(code_file=None, gravity_factor=1, window_size=(900, 600), camera_lens='perspective'
+    restitution=0.5, friction=0.5)
 ```
 - `code_file`: Path to Python file to execute (optional)
 - `gravity_factor`: Gravity factor (optional, default: 1)
 - `window_size`: Window size (optional, default: (900, 600))
 - `camera_lens`: Camera lens type ('perspective' or 'orthographic', optional, default: 'perspective')
+- `restitution`: Coefficient of restitution (0: no bounce to 1: perfect elastic collision, default: 0.5)
+- `friction`: Coefficient of friction (0: no friction to 1: high friction, default: 0.5)
 
 ### Object Addition Methods
 
@@ -377,6 +392,8 @@ launch_objects()  # Launch objects with initial velocity vectors (also triggered
 
 CubicPy can receive object data via WebSocket from external applications. This allows for real-time interaction between CubicPy and other applications.
 
+Establish WebSocket communication using the room name displayed in the top-left corner of the screen.
+
 ### Starting WebSocket Server
 
 To start CubicPy in WebSocket mode, use the following command:
@@ -389,6 +406,8 @@ cubicpy -x
 ### Example: Sending Data from Voxelamming Client
 
 You can send data to CubicPy from a Voxelamming client application. Here's an example using Python:
+
+![Websocket mode](https://creativival.github.io/CubicPy/assets/websocket_mode.png)
 
 ```python
 # Import Voxelamming class from voxelamming package

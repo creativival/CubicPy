@@ -1,8 +1,6 @@
 from setuptools import setup, find_packages
 import os
-
-# バージョン番号を直接指定
-VERSION = '0.1.24'
+from cubicpy import __version__
 
 # フォントファイルのパスを取得
 def get_font_files():
@@ -11,7 +9,7 @@ def get_font_files():
 
 setup(
     name="cubicpy",
-    version=VERSION,
+    version=__version__,
     packages=find_packages(),
     include_package_data=True,
     package_data={
