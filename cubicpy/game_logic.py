@@ -55,7 +55,7 @@ class GameLogic:
                         dy = abs(current_pos.y - initial_pos.y)
 
                         # 閾値以上に動いたら倒れたと判断
-                        if dx > 0.1 or dy > self.tolerance:
+                        if dx > self.tolerance or dy > self.tolerance:
                             count += 1
                     elif self.motion_state == 'fallen':
                         # 初期位置と現在位置を比較

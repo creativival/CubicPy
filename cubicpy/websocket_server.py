@@ -89,9 +89,16 @@ class WebSocketServer:
                             scale = (size, size, size * 0.001)
                         else:
                             scale = (size, size, size)
-                        
-                        if data["nodeTransform"]:
-                            x, y, z, h, p, r = data["nodeTransform"]
+
+                        if data.get("nodeTransform") or data.get("translation"):
+                            # 新APIのnodeTransformまたは古いAPIのtranslationを取得
+                            transform = data.get("nodeTransform") or data.get("translation")
+
+                            if len(transform) == 6:
+                                x, y, z, h, p, r = transform
+                            else:
+                                x, y, z, h, p, r = 0, 0, 0, 0, 0, 0
+
                             self.app.transform_manager.push_matrix()
                             self.app.transform_manager.translate(*(Vec3(x, -z, y) * size))  # 座標変換
                             h_b, p_b, r_b = convert_hpr_from_A_to_B(h, p, r)  # 座標変換

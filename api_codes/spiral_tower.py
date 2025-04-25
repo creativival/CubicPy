@@ -3,7 +3,6 @@ import math
 
 app = CubicPyApp(gravity_factor=0.1, window_size=(1800, 1200))
 
-
 # スパイラルタワーを作成
 def create_spiral_tower(x, y, height, layers, radius, color_gradient=True):
     app.push_matrix()
