@@ -1,9 +1,14 @@
 # CubicPy パッケージの初期化
 
-__version__ = '0.1.23'
+# バージョン
+__version__ = '0.1.26'
 
 # デフォルト設定
 DEFAULT_GRAVITY_FACTOR = 1.0
+DEFAULT_WINDOW_SIZE_X = 900
+DEFAULT_WINDOW_SIZE_Y = 600
+RESTITUTION = 0.5  # 反発係数
+FRICTION = 0.5  # 摩擦係数
 
 # 位置計算用関数
 from .base_point import BasePoint, get_position_offset

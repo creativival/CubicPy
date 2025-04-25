@@ -61,6 +61,10 @@ cubicpy --camera-lens orthographic -e cube_tower_sample
 cubicpy -e cube_tower_sample --external
 cubicpy -e cube_tower_sample -x
 
+# Run in websocket mode with specific room
+cubicpy -e cube_tower_sample --external --room 1000
+cubicpy -e cube_tower_sample -x -m 1000
+
 # Run with custom restitution coefficient (0-1)
 cubicpy -e cube_tower_sample --restitution 0.8
 cubicpy -e cube_tower_sample -r 0.8
