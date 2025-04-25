@@ -458,6 +458,10 @@ $ python main.py
 $ python3 main.py
 ```
 
+## Other Sample Codes for Websocket Mode
+
+Additional sample codes are available in the "websocket_codes" directory. Supported languages include `Python`, `JavaScript`, `Ruby`, `Swift`, and `Scratch3`.
+
 For more details, please refer to the Voxelamming official website:
 
 [Voxelamming official](https://creativival.github.io/voxelamming/)

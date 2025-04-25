@@ -447,6 +447,11 @@ $ python main.py
 # または
 $ python3 main.py
 ```
+```
+
+## Websocketモードの他のサンプルコード
+
+追加のサンプルコードは「websocket_codes」ディレクトリにあります。`Python` `JavaScript` `Ruby` `Swift` `Scratch3` の言語に対応しています。
 
 詳細については、Voxelamming公式ウェブサイトを参照してください：
 
