@@ -116,7 +116,7 @@ class WebSocketServer:
                             }
                             self.app.api.add(object_type, **object_data)
                         
-                        if data["nodeTransform"]:
+                        if data.get("nodeTransform") or data.get("translation"):
                             self.app.transform_manager.pop_matrix()
 
                         # ワールドを再生成
