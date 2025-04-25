@@ -26,6 +26,7 @@ MESSAGES = {
         'restitution_help': '反発係数（0.0から1.0の範囲）デフォルト: 0.5',
         'friction_help': '摩擦係数（0.0から1.0の範囲）デフォルト: 0.5',
         'external_help': 'WebSocket通信モードで起動',
+        'room_help': 'WebSocket通信のルーム名を指定（デフォルト: ランダムな4桁の数字）',
         'version_help': 'バージョン情報を表示',
         'version_info': 'CubicPy バージョン {0}',
         'available_samples': '利用可能なサンプル:',
@@ -52,6 +53,7 @@ MESSAGES = {
         'restitution_help': 'Restitution coefficient (0.0 to 1.0) default: 0.5',
         'friction_help': 'Friction coefficient (0.0 to 1.0) default: 0.5',
         'external_help': 'Start in WebSocket communication mode',
+        'room_help': 'Specify WebSocket communication room name (default: random 4-digit number)',
         'version_help': 'Display version information',
         'version_info': 'CubicPy version {0}',
         'available_samples': 'Available samples:',
@@ -103,9 +105,9 @@ def parse_window_size(size_str, lang):
         return None
 
 
-def run_websocket_server(api):
+def run_websocket_server(api, room=None):
     """WebSocketサーバーを実行する関数"""
-    server = WebSocketServer(api)
+    server = WebSocketServer(api, room=room)
     server.start()
 
 
@@ -128,6 +130,8 @@ def main():
                         help=msgs['gravity_help'])
     parser.add_argument('--external', '-x', action='store_true',
                         help=msgs['external_help'])
+    parser.add_argument('--room', '-m', type=str, default=None,
+                        help=msgs['room_help'])
     parser.add_argument('--window-size', '-w', default="900,600",
                         help=msgs['window_size_help'])
     parser.add_argument('--version', '-v', action='store_true',
@@ -211,7 +215,7 @@ def main():
         if args.external:
             print(f"WebSocketクライアントを開始します")
             # WebSocketサーバーを別スレッドで実行
-            websocket_thread = threading.Thread(target=run_websocket_server, args=(app,))
+            websocket_thread = threading.Thread(target=run_websocket_server, args=(app, args.room))
             websocket_thread.daemon = True  # メインスレッドが終了したら自動的に終了
             websocket_thread.start()
 
