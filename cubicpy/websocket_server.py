@@ -79,16 +79,15 @@ class WebSocketServer:
                     self.logger.info(f"Received data: {data}")
 
                     # メッセージを処理
-                    # print(data)
                     if data["bodyData"]:
                         body_data = data["bodyData"]
-                        # print(f"body_data: {body_data}")
+                        print(f"body_data: {body_data}")
 
                         # リスト形式のデータをタプルに変換
                         formatted_body_data = []
                         for body in body_data:
-                            # print(f"body: {body}")
-
+                            print(f"body: {body}")
+                            
                             # リスト形式のデータをタプルに変換
                             if isinstance(body.get('pos'), list):
                                 body['pos'] = tuple(body['pos'])
@@ -100,13 +99,14 @@ class WebSocketServer:
                                 body['hpr'] = tuple(body['hpr'])
                             if isinstance(body.get('velocity'), list):
                                 body['velocity'] = tuple(body['velocity'])
-
+                            
                             formatted_body_data.append(body)
                         
-                        self.app.world_manager.build_body_data(formatted_body_data)
-
-                        # # ワールドを再生成
-                        # self.app.reset_all()
+                        # ApiMethodを使用してオブジェクトを配置
+                        self.app.api.from_body_data(formatted_body_data)
+                        
+                        # ワールドを再生成
+                        self.app.reset_all()
                         
                         response = 'オブジェクトの配置が完了しました'
                         await self.websocket.send(response)

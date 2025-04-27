@@ -69,16 +69,6 @@ class WorldManager:
                 body_object = Sphere(self.app, body, parent_node)
             elif body['type'] == 'cylinder':
                 body_object = Cylinder(self.app, body, parent_node)
-            elif body['type'] == 'push_matrix':
-                print(f"push_matrix: {body}")
-            elif body['type'] == 'pop_matrix':
-                print(f"pop_matrix: {body}")
-            elif body['type'] == 'translate':
-                print(f"translate: {body}")
-            elif body['type'] == 'rotate_hpr':
-                print(f"rotate_hpr: {body}")
-            elif body['type'] == 'reset_matrix':
-                print(f"reset_matrix: {body}")
             else:
                 print(f"Unknown body type: {body['type']}")
 
