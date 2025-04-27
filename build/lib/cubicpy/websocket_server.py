@@ -79,39 +79,55 @@ class WebSocketServer:
                     self.logger.info(f"Received data: {data}")
 
                     # メッセージを処理
-                    print(data)
-                    if data["boxes"]:
-                        size = data["size"]
-                        shape = data["shape"]
-                        object_type = shape if shape == "sphere" else "cube"
+                    if data["bodyData"]:
+                        body_data = data["bodyData"]
+                        print(f"body_data: {body_data}")
 
-                        if shape == "plane":
-                            scale = (size, size, size * 0.001)
-                        else:
-                            scale = (size, size, size)
+                        # リスト形式のデータをタプルに変換
+                        formatted_body_data = []
+                        for body in body_data:
+                            print(f"body: {body}")
+                            
+                            if body['type'] in ['cube', 'box', 'sphere', 'cylinder']:
+                                # リスト形式のデータをタプルに変換
+                                if isinstance(body.get('pos'), list):
+                                    body['pos'] = tuple(body['pos'])
+                                if isinstance(body.get('scale'), list):
+                                    body['scale'] = tuple(body['scale'])
+                                if isinstance(body.get('color'), list):
+                                    body['color'] = tuple(body['color'])
+                                if isinstance(body.get('hpr'), list):
+                                    body['hpr'] = tuple(body['hpr'])
+                                if isinstance(body.get('velocity'), list):
+                                    body['velocity'] = tuple(body['velocity'])
+
+                                # オブジェクトを配置
+                                self.app.api.add(body['type'], **body)
+                            elif body['type'] == 'top_left_text':
+                                # テキストを配置
+                                self.app.set_top_left_text(body['text'])
+                            elif body['type'] == 'bottom_left_text':
+                                # テキストを配置
+                                self.app.set_bottom_left_text(body['text'])
+                            elif body['type'] == 'push_matrix':
+                                # 変換行列をスタックにプッシュ
+                                self.app.api.push_matrix()
+                            elif body['type'] == 'pop_matrix':
+                                # 変換行列をスタックからポップ
+                                self.app.api.pop_matrix()
+                            elif body['type'] == 'translate':
+                                # 平行移動
+                                if isinstance(body.get('pos'), list):
+                                    x, y, z = tuple(body['pos'])
+                                    self.app.api.translate(x, y, z)
+                            elif body['type'] == 'rotation':
+                                # 回転
+                                if isinstance(body.get('hpr'), list):
+                                    h, p, r = tuple(body['hpr'])
+                                    self.app.api.rotate_hpr(h, p, r)
+                            else:
+                                print(f"Unknown body type: {body['type']}")
                         
-                        if data["nodeTransform"]:
-                            x, y, z, h, p, r = data["nodeTransform"]
-                            self.app.transform_manager.push_matrix()
-                            self.app.transform_manager.translate(*(Vec3(x, -z, y) * size))  # 座標変換
-                            h_b, p_b, r_b = convert_hpr_from_A_to_B(h, p, r)  # 座標変換
-                            self.app.transform_manager.rotate_hpr(h_b, p_b, r_b)  # 座標変換
-
-                        for box in data["boxes"]:
-                            print(box)
-                            x, y, z, r, g, b, alpha, texture = box
-                            # キューブを配置
-                            object_data = {
-                                'position': Vec3(x, -z, y) * size,  # 座標変換
-                                'scale': scale,
-                                'color': Vec3(r, g, b),
-                                'color_alpha': alpha
-                            }
-                            self.app.api.add(object_type, **object_data)
-                        
-                        if data["nodeTransform"]:
-                            self.app.transform_manager.pop_matrix()
-
                         # ワールドを再生成
                         self.app.reset_all()
                         

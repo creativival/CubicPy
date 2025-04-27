@@ -102,7 +102,7 @@ class ApiMethod:
         remove = kwargs.get('remove', False)
         velocity = kwargs.get('velocity', (0, 0, 0))
 
-        if obj_type == 'cube':
+        if obj_type in ['cube', 'box']:
             return self.add_cube(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)
         elif obj_type == 'sphere':
             return self.add_sphere(position, scale, color, mass, color_alpha, hpr, base_point, remove, velocity)

@@ -55,18 +55,22 @@ class WorldManager:
 
     def build_body_data(self, body_data):
         """オブジェクトデータからボディを構築"""
+        print(f"body_data length: {len(body_data)}")
+        
         for body in body_data:
+            # print(f"body: {body}")
             # 親ノードの取得（APIで設定された場合）
             parent_node = body.get('parent_node', None)
 
-            if body['type'] == 'cube':
+            if body['type'] in ['cube', 'box']:
+                print(f"cube: {body}")
                 body_object = Cube(self.app, body, parent_node)
             elif body['type'] == 'sphere':
                 body_object = Sphere(self.app, body, parent_node)
             elif body['type'] == 'cylinder':
                 body_object = Cylinder(self.app, body, parent_node)
             else:
-                body_object = Cube(self.app, body, parent_node)
+                print(f"Unknown body type: {body['type']}")
 
             self.body_objects.append({'type': body['type'], 'object': body_object})
 
