@@ -101,7 +101,16 @@ class WebSocketServer:
                                 if isinstance(body.get('velocity'), list):
                                     body['velocity'] = tuple(body['velocity'])
 
+                                # オブジェクトを配置
                                 self.app.api.add(body['type'], **body)
+                            elif body['type'] == 'top_left_text':
+                                # テキストを配置
+                                self.app.set_top_left_text(body['text'])
+                            elif body['type'] == 'bottom_left_text':
+                                # テキストを配置
+                                self.app.set_bottom_left_text(body['text'])
+                            else:
+                                print(f"Unknown body type: {body['type']}")
                         
                         # ワールドを再生成
                         self.app.reset_all()
