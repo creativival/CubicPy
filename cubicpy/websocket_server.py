@@ -88,22 +88,20 @@ class WebSocketServer:
                         for body in body_data:
                             print(f"body: {body}")
                             
-                            # リスト形式のデータをタプルに変換
-                            if isinstance(body.get('pos'), list):
-                                body['pos'] = tuple(body['pos'])
-                            if isinstance(body.get('scale'), list):
-                                body['scale'] = tuple(body['scale'])
-                            if isinstance(body.get('color'), list):
-                                body['color'] = tuple(body['color'])
-                            if isinstance(body.get('hpr'), list):
-                                body['hpr'] = tuple(body['hpr'])
-                            if isinstance(body.get('velocity'), list):
-                                body['velocity'] = tuple(body['velocity'])
-                            
-                            formatted_body_data.append(body)
-                        
-                        # ApiMethodを使用してオブジェクトを配置
-                        self.app.api.from_body_data(formatted_body_data)
+                            if body['type'] in ['cube', 'box', 'sphere', 'cylinder']:
+                                # リスト形式のデータをタプルに変換
+                                if isinstance(body.get('pos'), list):
+                                    body['pos'] = tuple(body['pos'])
+                                if isinstance(body.get('scale'), list):
+                                    body['scale'] = tuple(body['scale'])
+                                if isinstance(body.get('color'), list):
+                                    body['color'] = tuple(body['color'])
+                                if isinstance(body.get('hpr'), list):
+                                    body['hpr'] = tuple(body['hpr'])
+                                if isinstance(body.get('velocity'), list):
+                                    body['velocity'] = tuple(body['velocity'])
+
+                                self.app.api.add(body['type'], **body)
                         
                         # ワールドを再生成
                         self.app.reset_all()
