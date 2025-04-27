@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cubicpy
-Version: 0.1.26
+Version: 0.1.27
 Summary: A Python library for creating 3D basic shape models and animations with Physics.
 Home-page: https://github.com/creativival/CubicPy
 Author: creativival
@@ -80,6 +80,10 @@ cubicpy --camera-lens orthographic -e cube_tower_sample
 # Run in websocket mode
 cubicpy -e cube_tower_sample --external
 cubicpy -e cube_tower_sample -x
+
+# Run in websocket mode with specific room
+cubicpy -e cube_tower_sample --external --room 1000
+cubicpy -e cube_tower_sample -x -m 1000
 
 # Run with custom restitution coefficient (0-1)
 cubicpy -e cube_tower_sample --restitution 0.8
@@ -473,6 +477,10 @@ $ python main.py
 # or
 $ python3 main.py
 ```
+
+## Other Sample Codes for Websocket Mode
+
+Additional sample codes are available in the "websocket_codes" directory. Supported languages include `Python`, `JavaScript`, `Ruby`, `Swift`, and `Scratch3`.
 
 For more details, please refer to the Voxelamming official website:
 
