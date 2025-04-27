@@ -109,6 +109,22 @@ class WebSocketServer:
                             elif body['type'] == 'bottom_left_text':
                                 # テキストを配置
                                 self.app.set_bottom_left_text(body['text'])
+                            elif body['type'] == 'push_matrix':
+                                # 変換行列をスタックにプッシュ
+                                self.app.api.push_matrix()
+                            elif body['type'] == 'pop_matrix':
+                                # 変換行列をスタックからポップ
+                                self.app.api.pop_matrix()
+                            elif body['type'] == 'translate':
+                                # 平行移動
+                                if isinstance(body.get('pos'), list):
+                                    x, y, z = tuple(body['pos'])
+                                    self.app.api.translate(x, y, z)
+                            elif body['type'] == 'rotation':
+                                # 回転
+                                if isinstance(body.get('hpr'), list):
+                                    h, p, r = tuple(body['hpr'])
+                                    self.app.api.rotate_hpr(h, p, r)
                             else:
                                 print(f"Unknown body type: {body['type']}")
                         
