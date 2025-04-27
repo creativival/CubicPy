@@ -5,21 +5,20 @@ from . import get_position_offset
 
 class Cube:
     def __init__(self, app, cube, parent_node=None):
-        # print(cube)
         self.app = app
         self.type = 'cube'
 
         # スケール・色・質量の設定
-        self.node_scale = Vec3(cube['scale']) if 'scale' in cube else (1, 1, 1)
-        self.node_color = cube['color'] if 'color' in cube else (0.5, 0.5, 0.5)
+        self.node_scale = Vec3(*cube['scale']) if 'scale' in cube else Vec3(1, 1, 1)
+        self.node_color = Vec3(*cube['color']) if 'color' in cube else Vec3(0.5, 0.5, 0.5)
         self.node_mass = cube['mass'] if 'mass' in cube else 1
-        self.node_hpr = Vec3(cube['hpr']) if 'hpr' in cube else Vec3(0, 0, 0)
+        self.node_hpr = Vec3(*cube['hpr']) if 'hpr' in cube else Vec3(0, 0, 0)
         self.color_alpha = cube['color_alpha'] if 'color_alpha' in cube else 1
         # 配置するときの位置基準 (0: 原点に近い角が基準, 1: 底面の中心が基準, 2: 立方体の重心が基準)
         self.base_point = cube['base_point'] if 'base_point' in cube else 0
         self.remove_selected = cube['remove'] if 'remove' in cube else False
         # 初速度ベクトルの設定を追加
-        self.velocity = Vec3(cube['velocity']) if 'velocity' in cube else Vec3(0, 0, 0)
+        self.velocity = Vec3(*cube['velocity']) if 'velocity' in cube else Vec3(0, 0, 0)
 
         # 配置位置の計算
         self.node_pos = Vec3(cube['pos']) + get_position_offset(self)
